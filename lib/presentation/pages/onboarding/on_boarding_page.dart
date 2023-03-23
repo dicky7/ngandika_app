@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
+import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
 import '../../../data/models/onboarding_item.dart';
@@ -66,7 +67,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         curve: Curves.easeIn,
                         duration: const Duration(milliseconds: 500)
                       ),
-
                    ),
               ],
             ),
@@ -94,16 +94,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: kBlackColor)
+                  style: context.headlineMedium?.copyWith(color: kBlackColor)
               ),
               const SizedBox(height: 20),
               Text(
                 description,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: context.textTheme.titleSmall,
               ),
             ],
-
           ),
         ),
       ],

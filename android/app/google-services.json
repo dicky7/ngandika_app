@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "901787842217",
+    "project_id": "ngandika-app",
+    "storage_bucket": "ngandika-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901787842217:android:22d5bc2cc411b3095e1bb8",
+        "android_client_info": {
+          "package_name": "com.example.ngandika_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "901787842217-gs4u9cef9i2odcvt5g4fbsb7svk7b437.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ngandika_app",
+            "certificate_hash": "e30bd0def6c5989ea9c7a048d7b3a3ab495a4aa5"
+          }
+        },
+        {
+          "client_id": "901787842217-jcihbhph5bil3oidf5s303qjl9fqssul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJcvLoS1o3pgLKTeIyW1BUYzEPNQJwtac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "901787842217-jcihbhph5bil3oidf5s303qjl9fqssul.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "901787842217-iop5sfa17a7jul44bb5s7ibbveih60cn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ngandikaApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

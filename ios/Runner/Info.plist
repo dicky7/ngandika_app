@@ -43,9 +43,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library Use</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Camera Library Use</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Mic Use</string>
 </dict>
 </plist>

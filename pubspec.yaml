@@ -29,13 +29,22 @@ dependencies:
   google_fonts: ^2.1.0
   google_nav_bar: ^5.0.6
   faker: ^2.0.0
+  country_picker: ^2.0.16
   dartz: ^0.10.0
   equatable: ^2.0.2
   cached_network_image: ^3.0.0
+  flutter_bloc: ^8.0.1
+  get_it: ^7.2.0
+  sms_autofill: ^2.2.0
+  image_picker: ^0.8.7
   shared_preferences: ^2.0.17
   sqflite: ^2.2.4+1
-  flutter_bloc: ^8.0.1
   intl: ^0.17.0
+
+  firebase_auth: ^4.3.0
+  firebase_core: ^2.1.1
+  cloud_firestore: ^4.0.3
+  firebase_storage: ^11.0.3
 
 
 dev_dependencies:

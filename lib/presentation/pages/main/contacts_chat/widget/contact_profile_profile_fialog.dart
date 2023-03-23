@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/helpers.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
@@ -40,7 +41,7 @@ Future<void> showContactProfileDialog(BuildContext context){
                 color: Colors.black26,
                 child: Text(
                   "Name Contact",
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: kPrimaryColor),
+                  style: context.bodyLarge?.copyWith(color: kPrimaryColor),
                 ),
               ),
             )

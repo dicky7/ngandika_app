@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ngandika_app/presentation/pages/main/chats/chat_page.dart';
 import 'package:ngandika_app/presentation/pages/main/contacts_chat/widget/contact_profile_profile_fialog.dart';
 import 'package:ngandika_app/presentation/widget/custom_list_tile.dart';
+import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
 import '../../../../utils/helpers.dart';
@@ -35,7 +36,7 @@ class ContactsChatPage extends StatelessWidget {
       centerTitle: true,
       title: Text(
         "Messages",
-        style: Theme.of(context).textTheme.headline6?.copyWith(color: kGreyColor),
+        style: context.titleLarge?.copyWith(color: kGreyColor),
       ),
       leadingWidth: 54,
       leading: Align(

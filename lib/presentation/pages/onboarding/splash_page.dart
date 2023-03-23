@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
 import 'package:ngandika_app/presentation/pages/onboarding/on_boarding_page.dart';
+import 'package:ngandika_app/presentation/pages/onboarding/term_and_condition_page.dart';
 
 class SplashPage extends StatefulWidget {
   static const routeName = "splash";
@@ -15,7 +16,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 4), () {
-      Navigator.pushNamed(context, OnBoardingPage.routeName);
+      Navigator.pushNamed(context, TermAndConditionPage.routeName);
     });
   }
 

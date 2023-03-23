@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ngandika_app/utils/extensions/extenstions.dart';
 
 import '../../../../../utils/styles/style.dart';
 
@@ -9,13 +10,11 @@ class SenderMessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Align(
       alignment: Alignment.centerLeft,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: size.width * 0.8,
+          maxWidth: context.width(0.8),
         ),
         child: Card(
           elevation: 2,
@@ -35,7 +34,7 @@ class SenderMessageCard extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 12, right: 30, top: 5, bottom: 17),
                 child: Text(
                   message,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: kBlackColor),
+                  style: context.bodyLarge?.copyWith(color: kBlackColor),
                 ),
               ),
               Positioned(
@@ -43,7 +42,7 @@ class SenderMessageCard extends StatelessWidget {
                 right: 10,
                 child: Text(
                   date,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.black12),
+                  style: context.bodySmall?.copyWith(color: Colors.black12),
                 ),
               )
             ],
