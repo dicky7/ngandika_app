@@ -1,22 +1,32 @@
+
+
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:ngandika_app/data/models/user_model.dart';
 import 'package:ngandika_app/utils/error/exception.dart';
 
 abstract class AuthRemoteDataSource {
   Future<void> signInWithPhone(String phoneNumber);
   Future<void> verifyOtp(String smsOtpCode);
+  Future<void> saveUserDataToFirebase(String userName, File? profilePicture);
+  Future<String> storeFileToFirebase(String path, File file);
+  Future<String> getCurrentUid();
 }
 
 class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firestore;
+  final FirebaseStorage firebaseStorage;
 
   //variable _verificationId use for store the verificationId.
   //Storing the verification ID in a variable is important because it is needed later in the verification process to verify the user's phone number.
   String _verificationId = '';
 
-  AuthRemoteDataSourceImpl(this.firebaseAuth, this.firestore);
+  AuthRemoteDataSourceImpl(this.firebaseAuth, this.firestore, this.firebaseStorage);
 
   @override
   Future<void> signInWithPhone(String phoneNumber) async {
@@ -72,6 +82,67 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       // obtained from the FirebaseAuthException caught in the catch block.
       await firebaseAuth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
+      throw ServerException(e.message.toString());
+    }
+  }
+
+  //This two methods - saveUserDataToFirebase and storeFileToFirebase, that work together to save user data, including a user's name, profile picture, and other information, to Firebase.
+  @override
+  Future<void> saveUserDataToFirebase(String userName, File? profilePicture) async{
+    try{
+      //The method first gets the current user's unique ID by calling the uid property on the currentUser object of the firebaseAuth instance.
+      String uId = firebaseAuth.currentUser!.uid;
+
+      //Then, it checks if profilePicture is not null, and if it is not null, it uploads the file to Firebase Storage using the storeFileToFirebase
+      // method and sets the resulting URL as the value of the photoUrl variable.
+      String photoUrl = "";
+      if (profilePicture != null) {
+        photoUrl = await storeFileToFirebase(
+          "profilePic/$uId",
+          profilePicture
+        );
+      }
+      //After that, it creates a UserModel object with the provided userName, uId, phoneNumber, profilePicture, isOnline, and an empty groupId array.
+      var user = UserModel(
+        name: userName,
+        uId: uId,
+        profilePicture: photoUrl,
+        isOnline: true,
+        phoneNumber: firebaseAuth.currentUser!.phoneNumber!,
+        groupId: [],
+        status: 'Hey,$userName Here!',
+        lastSeen: DateTime.now(),
+      );
+      //Finally, it saves the UserModel object to the users collection in Firestore using the set method on a document with the current user's uId.
+      //The toMap method is called on this UserModel instance to obtain a Map representation of the user data.
+      firestore.collection("users").doc(uId).set(user.toMap());
+
+    }on FirebaseFirestore catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  //This is method uploads a file to Firebase Storage and returns the download URL of the uploaded file.
+  @override
+  Future<String> storeFileToFirebase(String path, File file) async{
+    //First, the method creates an UploadTask object using the putFile method of the Firebase Storage reference. The path parameter is used as
+    // the path of the file in Firebase Storage, and the file parameter is used as the actual file to be uploaded
+    UploadTask uploadTask = firebaseStorage.ref().child(path).putFile(file);
+    //Next, the method waits for the upload to complete by awaiting the UploadTask object. The result of the upload is a TaskSnapshot object,
+    // which contains information about the uploaded file, such as its download URL.
+    TaskSnapshot snapshot = await uploadTask;
+    //Finally, the method gets the download URL of the uploaded file by calling the getDownloadURL method on the TaskSnapshot object, and returns it as a String.
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  @override
+  Future<String> getCurrentUid() async{
+    try{
+      //The method first gets the current user's unique ID by calling the uid property on the currentUser object of the firebaseAuth instance.
+      String uId = firebaseAuth.currentUser!.uid;
+      return uId;
+    }on FirebaseAuthException catch(e){
       throw ServerException(e.message.toString());
     }
   }

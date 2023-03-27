@@ -11,6 +11,8 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState{}
 
+class AuthSuccess extends AuthState{}
+
 class AuthError extends AuthState{
   final String message;
 
@@ -21,10 +23,6 @@ class AuthError extends AuthState{
   List<Object> get props => [message];
 }
 
-class AuthSuccess extends AuthState{}
-
-class AuthVerifyOtpSuccess extends AuthState{}
-
 class AuthSetCountrySuccess extends AuthState {
   final Country country;
 
@@ -34,4 +32,14 @@ class AuthSetCountrySuccess extends AuthState {
   // TODO: implement props
   List<Object> get props => [country];
 
+}
+
+class AuthCurrentUidLoaded extends AuthState{
+  final String userId;
+
+  AuthCurrentUidLoaded(this.userId);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [userId];
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:ngandika_app/presentation/pages/onboarding/login_page.dart';
 import 'package:ngandika_app/presentation/pages/onboarding/widgets/login_app_bar.dart';
 import 'package:ngandika_app/presentation/widget/custom_button.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
+
+import '../login/login_page.dart';
 
 class TermAndConditionPage extends StatelessWidget {
   static const routeName = "term-condition";

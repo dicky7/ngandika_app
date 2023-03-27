@@ -1,17 +1,24 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
-import 'package:ngandika_app/data/datasource/auth_remote_data_source.dart';
+import 'package:ngandika_app/data/datasource/auth/auth_remote_data_source.dart';
 import 'package:ngandika_app/utils/error/exception.dart';
 import 'package:ngandika_app/utils/error/failure.dart';
+
+import '../datasource/auth/auth_local_data_source.dart';
 
 abstract class AuthRepository{
   Future<Either<Failure, void>> signInWithNumber(String phoneNumber);
   Future<Either<Failure, void>> verifyOtp(String smsOtpCode);
+  Future<Either<Failure, void>> saveUserDataToFirebase(String username, File? profilePicture);
+  Future<String> getCurrentUid();
 }
 
 class AuthRepositoryImpl extends AuthRepository{
   final AuthRemoteDataSource authRemoteDataSource;
+  final AuthLocalDataSource authLocalDataSource;
 
-  AuthRepositoryImpl(this.authRemoteDataSource);
+  AuthRepositoryImpl(this.authRemoteDataSource, this.authLocalDataSource);
 
   //this method returns an Either instance, indicating success or failure of the sign-in operation,
   // and it handles both expected and unexpected errors.
@@ -39,4 +46,25 @@ class AuthRepositoryImpl extends AuthRepository{
       return Left(ServerFailure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> saveUserDataToFirebase(String username, File? profilePicture) async{
+    try{
+      final result = await authRemoteDataSource.saveUserDataToFirebase(username, profilePicture);
+
+      //when saveUserDataToFirebase is successful, it wil save the currentUid to shared pref
+      authLocalDataSource.setUserId(await authRemoteDataSource.getCurrentUid());
+
+      return Right(result);
+    }on ServerException catch(e){
+      return Left(ServerFailure(e.message));
+    }
+  }
+
+  @override
+  Future<String> getCurrentUid() async{
+    final result = await authLocalDataSource.getUserId();
+    return result;
+  }
+
 }

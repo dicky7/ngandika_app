@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/presentation/pages/main/chats/chat_page.dart';
+import 'package:ngandika_app/presentation/pages/main/contacts_chat/widget/contact_app_bar.dart';
 import 'package:ngandika_app/presentation/pages/main/contacts_chat/widget/contact_profile_profile_fialog.dart';
 import 'package:ngandika_app/presentation/widget/custom_list_tile.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
@@ -17,7 +18,7 @@ class ContactsChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: const ContactAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -29,36 +30,6 @@ class ContactsChatPage extends StatelessWidget {
     );
   }
 
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      centerTitle: true,
-      title: Text(
-        "Messages",
-        style: context.titleLarge?.copyWith(color: kGreyColor),
-      ),
-      leadingWidth: 54,
-      leading: Align(
-        alignment: Alignment.centerRight,
-        child: IconButton(
-          icon: Icon(Icons.search, color: kBlackColor),
-          onPressed: () {},
-        ),
-      ),
-      actions: const [
-        Padding(
-            padding: EdgeInsets.only(right: 24.0, ),
-            child: CircleAvatar(
-              radius: 18,
-              backgroundImage: NetworkImage(
-                  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8cmFuZG9tJTIwcGVvcGxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
-              ),
-            )
-        ),
-      ],
-    );
-  }
 
   Widget buildStories(){
     final Faker faker = Faker();

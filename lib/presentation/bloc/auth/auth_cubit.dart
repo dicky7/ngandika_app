@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:equatable/equatable.dart';
@@ -16,6 +19,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signInWithPhone(String phoneNumber) async{
+    emit(AuthLoading());
     final result = await authRepository.signInWithNumber(phoneNumber);
     result.fold(
       (error) => emit(AuthError(error.message)),
@@ -24,10 +28,29 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> verifyOtp(String smsOtpCode) async{
+    emit(AuthLoading());
     final result = await authRepository.verifyOtp(smsOtpCode);
     result.fold(
       (error) => emit(AuthError(error.message)),
-      (success) => emit(AuthVerifyOtpSuccess()),
+      (success) => emit(AuthSuccess()),
     );
   }
+
+  Future<void> saveUserDataToFirebase({
+    required String username,
+    required File? profilePicture}) async{
+    emit(AuthLoading());
+    final result = await authRepository.saveUserDataToFirebase(username, profilePicture);
+    result.fold(
+      (error) => emit(AuthError(error.message)),
+      (success) => emit(AuthSuccess()),
+    );
+  }
+
+  Future<String> getCurrentUid() async{
+    final result = await authRepository.getCurrentUid();
+    return result;
+  }
+
+
 }

@@ -2,7 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
-import 'package:ngandika_app/presentation/pages/onboarding/login_otp_page.dart';
+import 'package:ngandika_app/presentation/pages/onboarding/login/login_otp_page.dart';
 import 'package:ngandika_app/presentation/pages/onboarding/widgets/login_app_bar.dart';
 import 'package:ngandika_app/presentation/widget/custom_button.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';

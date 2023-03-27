@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
+import 'package:ngandika_app/presentation/pages/onboarding/login/login_page.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
-import '../../../data/models/onboarding_item.dart';
+import '../../../../data/models/onboarding_item.dart';
 
 class OnBoardingPage extends StatefulWidget {
   static const routeName = "on-boarding";
@@ -58,7 +59,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 ),
                 onLastPage
                   ? GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, MainPage.routeName),
+                      onTap: () => Navigator.pushNamed(context, LoginPage.routeName),
                       child: const Text("Done"),
                     )
                   : GestureDetector(

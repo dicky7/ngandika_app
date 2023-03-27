@@ -37,8 +37,9 @@ dependencies:
   get_it: ^7.2.0
   sms_autofill: ^2.2.0
   image_picker: ^0.8.7
+  image_cropper: ^3.0.1
   shared_preferences: ^2.0.17
-  sqflite: ^2.2.4+1
+  flutter_contacts: ^1.1.6
   intl: ^0.17.0
 
   firebase_auth: ^4.3.0
