@@ -79,6 +79,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         CustomPopUpMenuButton(
           buttons: _buttons(context),
+          colors: kBlackColor,
         ),
 
       ],

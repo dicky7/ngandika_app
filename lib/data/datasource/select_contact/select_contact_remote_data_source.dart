@@ -21,7 +21,7 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource{
 
   List<Contact> _contactsNotOnApp = [];
 
-  Map<String, dynamic> _contactsOnAppMap = {};
+  Map<String, dynamic> contactsOnAppMap = {};
 
   //This method returns a future that resolves to a Set of contacts that are not on the app. The Set is initially populated with the _contactsNotOnApp field,
   // which is an empty Set.
@@ -31,50 +31,54 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource{
   // This method returns a future that resolves to a map of contacts that are on the app. The map is initially populated with the _contactsOnAppMap field,
   // which appears to be an empty map.
   @override
-  Future<Map<String, dynamic>> contactsOnApp() async => _contactsOnAppMap;
+  Future<Map<String, dynamic>> contactsOnApp() async => contactsOnAppMap;
 
   //The getAllContacts method takes a list of Contact objects and populates _contactsNotOnApp and _contactsOnAppMap based on whether the phone numbers
   // in the Contact objects match those in the Firestore database.
   @override
   Future<void> getAllContacts(List<Contact> contacts) async {
-    try {
-      //First, The method initializes the _contactsNotOnApp and _contactsOnAppMap fields to empty values. These will be populated with contacts that are not on the app and contacts that are on the app.
-      _contactsNotOnApp = [];
+    _contactsNotOnApp = [];
+    Map<String, dynamic> allContacts;
 
-      //The method then makes a batch query to the Firestore database to retrieve information about each contact in the input contacts list.
-      //This is done using the map method to iterate over each contact in contacts, and the Future.wait method to execute all the queries in parallel.
-      var userDocs = await Future.wait(contacts.map((contact) =>
-          firestore
-              .collection("users")
-              .where("phoneNumber", isEqualTo: contact.phones.isNotEmpty ? contact.phones.first.number.replaceAll(' ', '') : '')
-              .get()));
+    final userCollection = firestore.collection('users').snapshots();
+    final phoneNumbersSet = await userCollection.map((snapshot) {
+      final phoneNumbers = snapshot.docs.map((doc) => UserModel.fromMap(doc.data()).phoneNumber).toList();
+      return phoneNumbers.toSet();
+    }).first;
 
-      print("user docs $userDocs");
+    await Future.forEach(contacts, (contact) async {
+      var phoneNum = contact.phones.isNotEmpty
+          ? contact.phones[0].number.replaceAll('-', '').replaceAll(' ', '')
+          : '';
+      if (phoneNum.startsWith('0')) {
+        phoneNum = '+62${phoneNum.substring(1)}';
+      } else if (!phoneNum.startsWith('+')) {
+        phoneNum = '+$phoneNum';
+      }
 
-      //Once the queries are complete, the method loops over the userDocs list to process the results. For each query result, the method retrieves
-      // the userData object from the first document in the query result using the fromMap method of the UserModel class.
-      for (int i = 0; i < userDocs.length; i++) {
-        var userData;
-        var contact = contacts[i];
-        print("userDocs[i] ${userDocs.length}");
-        if (userDocs[i].docs.isNotEmpty) {
-          userData = UserModel.fromMap(userDocs[i].docs.first.data());
+      if (phoneNumbersSet.contains(phoneNum)) {
+        final userDocs = await firestore.collection('users').where('phoneNumber', isEqualTo: phoneNum).get();
+        if (userDocs.docs.isNotEmpty) {
+          final userDoc = userDocs.docs.first;
+
+          final userData = UserModel.fromMap(userDoc.data());
           if (userData.uId != auth.currentUser!.uid) {
-            _contactsOnAppMap[userData.uId] = {
-              'uId': userData.uId,
-              'profilePicture': userData.profilePicture,
-              'status': userData.status,
-              'name': contact.displayName,
-            };
-            print("on app contact ${_contactsOnAppMap.length}");
-            continue;
+            contactsOnAppMap.addAll({
+              userData.uId : {
+                'uId': userData.uId,
+                'profilePicture': userData.profilePicture,
+                'status': userData.status,
+                'name': contact.displayName,
+              }
+            });
+            print("_contactsOnAppMap $contactsOnAppMap");
           }
         }
+      } else {
         _contactsNotOnApp.add(contact);
       }
-    } catch (e) {
-      throw ServerException(e.toString());
-    }
+    });
   }
+
 
 }

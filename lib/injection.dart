@@ -11,7 +11,9 @@ import 'package:ngandika_app/data/repository/auth_repository.dart';
 import 'package:ngandika_app/data/repository/select_contact_repository.dart';
 import 'package:ngandika_app/data/repository/user_repository.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
-import 'package:ngandika_app/presentation/bloc/select_contact/select_contact_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +30,13 @@ Future<void> init() async{
     () => UserCubit(locator()),
   );
   locator.registerFactory(
-    () => SelectContactCubit(locator()),
+    () => GetAllContactsCubit(locator()),
+  );
+  locator.registerFactory(
+        () => GetContactsOnAppCubit(locator()),
+  );
+  locator.registerFactory(
+        () => GetContactsNotOnAppCubit(locator()),
   );
 
 

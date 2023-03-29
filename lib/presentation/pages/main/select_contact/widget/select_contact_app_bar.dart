@@ -1,42 +1,45 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_state.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
-import '../../../../data/models/pop_up_menu_item_model.dart';
-import '../../../bloc/select_contact/select_contact_state.dart';
-import '../chats/widget/custom_pop_up_menu_button.dart';
+import '../../../../../data/models/pop_up_menu_item_model.dart';
+import '../../chats/widget/custom_pop_up_menu_button.dart';
 
 class SelectContactAppBar extends StatelessWidget implements PreferredSizeWidget{
   final int numOfContacts;
-  const SelectContactAppBar({Key? key, required this.numOfContacts}) : super(key: key);
+  final GetAllContactsState? state;
+  const SelectContactAppBar({Key? key, required this.numOfContacts,  this.state}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 3,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "Select contact",
-            style: context.headlineLarge,
+            style: context.headlineMedium?.copyWith(color: kPrimaryColor),
           ),
           const SizedBox(height: 3),
           Text(
             '$numOfContacts contacts',
-            style: context.bodySmall,
+            style: context.bodySmall?.copyWith(color: kPrimaryColor),
           ),
         ],
       ),
       actions: [
+        if (state is GetAllContactsLoading)
           FittedBox(
             fit: BoxFit.scaleDown,
             child: SizedBox(
               width: 18,
               height: 18,
               child: CircularProgressIndicator(
-                color: kBlueDark,
+                color: context.colorScheme.onPrimary,
                 strokeWidth: 2,
               ),
             ),
@@ -45,7 +48,7 @@ class SelectContactAppBar extends StatelessWidget implements PreferredSizeWidget
           onPressed: () {},
           icon: const Icon(Icons.search),
         ),
-        CustomPopUpMenuButton(buttons: _buttons(context)),
+        CustomPopUpMenuButton(buttons: _buttons(context), colors: kPrimaryColor),
       ],
     );
   }

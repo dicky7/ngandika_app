@@ -5,13 +5,14 @@ import '../../../../../data/models/pop_up_menu_item_model.dart';
 
 class CustomPopUpMenuButton extends StatelessWidget {
   final List<PopUpMenuItemModel> buttons;
+  final Color colors;
 
-  const CustomPopUpMenuButton({Key? key, required this.buttons}) : super(key: key);
+  const CustomPopUpMenuButton({Key? key, required this.buttons, required this.colors}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      icon: Icon(Icons.more_vert, color: kBlackColor),
+      icon: Icon(Icons.more_vert, color: colors),
       onSelected: (value) {
         buttons[value].onTap();
 
