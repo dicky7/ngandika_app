@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
@@ -6,6 +7,7 @@ import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/functions/app_dialogs.dart';
 
 import '../../../../../utils/styles/style.dart';
+import '../../select_contact/select_contact_page.dart';
 
 class ContactAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ContactAppBar({Key? key}) : super(key: key);
@@ -23,13 +25,7 @@ class ContactAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: 54,
       leading: Align(
         alignment: Alignment.centerRight,
-        child: IconButton(
-          icon: Icon(Icons.search, color: kBlackColor),
-          onPressed: () {},
-        ),
-      ),
-      actions: [
-        BlocConsumer<UserCubit, UserState>(
+        child: BlocConsumer<UserCubit, UserState>(
           listener: (context, state) {
             if (state is UserError) {
               AppDialogs.showCustomDialog(
@@ -42,29 +38,39 @@ class ContactAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
           builder: (context, state) {
             if (state is GetCurrentUserSuccess) {
-              return Padding(
-                  padding: const EdgeInsets.only(right: 24.0),
-                  child: CircleAvatar(
-                    radius: 20,
-                    child: CachedNetworkImage(
-                      imageUrl: state.userModel.profilePicture,
-                      placeholder: (context, url) => const CircularProgressIndicator(),
-                      fit: BoxFit.fill,
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
+              return CircleAvatar(
+                radius: 20,
+                child: CachedNetworkImage(
+                  imageUrl: state.userModel.profilePicture,
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  fit: BoxFit.fill,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.fill,
                       ),
                     ),
-                  ));
+                  ),
+                ),
+              );
             } else {
               print(state.toString());
               return Container();
             }
+          },
+        ),
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.search, color: kBlackColor),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.note_alt_outlined, color: kBlackColor),
+          onPressed: () {
+            Navigator.pushNamed(context, SelectContactPage.routeName);
           },
         ),
       ],

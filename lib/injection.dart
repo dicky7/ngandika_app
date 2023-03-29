@@ -4,10 +4,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ngandika_app/data/datasource/auth/auth_local_data_source.dart';
 import 'package:ngandika_app/data/datasource/auth/auth_remote_data_source.dart';
+import 'package:ngandika_app/data/datasource/select_contact/select_contact_local_data_source.dart';
+import 'package:ngandika_app/data/datasource/select_contact/select_contact_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/user/user_remote_data_source.dart';
 import 'package:ngandika_app/data/repository/auth_repository.dart';
+import 'package:ngandika_app/data/repository/select_contact_repository.dart';
 import 'package:ngandika_app/data/repository/user_repository.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/select_contact/select_contact_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +27,9 @@ Future<void> init() async{
   locator.registerFactory(
     () => UserCubit(locator()),
   );
+  locator.registerFactory(
+    () => SelectContactCubit(locator()),
+  );
 
 
   /**
@@ -37,6 +44,12 @@ Future<void> init() async{
   locator.registerLazySingleton<UserRemoteDataSource>(
     () => UserRemoteDataSourceImpl(locator(), locator()),
   );
+  locator.registerLazySingleton<SelectContactLocalDataSource>(
+    () => SelectContactLocalDataSourceImpl(),
+  );
+  locator.registerLazySingleton<SelectContactRemoteDataSource>(
+    () => SelectContactRemoteDataSourceImpl(locator(), locator()),
+  );
 
   /**
    * Repository
@@ -46,6 +59,9 @@ Future<void> init() async{
   );
   locator.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(locator()),
+  );
+  locator.registerLazySingleton<SelectContactRepository>(
+    () => SelectContactRepositoryImpl(locator(), locator()),
   );
 
   //External

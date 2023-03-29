@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:ngandika_app/presentation/pages/main/calls/call_page.dart';
 import 'package:ngandika_app/presentation/pages/main/contacts_chat/contacts_chat_page.dart';
+import 'package:ngandika_app/presentation/pages/main/select_contact/select_contact_page.dart';
 import 'package:ngandika_app/presentation/pages/main/settings/setting_page.dart';
 import 'package:ngandika_app/presentation/pages/main/status/status_page.dart';
 import 'package:ngandika_app/utils/styles/style.dart';

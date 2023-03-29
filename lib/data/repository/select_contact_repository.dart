@@ -26,9 +26,9 @@ class SelectContactRepositoryImpl extends SelectContactRepository{
       final result = await remoteDataSource.getAllContacts(await localDataSource.getContactLocal());
       return Right(result);
     }on DatabaseException catch(e){
-      return Left(ServerFailure(e.message));
+      return Left(ServerFailure("repository getAllContacts DatabaseException${e.message}"));
     }on ServerException catch(e){
-      return Left(ServerFailure(e.message));
+      return Left(ServerFailure("repository getAllContacts ServerException${e.message}"));
     }
   }
 
@@ -38,7 +38,7 @@ class SelectContactRepositoryImpl extends SelectContactRepository{
       final result = await remoteDataSource.contactsNotOnApp();
       return Right(result);
     }on ServerException catch (e){
-      return Left(ServerFailure(e.message));
+      return Left(ServerFailure("repository contactsNotOnApp${e.message}"));
     }
   }
 
@@ -48,7 +48,7 @@ class SelectContactRepositoryImpl extends SelectContactRepository{
       final result = await remoteDataSource.contactsOnApp();
       return Right(result);
     }on ServerException catch (e){
-      return Left(ServerFailure(e.message));
+      return Left(ServerFailure("repository contactsOnApp${e.message}"));
     }
   }
 
