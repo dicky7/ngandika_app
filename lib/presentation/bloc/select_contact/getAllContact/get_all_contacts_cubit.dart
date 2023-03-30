@@ -10,9 +10,7 @@ import '../../../../data/repository/select_contact_repository.dart';
 class GetAllContactsCubit extends Cubit<GetAllContactsState> {
   final SelectContactRepository repository;
   
-  GetAllContactsCubit(this.repository) : super(GetAllContactstInitial()){
-    getAllContacts();
-  }
+  GetAllContactsCubit(this.repository) : super(GetAllContactstInitial());
 
   int _totalContacts = 0; // class-level variable to store the total number of contacts
   int get totalContacts => _totalContacts; // getter method to access the total number of contacts

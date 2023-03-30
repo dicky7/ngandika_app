@@ -1,7 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_state.dart';
+import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
@@ -71,7 +75,10 @@ class SelectContactAppBar extends StatelessWidget implements PreferredSizeWidget
     PopUpMenuItemModel(
       name: "Refresh",
       onTap: () {
-
+        context.read<GetAllContactsCubit>().getAllContacts().then((value) {
+          context.read<GetAllContactsCubit>().getContactsOnApp();
+          context.read<GetAllContactsCubit>().getContactsNotOnApp();
+        });
       },
     ),
     PopUpMenuItemModel(

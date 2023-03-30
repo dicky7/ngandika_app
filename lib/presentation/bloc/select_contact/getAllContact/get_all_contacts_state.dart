@@ -1,5 +1,6 @@
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter_contacts/contact.dart';
 
 abstract class GetAllContactsState extends Equatable {
   const GetAllContactsState();

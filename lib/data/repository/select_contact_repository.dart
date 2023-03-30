@@ -8,8 +8,9 @@ import '../datasource/select_contact/select_contact_remote_data_source.dart';
 
 abstract class SelectContactRepository{
   Future<Either<Failure, void>> getAllContacts();
-  Future<Either<Failure, Map<String, dynamic>>> contactsOnApp();
-  Future<Either<Failure, List<Contact>>> contactsNotOnApp();
+  Stream<Either<Failure, Map<String, dynamic>>> contactsOnApp();
+  Stream<Either<Failure, List<Contact>>> contactsNotOnApp();
+
 }
 class SelectContactRepositoryImpl extends SelectContactRepository{
   final SelectContactRemoteDataSource remoteDataSource;
@@ -33,23 +34,33 @@ class SelectContactRepositoryImpl extends SelectContactRepository{
   }
 
   @override
-  Future<Either<Failure, List<Contact>>> contactsNotOnApp() async{
-    try{
-      final result = await remoteDataSource.contactsNotOnApp();
-      return Right(result);
-    }on ServerException catch (e){
-      return Left(ServerFailure("repository contactsNotOnApp${e.message}"));
+  Stream<Either<Failure, List<Contact>>> contactsNotOnApp() async* {
+    try {
+      final resultStream = remoteDataSource.contactsNotOnApp();
+      // the resultStream is mapped using the map() method to convert each value in the Stream<List<Contact>> to Either<Failure, List<Contact>>.
+      // The resulting Stream of Either<Failure, List<Contact>> is then returned using yield*.
+
+      yield* resultStream.map((result) {
+        return Right(result);
+      });
+    } on ServerException catch (e) {
+      yield Left(ServerFailure("repository contactsNotOnApp${e.message}"));
     }
   }
 
+
+
   @override
-  Future<Either<Failure, Map<String, dynamic>>> contactsOnApp() async{
-    try{
-      final result = await remoteDataSource.contactsOnApp();
-      return Right(result);
-    }on ServerException catch (e){
-      return Left(ServerFailure("repository contactsOnApp${e.message}"));
+  Stream<Either<Failure, Map<String, dynamic>>> contactsOnApp() async* {
+    try {
+      final resultStream = remoteDataSource.contactsOnApp();
+      yield* resultStream.map((result) {
+        return Right(result);
+      });
+    } on ServerException catch (e) {
+      yield Left(ServerFailure("repository contactsOnApp${e.message}"));
     }
   }
+
 
 }

@@ -2,14 +2,13 @@ part of 'get_contacts_not_on_app_cubit.dart';
 
 @immutable
 abstract class GetContactsNotOnAppState extends Equatable{
+  const GetContactsNotOnAppState();
+
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class GetContactsNotOnAppInitial extends GetContactsNotOnAppState {}
-
-
 
 /**
  * GetContactsNotOnApp
