@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_contacts/contact.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 
@@ -11,65 +14,109 @@ class ContactsNotOnAppList extends StatefulWidget {
   const ContactsNotOnAppList({Key? key}) : super(key: key);
 
   @override
-  State<ContactsNotOnAppList> createState() => _ContactsNotOnAppListState();
+  _ContactsNotOnAppListState createState() => _ContactsNotOnAppListState();
 }
 
 class _ContactsNotOnAppListState extends State<ContactsNotOnAppList> {
+  final int _itemsPerPage = 15;
+  int _currentPage = 1;
+  List<Contact> _contactsToDisplay = [];
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: context.read<GetContactsNotOnAppCubit>().getContactsNotOnApp(),
       builder: (context, snapshot) {
-        return BlocConsumer<GetContactsNotOnAppCubit, GetContactsNotOnAppState>(
-          listener: (context, state) {
-            if (state is GetContactsNotOnAppError) {
-              AppDialogs.showCustomDialog(
-                  context: context,
-                  icons: Icons.close,
-                  title: "Error",
-                  content: state.message,
-                  onPressed: () => Navigator.pop(context));
-            }
-          },
+        return BlocBuilder<GetContactsNotOnAppCubit, GetContactsNotOnAppState>(
           builder: (context, state) {
             if (state is GetContactsNotOnAppLoading) {
               return const Center(child: CircularProgressIndicator());
-            }
-            else if (state is GetContactsNotOnAppSuccess) {
+            } else if (state is GetContactsNotOnAppSuccess) {
+              final startIndex = (_currentPage - 1) * _itemsPerPage;
+              final endIndex = min(startIndex + _itemsPerPage, state.contactsNotOnApp.length);
+              _contactsToDisplay = state.contactsNotOnApp.sublist(startIndex, endIndex);
+
               return ListView.builder(
                 shrinkWrap: true,
-                itemCount: state.contactsNotOnApp.length,
+                itemCount: _contactsToDisplay.length + 1,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final contact = state.contactsNotOnApp[index];
-                  return CustomListTile(
-                    onTap: () {},
-                    leading: CircleAvatar(
-                      backgroundColor: kGreyColor,
-                      child: Icon(
-                        Icons.person_2_rounded,
-                        color: kPrimaryColor,
-                        size: 28,
+                  if (index == _contactsToDisplay.length) {
+                    return _buildPaginationButtons();
+                  } else {
+                    final contact = _contactsToDisplay[index];
+                    return CustomListTile(
+                      onTap: () {},
+                      leading: CircleAvatar(
+                        backgroundColor: kGreyColor,
+                        child: Icon(
+                          Icons.person_2_rounded,
+                          color: kPrimaryColor,
+                          size: 28,
+                        ),
                       ),
-                    ),
-                    title: contact.displayName,
-                    titleButton: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Invite",
-                        style: context.bodyLarge?.copyWith(color: kBlueLight, fontWeight: FontWeight.bold)
-                      )
-                    ),
-                  );
+                      title: contact.displayName,
+                      titleButton: TextButton(
+                          onPressed: () {},
+                          child: Text("Invite",
+                              style: context.bodyLarge?.copyWith(
+                                  color: kBlueLight,
+                                  fontWeight: FontWeight.bold))),
+                    );
+                  }
                 },
               );
-            }else{
+            } else {
               debugPrint("$state");
               return SizedBox();
             }
           },
         );
-      }
+      },
     );
   }
+
+  Widget _buildPaginationButtons() {
+    final isFirstPage = _currentPage == 1;
+    final isLastPage = (_contactsToDisplay.length < _itemsPerPage);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: isFirstPage ? null : () => _onPageChange(_currentPage - 1),
+          child: const Icon(Icons.arrow_back_ios_new_rounded),
+        ),
+        const SizedBox(width: 10),
+        Text(
+          'Page $_currentPage',
+          style: Theme
+              .of(context)
+              .textTheme
+              .headline6,
+        ),
+        const SizedBox(width: 10),
+        ElevatedButton(
+          onPressed: isLastPage ? null : () => _onPageChange(_currentPage + 1),
+          child: const Icon(Icons.arrow_forward_ios_rounded),
+        ),
+      ],
+    );
+  }
+
+  void _onPageChange(int page) {
+    setState(() {
+      _currentPage = page;
+    });
+
+    final startIndex = (_currentPage - 1) * _itemsPerPage;
+    final endIndex = min(startIndex + _itemsPerPage, (context.read<GetContactsNotOnAppCubit>().state as GetContactsNotOnAppSuccess).contactsNotOnApp.length);
+    final contactsToDisplay = (context.read<GetContactsNotOnAppCubit>().state as GetContactsNotOnAppSuccess).contactsNotOnApp.sublist(startIndex, endIndex);
+
+    setState(() {
+      _contactsToDisplay = contactsToDisplay;
+    });
+  }
+
+
 }
