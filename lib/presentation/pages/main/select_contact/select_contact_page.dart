@@ -24,11 +24,20 @@ class SelectContactPage extends StatefulWidget {
 
 class _SelectContactPageState extends State<SelectContactPage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<GetAllContactsCubit>().getAllContacts().then((value){
+      context.read<GetContactsNotOnAppCubit>().getContactsNotOnApp();
+      context.read<GetContactsOnAppCubit>().getContactsOnApp();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: context.read<GetAllContactsCubit>().getAllContacts(),
-        builder: (context, snapshot) {
-          return BlocListener<GetAllContactsCubit, GetAllContactsState>(
+    return Builder(
+        builder: (context) {
+          context.read<GetAllContactsCubit>().getAllContacts();
+          return BlocConsumer<GetAllContactsCubit, GetAllContactsState>(
             listener: (context, state) {
               if (state is GetAllContactsError) {
                 AppDialogs.showCustomDialog(
@@ -39,24 +48,26 @@ class _SelectContactPageState extends State<SelectContactPage> {
                     onPressed: () => Navigator.pop(context));
               }
             },
-            child: Scaffold(
-              appBar: SelectContactAppBar(
-                numOfContacts: context.watch<GetContactsOnAppCubit>().totalContacts + context.watch<GetContactsNotOnAppCubit>().totalContacts,
-              ),
-              body: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const NewGroupContact(),
-                    titleText("Contacts on App"),
-                    const ContactsOnAppList(),
-                    titleText("Invite to Join Ngandika"),
-                    const ContactsNotOnAppList(),
-                  ],
+            builder: (context, state) {
+              return Scaffold(
+                appBar: SelectContactAppBar(
+                  numOfContacts: context.watch<GetContactsOnAppCubit>().totalContacts + context.watch<GetContactsNotOnAppCubit>().totalContacts,
                 ),
-              ),
-            ),
+                body: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const NewGroupContact(),
+                      titleText("Contacts on App"),
+                      const ContactsOnAppList(),
+                      titleText("Invite to Join Ngandika"),
+                      const ContactsNotOnAppList(),
+                    ],
+                  ),
+                ),
+              );
+            },
           );
         });
   }

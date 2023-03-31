@@ -90,10 +90,7 @@ class _ContactsNotOnAppListState extends State<ContactsNotOnAppList> {
         const SizedBox(width: 10),
         Text(
           'Page $_currentPage',
-          style: Theme
-              .of(context)
-              .textTheme
-              .headline6,
+          style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(width: 10),
         ElevatedButton(
@@ -107,14 +104,6 @@ class _ContactsNotOnAppListState extends State<ContactsNotOnAppList> {
   void _onPageChange(int page) {
     setState(() {
       _currentPage = page;
-    });
-
-    final startIndex = (_currentPage - 1) * _itemsPerPage;
-    final endIndex = min(startIndex + _itemsPerPage, (context.read<GetContactsNotOnAppCubit>().state as GetContactsNotOnAppSuccess).contactsNotOnApp.length);
-    final contactsToDisplay = (context.read<GetContactsNotOnAppCubit>().state as GetContactsNotOnAppSuccess).contactsNotOnApp.sublist(startIndex, endIndex);
-
-    setState(() {
-      _contactsToDisplay = contactsToDisplay;
     });
   }
 
