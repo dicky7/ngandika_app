@@ -45,11 +45,9 @@ class MyApp extends StatelessWidget {
           create: (context) => di.locator<GetAllContactsCubit>(),
         ),
         BlocProvider(
-          lazy: true,
           create: (context) => di.locator<GetContactsOnAppCubit>(),
         ),
         BlocProvider(
-          lazy: true,
           create: (context) => di.locator<GetContactsNotOnAppCubit>(),
         ),
       ],

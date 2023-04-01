@@ -78,7 +78,7 @@ class _ContactsNotOnAppListState extends State<ContactsNotOnAppList> {
 
   Widget _buildPaginationButtons() {
     final isFirstPage = _currentPage == 1;
-    final isLastPage = (_contactsToDisplay.length < _itemsPerPage);
+    final isLastPage = ((_currentPage * _itemsPerPage) >= (context.read<GetContactsNotOnAppCubit>().state as GetContactsNotOnAppSuccess).contactsNotOnApp.length);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
