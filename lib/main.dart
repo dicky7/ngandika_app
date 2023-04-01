@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/main_page/page_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
-import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
-import 'package:ngandika_app/presentation/pages/main/main_page.dart';
 import 'package:ngandika_app/utils/routes/AppRoutes.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
-import 'firebase_options.dart';
 
+import 'firebase_options.dart';
 import 'injection.dart' as di;
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -34,9 +33,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => PageCubit(),
         ),
-        BlocProvider(
-          create: (context) => di.locator<AuthCubit>()
-        ),
+        BlocProvider(create: (context) => di.locator<AuthCubit>()),
         BlocProvider(
           create: (context) => di.locator<UserCubit>(),
         ),
@@ -45,23 +42,22 @@ class MyApp extends StatelessWidget {
           create: (context) => di.locator<GetAllContactsCubit>(),
         ),
         BlocProvider(
+          lazy: true,
           create: (context) => di.locator<GetContactsOnAppCubit>(),
         ),
         BlocProvider(
+          lazy: true,
           create: (context) => di.locator<GetContactsNotOnAppCubit>(),
         ),
       ],
       child: MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-          textTheme: myTextTheme,
-          backgroundColor: kPrimaryColor,
-          scaffoldBackgroundColor: kPrimaryColor,
-          cardColor: kCardLight
-        ),
-        onGenerateRoute: AppRoutes.onGenerateRoute
-
-      ),
+          theme: ThemeData(
+              brightness: Brightness.light,
+              textTheme: myTextTheme,
+              backgroundColor: kPrimaryColor,
+              scaffoldBackgroundColor: kPrimaryColor,
+              cardColor: kCardLight),
+          onGenerateRoute: AppRoutes.onGenerateRoute),
     );
   }
 }

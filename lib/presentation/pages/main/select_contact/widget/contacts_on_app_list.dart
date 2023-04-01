@@ -9,71 +9,59 @@ import '../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_cub
 import '../../../../bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import '../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_state.dart';
 
-class ContactsOnAppList extends StatefulWidget {
+class ContactsOnAppList extends StatelessWidget {
   const ContactsOnAppList({Key? key}) : super(key: key);
-
-  @override
-  State<ContactsOnAppList> createState() => _ContactsOnAppListState();
-}
-
-class _ContactsOnAppListState extends State<ContactsOnAppList> {
-  @override
-  void initState() {
-    Future.microtask(() => context.read<GetContactsOnAppCubit>().getContactsOnApp());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: context.read<GetContactsOnAppCubit>().getContactsOnApp(),
-      builder: (context, snapshot) {
-        return BlocConsumer<GetContactsOnAppCubit, GetContactsOnAppState>(
-          listener: (context, state) {
-            if (state is GetContactsOnAppError) {
-              AppDialogs.showCustomDialog(
-                  context: context,
-                  icons: Icons.close,
-                  title: "Error",
-                  content: state.message,
-                  onPressed: () => Navigator.pop(context));
-            }
-          },
-          builder: (context, state) {
-            if (state is GetAllContactsLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            else if (state is GetContactsOnAppSuccess) {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.contactsOnApp.length,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final contact = state.contactsOnApp.values.toList()[index];
-                  return CustomListTile(
-                    leading: ClipOval(
-                      child: CachedNetworkImage(
-                        imageUrl: contact["profilePicture"],
-                        placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                        fit: BoxFit.cover,
-                        height: 44,
-                        width: 44,
+        stream: context.read<GetContactsOnAppCubit>().getContactsOnApp(),
+        builder: (context, snapshot) {
+          return BlocConsumer<GetContactsOnAppCubit, GetContactsOnAppState>(
+            listener: (context, state) {
+              if (state is GetContactsOnAppError) {
+                AppDialogs.showCustomDialog(
+                    context: context,
+                    icons: Icons.close,
+                    title: "Error",
+                    content: state.message,
+                    onPressed: () => Navigator.pop(context));
+              }
+            },
+            builder: (context, state) {
+              if (state is GetAllContactsLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is GetContactsOnAppSuccess) {
+                final contacts = state.contactsOnApp.values.toList();
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final contact = contacts[index];
+                    return CustomListTile(
+                      leading: ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl: contact["profilePicture"],
+                          placeholder: (context, url) => const CircularProgressIndicator(),
+                          fit: BoxFit.cover,
+                          height: 44,
+                          width: 44,
+                        ),
                       ),
-                    ),
-                    title: contact["name"],
-                    subTitle: contact["status"],
-                    onTap: () {},
-                  );
-                },
-              );
-            } else{
-              debugPrint("$state");
-              return SizedBox();
-            }
-          },
-        );
-      }
+                      title: contact["name"],
+                      subTitle: contact["status"],
+                      onTap: () {},
+                    );
+                  },
+                    childCount: contacts.length,
+                  ),
+                );
+              } else {
+                debugPrint("$state");
+                return SizedBox();
+              }
+            },
+
+          );
+        }
     );
   }
 }

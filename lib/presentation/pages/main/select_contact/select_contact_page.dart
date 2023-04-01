@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_contacts/contact.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_state.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
@@ -12,6 +15,7 @@ import 'package:ngandika_app/utils/styles/style.dart';
 
 import '../../../../utils/functions/app_dialogs.dart';
 import '../../../bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
+import '../../../widget/custom_list_tile.dart';
 
 class SelectContactPage extends StatefulWidget {
   static const routeName = "select-contact";
@@ -23,50 +27,39 @@ class SelectContactPage extends StatefulWidget {
 }
 
 class _SelectContactPageState extends State<SelectContactPage> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<GetAllContactsCubit>().getAllContacts();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Builder(
-        builder: (context) {
-          context.read<GetAllContactsCubit>().getAllContacts();
-          return BlocConsumer<GetAllContactsCubit, GetAllContactsState>(
-            listener: (context, state) {
-              if (state is GetAllContactsError) {
-                AppDialogs.showCustomDialog(
-                    context: context,
-                    icons: Icons.close,
-                    title: "Error",
-                    content: state.message,
-                    onPressed: () => Navigator.pop(context));
-              }
-            },
-            builder: (context, state) {
-              return Scaffold(
-                appBar: SelectContactAppBar(
-                  numOfContacts: context.watch<GetContactsOnAppCubit>().totalContacts + context.watch<GetContactsNotOnAppCubit>().totalContacts,
-                ),
-                body: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const NewGroupContact(),
-                      titleText("Contacts on App"),
-                      const ContactsOnAppList(),
-                      titleText("Invite to Join Ngandika"),
-                      const ContactsNotOnAppList(),
-                    ],
+      builder: (context) {
+        context.read<GetAllContactsCubit>().getAllContacts();
+        return BlocBuilder<GetAllContactsCubit, GetAllContactsState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: SelectContactAppBar(
+                numOfContacts: context.watch<GetContactsNotOnAppCubit>().totalContacts,
+              ),
+              body: CustomScrollView(
+                slivers: [
+                  const SliverToBoxAdapter(
+                    child:  NewGroupContact(),
                   ),
-                ),
-              );
-            },
-          );
-        });
+                  SliverToBoxAdapter(
+                    child: titleText("Contacts on App"),
+                  ),
+                  const ContactsOnAppList(),
+                  SliverToBoxAdapter(
+                    child: titleText("Invite to Join Ngandika"),
+                  ),
+                  ContactsNotOnAppList()
+                ],
+              ),
+            );
+
+          },
+        );
+      },
+    );
   }
 
   Widget titleText(String text) {

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 import '../../../../data/repository/select_contact_repository.dart';
 import 'get_contacts_on_app_state.dart';
+
 
 
 class GetContactsOnAppCubit extends Cubit<GetContactsOnAppState> {
@@ -20,9 +20,10 @@ class GetContactsOnAppCubit extends Cubit<GetContactsOnAppState> {
     _totalContacts = 0; // Reset total number of contacts to 0
     await repository.contactsOnApp().forEach((result) {
       result.fold(
-         (error) => emit(GetContactsOnAppError(error.message)),
-         (contactsOnApp) {
+              (error) => emit(GetContactsOnAppError(error.message)),
+              (contactsOnApp) {
             _totalContacts += contactsOnApp.length; // update total number of contacts
+            print("getContactsOnApp $_totalContacts");
             emit(GetContactsOnAppSuccess(contactsOnApp));
           }
       );

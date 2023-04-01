@@ -24,6 +24,7 @@ class GetContactsNotOnAppCubit extends Cubit<GetContactsNotOnAppState> {
             (error) => emit(GetContactsNotOnAppError(error.message)),
             (contactsNotOnApp) {
           _totalContacts += contactsNotOnApp.length; // update total number of contacts
+          print("getContactsNotOnApp $_totalContacts");
           emit(GetContactsNotOnAppSuccess(contactsNotOnApp));
         },
       );
