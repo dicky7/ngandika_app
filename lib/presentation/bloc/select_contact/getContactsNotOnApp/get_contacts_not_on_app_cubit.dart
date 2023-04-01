@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_contacts/contact.dart';
-import 'package:meta/meta.dart';
 
 import '../../../../data/repository/select_contact_repository.dart';
 
@@ -22,8 +21,8 @@ class GetContactsNotOnAppCubit extends Cubit<GetContactsNotOnAppState> {
     _totalContacts = 0; // Reset total number of contacts to 0
     await for (final result in repository.contactsNotOnApp()) {
       result.fold(
-        (error) => emit(GetContactsNotOnAppError(error.message)),
-        (contactsNotOnApp) {
+            (error) => emit(GetContactsNotOnAppError(error.message)),
+            (contactsNotOnApp) {
           _totalContacts += contactsNotOnApp.length; // update total number of contacts
           emit(GetContactsNotOnAppSuccess(contactsNotOnApp));
         },

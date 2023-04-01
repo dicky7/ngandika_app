@@ -40,6 +40,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                     child: CachedNetworkImage(
                       imageUrl: Helpers.randomPictureUrl(),
                       placeholder: (context, url) => const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Image.asset("assets/user_default.png"),
                     ),
                   ),
                 ),
