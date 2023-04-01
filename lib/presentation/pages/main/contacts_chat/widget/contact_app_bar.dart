@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
+import 'package:ngandika_app/presentation/widget/custom_network_image.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/functions/app_dialogs.dart';
 
@@ -38,22 +39,9 @@ class ContactAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
           builder: (context, state) {
             if (state is GetCurrentUserSuccess) {
-              return CircleAvatar(
+              return CustomNetworkImage(
+                imageUrl: state.userModel.profilePicture,
                 radius: 20,
-                child: CachedNetworkImage(
-                  imageUrl: state.userModel.profilePicture,
-                  placeholder: (context, url) => const CircularProgressIndicator(),
-                  fit: BoxFit.fill,
-                  imageBuilder: (context, imageProvider) => Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                ),
               );
             } else {
               print(state.toString());

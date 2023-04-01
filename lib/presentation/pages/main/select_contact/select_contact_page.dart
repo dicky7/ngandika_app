@@ -26,10 +26,7 @@ class _SelectContactPageState extends State<SelectContactPage> {
   @override
   void initState() {
     super.initState();
-    context.read<GetAllContactsCubit>().getAllContacts().then((value){
-      context.read<GetContactsNotOnAppCubit>().getContactsNotOnApp();
-      context.read<GetContactsOnAppCubit>().getContactsOnApp();
-    });
+    context.read<GetAllContactsCubit>().getAllContacts();
   }
 
   @override

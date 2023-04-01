@@ -9,8 +9,19 @@ import '../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_cub
 import '../../../../bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import '../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_state.dart';
 
-class ContactsOnAppList extends StatelessWidget {
+class ContactsOnAppList extends StatefulWidget {
   const ContactsOnAppList({Key? key}) : super(key: key);
+
+  @override
+  State<ContactsOnAppList> createState() => _ContactsOnAppListState();
+}
+
+class _ContactsOnAppListState extends State<ContactsOnAppList> {
+  @override
+  void initState() {
+    Future.microtask(() => context.read<GetContactsOnAppCubit>().getContactsOnApp());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
