@@ -75,10 +75,10 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
                 'name': contact.displayName,
               }
             });
-            print("_contactsOnAppMap $contactsOnAppMap");
           }
         }
       } else {
+        print("_contactsNotOnApp $_contactsNotOnApp");
         _contactsNotOnApp.add(contact);
       }
     });
