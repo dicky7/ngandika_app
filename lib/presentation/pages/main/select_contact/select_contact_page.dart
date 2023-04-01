@@ -31,35 +31,41 @@ class _SelectContactPageState extends State<SelectContactPage> {
   @override
   Widget build(BuildContext context) {
     return Builder(
-      builder: (context) {
-        context.read<GetAllContactsCubit>().getAllContacts();
-        return BlocBuilder<GetAllContactsCubit, GetAllContactsState>(
-          builder: (context, state) {
-            return Scaffold(
-              appBar: SelectContactAppBar(
-                numOfContacts: context.watch<GetContactsNotOnAppCubit>().totalContacts,
-              ),
-              body: CustomScrollView(
-                slivers: [
-                  const SliverToBoxAdapter(
-                    child:  NewGroupContact(),
+        builder: (context) {
+          context.read<GetAllContactsCubit>().getAllContacts();
+          return BlocConsumer<GetAllContactsCubit, GetAllContactsState>(
+            listener: (context, state) {
+              if (state is GetAllContactsError) {
+                AppDialogs.showCustomDialog(
+                    context: context,
+                    icons: Icons.close,
+                    title: "Error",
+                    content: state.message,
+                    onPressed: () => Navigator.pop(context));
+              }
+            },
+            builder: (context, state) {
+              return Scaffold(
+                appBar: SelectContactAppBar(
+                  numOfContacts: context.watch<GetContactsOnAppCubit>().totalContacts + context.watch<GetContactsNotOnAppCubit>().totalContacts,
+                ),
+                body: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const NewGroupContact(),
+                      titleText("Contacts on App"),
+                      const ContactsOnAppList(),
+                      titleText("Invite to Join Ngandika"),
+                      const ContactsNotOnAppList(),
+                    ],
                   ),
-                  SliverToBoxAdapter(
-                    child: titleText("Contacts on App"),
-                  ),
-                  const ContactsOnAppList(),
-                  SliverToBoxAdapter(
-                    child: titleText("Invite to Join Ngandika"),
-                  ),
-                  ContactsNotOnAppList()
-                ],
-              ),
-            );
-
-          },
-        );
-      },
-    );
+                ),
+              );
+            },
+          );
+        });
   }
 
   Widget titleText(String text) {

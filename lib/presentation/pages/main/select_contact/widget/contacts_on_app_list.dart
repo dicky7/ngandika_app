@@ -31,16 +31,20 @@ class ContactsOnAppList extends StatelessWidget {
             builder: (context, state) {
               if (state is GetAllContactsLoading) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (state is GetContactsOnAppSuccess) {
-                final contacts = state.contactsOnApp.values.toList();
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    final contact = contacts[index];
+              }
+              else if (state is GetContactsOnAppSuccess) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: state.contactsOnApp.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final contact = state.contactsOnApp.values.toList()[index];
                     return CustomListTile(
                       leading: ClipOval(
                         child: CachedNetworkImage(
                           imageUrl: contact["profilePicture"],
-                          placeholder: (context, url) => const CircularProgressIndicator(),
+                          placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
                           fit: BoxFit.cover,
                           height: 44,
                           width: 44,
@@ -51,15 +55,12 @@ class ContactsOnAppList extends StatelessWidget {
                       onTap: () {},
                     );
                   },
-                    childCount: contacts.length,
-                  ),
                 );
-              } else {
+              } else{
                 debugPrint("$state");
                 return SizedBox();
               }
             },
-
           );
         }
     );
