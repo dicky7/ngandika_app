@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ngandika_app/presentation/widget/custom_network_image.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
 class StoryCard extends StatelessWidget {
@@ -16,12 +17,8 @@ class StoryCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: CachedNetworkImage(
-              imageUrl: image,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-            ),
+          CustomNetworkImage(
+            imageUrl: image,
           ),
           Expanded(
             child: Padding(

@@ -3,24 +3,22 @@ import 'package:flutter/material.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String imageUrl;
-  final double radius;
-  const CustomNetworkImage({Key? key, required this.imageUrl, required this.radius}) : super(key: key);
+  final double? radius;
+
+  const CustomNetworkImage({
+    Key? key,
+    required this.imageUrl,
+    this.radius,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final height = radius != null ? radius! * 2 : null;
     return ClipOval(
       child: CachedNetworkImage(
         imageUrl: imageUrl,
-        height: radius * 2,
-        placeholder: (context, url) => Stack(
-          children: [
-            Image.asset("assets/user_default.png"),
-            const Align(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(),
-            )
-          ],
-        ),
+        height: height,
+        placeholder: (context, url) => const CircularProgressIndicator(),
         errorWidget: (context, url, error) => Image.asset("assets/user_default.png"),
         fit: BoxFit.cover,
       ),

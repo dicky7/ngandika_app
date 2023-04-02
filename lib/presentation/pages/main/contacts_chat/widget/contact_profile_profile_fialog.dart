@@ -29,6 +29,7 @@ Future<void> showContactProfileDialog(BuildContext context){
                     )
                   ],
                 ),
+                errorWidget: (context, url, error) => Image.asset("assets/user_default.png"),
               ),
             ),
 

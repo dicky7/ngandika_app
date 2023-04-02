@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
+import 'package:ngandika_app/presentation/widget/custom_appbar_network_image.dart';
 import 'package:ngandika_app/presentation/widget/custom_network_image.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/functions/app_dialogs.dart';
@@ -39,9 +40,8 @@ class ContactAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
           builder: (context, state) {
             if (state is GetCurrentUserSuccess) {
-              return CustomNetworkImage(
+              return CustomAppbarNetworkImage(
                 imageUrl: state.userModel.profilePicture,
-                radius: 20,
               );
             } else {
               print(state.toString());

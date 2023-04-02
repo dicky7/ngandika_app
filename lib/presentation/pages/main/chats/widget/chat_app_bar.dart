@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ngandika_app/presentation/widget/custom_appbar_network_image.dart';
 
 import '../../../../../data/models/pop_up_menu_item_model.dart';
 import '../../../../../utils/helpers.dart';
 import '../../../../../utils/styles/style.dart';
+import '../../../../widget/custom_network_image.dart';
 import 'custom_pop_up_menu_button.dart';
 
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -35,14 +37,9 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(width: 5),
               Hero(
                 tag: "userdata.uId",
-                child: ClipOval(
-                  child: CircleAvatar(
-                    child: CachedNetworkImage(
-                      imageUrl: Helpers.randomPictureUrl(),
-                      placeholder: (context, url) => const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Image.asset("assets/user_default.png"),
-                    ),
-                  ),
+                child: CustomAppbarNetworkImage(
+                  imageUrl: Helpers.randomPictureUrl(),
+
                 ),
               ),
             ],

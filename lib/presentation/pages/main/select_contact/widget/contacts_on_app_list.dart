@@ -8,6 +8,7 @@ import '../../../../../utils/functions/app_dialogs.dart';
 import '../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
 import '../../../../bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import '../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_state.dart';
+import '../../../../widget/custom_network_image.dart';
 
 class ContactsOnAppList extends StatelessWidget {
   const ContactsOnAppList({Key? key}) : super(key: key);
@@ -40,15 +41,8 @@ class ContactsOnAppList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final contact = state.contactsOnApp.values.toList()[index];
                     return CustomListTile(
-                      leading: ClipOval(
-                        child: CachedNetworkImage(
-                          imageUrl: contact["profilePicture"],
-                          placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                          fit: BoxFit.cover,
-                          height: 44,
-                          width: 44,
-                        ),
+                      leading: CustomNetworkImage(
+                        imageUrl: contact["profilePicture"],
                       ),
                       title: contact["name"],
                       subTitle: contact["status"],

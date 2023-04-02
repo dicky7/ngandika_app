@@ -6,6 +6,7 @@ import 'package:ngandika_app/presentation/pages/main/contacts_chat/widget/contac
 import 'package:ngandika_app/presentation/pages/main/contacts_chat/widget/contact_profile_profile_fialog.dart';
 import 'package:ngandika_app/presentation/pages/main/select_contact/select_contact_page.dart';
 import 'package:ngandika_app/presentation/widget/custom_list_tile.dart';
+import 'package:ngandika_app/presentation/widget/custom_network_image.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
@@ -93,13 +94,10 @@ class ContactsChatPage extends StatelessWidget {
                 onTap: () {
                   showContactProfileDialog(context);
                 },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: CachedNetworkImage(
-                    imageUrl: Helpers.randomPictureUrl(),
-                    placeholder: (context, url) => const CircularProgressIndicator(),
-                  ),
-                ),
+                child: CustomNetworkImage(
+                  imageUrl: Helpers.randomPictureUrl(),
+                  radius: 30,
+                )
               ),
             ),
             title: faker.person.name(),
