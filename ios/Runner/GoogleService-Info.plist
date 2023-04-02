@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>901787842217-iop5sfa17a7jul44bb5s7ibbveih60cn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.901787842217-iop5sfa17a7jul44bb5s7ibbveih60cn</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>901787842217-gs4u9cef9i2odcvt5g4fbsb7svk7b437.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBtEYEBlkQqVjCcWpcZ1jtdxpAcVs8y7nY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>901787842217</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.ngandikaApp</string>
+	<key>PROJECT_ID</key>
+	<string>ngandika-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ngandika-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:901787842217:ios:513452fa049ca9265e1bb8</string>
+</dict>
+</plist>
