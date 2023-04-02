@@ -119,13 +119,13 @@ class _ContactsNotOnAppListState extends State<ContactsNotOnAppList> {
 
     // un comment this code if you don't want new data bellow old data
 
-    // final startIndex = (_currentPage - 1) * _itemsPerPage;
-    // final endIndex = min(startIndex + _itemsPerPage, (context.read<GetContactsNotOnAppCubit>().state as GetContactsNotOnAppSuccess).contactsNotOnApp.length);
-    // final contactsToDisplay = (context.read<GetContactsNotOnAppCubit>().state as GetContactsNotOnAppSuccess).contactsNotOnApp.sublist(startIndex, endIndex);
-    //
-    // setState(() {
-    //   _contactsToDisplay = contactsToDisplay;
-    // });
+    final startIndex = (_currentPage - 1) * _itemsPerPage;
+    final endIndex = min(startIndex + _itemsPerPage, (context.read<GetContactsNotOnAppCubit>().state as GetContactsNotOnAppSuccess).contactsNotOnApp.length);
+    final contactsToDisplay = (context.read<GetContactsNotOnAppCubit>().state as GetContactsNotOnAppSuccess).contactsNotOnApp.sublist(startIndex, endIndex);
+
+    setState(() {
+      _contactsToDisplay.addAll(contactsToDisplay);
+    });
   }
 
 

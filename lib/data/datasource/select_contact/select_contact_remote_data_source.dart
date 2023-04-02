@@ -34,53 +34,62 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
     yield* Stream.value(_contactsNotOnApp);
   }
 
-// The getAllContacts method takes a list of Contact objects and populates _contactsNotOnApp and _contactsOnAppMap based on whether the phone numbers
-// in the Contact objects match those in the Firestore database.
   @override
   Future<void> getAllContacts(List<Contact> contacts) async {
-    _contactsNotOnApp = [];
-    final userCollection = firestore.collection('users').snapshots();
-    final phoneNumbersSet = await userCollection.map((snapshot) {
-      final phoneNumbers = snapshot.docs.map((doc) =>
-      UserModel
-          .fromMap(doc.data())
-          .phoneNumber).toList();
-      return phoneNumbers.toSet();
-    }).first;
+    try {
+      _contactsNotOnApp = [];
 
+      // Use a set to remove duplicates
+      final contactSet = contacts.toSet();
 
-    await Future.forEach(contacts, (contact) async {
-      var phoneNum = contact.phones.isNotEmpty
-          ? contact.phones[0].number.replaceAll('-', '').replaceAll(' ', '')
-          : '';
-      if (phoneNum.startsWith('0')) {
-        phoneNum = '+62${phoneNum.substring(1)}';
-      } else if (!phoneNum.startsWith('+')) {
-        phoneNum = '+$phoneNum';
-      }
+      // Use Future.wait() for parallel execution
+      final results = await Future.wait(contactSet.map((contact) async {
+        var phoneNumber = contact.phones.isNotEmpty ? contact.phones[0].number.replaceAll(' ', '').replaceAll('-', '') : '';
+        if (phoneNumber.isEmpty) return null;
 
-      if (phoneNumbersSet.contains(phoneNum)) {
-        final userDocs = await firestore.collection('users').where(
-            'phoneNumber', isEqualTo: phoneNum).get();
-        if (userDocs.docs.isNotEmpty) {
-          final userDoc = userDocs.docs.first;
-
-          final userData = UserModel.fromMap(userDoc.data());
-          if (userData.uId != auth.currentUser!.uid) {
-            contactsOnAppMap.addAll({
-              userData.uId: {
-                'uId': userData.uId,
-                'profilePicture': userData.profilePicture,
-                'status': userData.status,
-                'name': contact.displayName,
-              }
-            });
-          }
+        // Add the following code to convert the phone number to the desired format
+        if (phoneNumber.startsWith('0')) {
+          phoneNumber = '+62${phoneNumber.substring(1)}';
+        } else if (!phoneNumber.startsWith('+')) {
+          phoneNumber = '+$phoneNumber';
         }
-      } else {
-        print("_contactsNotOnApp $_contactsNotOnApp");
-        _contactsNotOnApp.add(contact);
-      }
-    });
+        print("phoneNumber $phoneNumber");
+
+        // Use querySnapshot instead of get() with a where() clause
+        final querySnapshot = await firestore
+            .collection('users')
+            .where('phoneNumber', isEqualTo: phoneNumber)
+            .get();
+        if (querySnapshot.size == 0) {
+          _contactsNotOnApp.add(contact);
+          return null;
+        }
+
+        // Use batch to perform multiple writes in a single operation
+        final batch = firestore.batch();
+        querySnapshot.docs.forEach((document) {
+          final userData = UserModel.fromMap(document.data());
+          if (userData.uId != auth.currentUser!.uid) {
+            final data = {
+              'uId': userData.uId,
+              'profilePicture': userData.profilePicture,
+              'status': userData.status,
+              'name': contact.displayName,
+            };
+            batch.set(firestore.collection('contacts').doc(auth.currentUser!.uid).collection('users').doc(userData.uId), data);
+            contactsOnAppMap[userData.uId] = data;
+          }
+        });
+        await batch.commit();
+      }).whereType<Future>());
+
+      // Remove null results from Future.wait()
+      _contactsNotOnApp.addAll(results.whereType<Contact>());
+
+      // Sort the contacts in ascending order based on their display name
+      _contactsNotOnApp.sort((a, b) => a.displayName.compareTo(b.displayName));
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
   }
 }
