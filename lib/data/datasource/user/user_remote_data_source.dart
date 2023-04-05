@@ -6,6 +6,7 @@ import '../../models/user_model.dart';
 
 abstract class UserRemoteDataSource{
   Future<UserModel?> getCurrentUserData();
+  Stream<UserModel> getUserById(String id);
 }
 
 class UserRemoteDataSourceImpl extends UserRemoteDataSource{
@@ -30,5 +31,17 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource{
     }
     return userModel;
   }
+
+  // this function retrieves a stream of updates for a single user document from the Firestore database and converts each update to a UserModel object.
+  @override
+  Stream<UserModel> getUserById(String id) {
+    return firestore
+        .collection("users")
+        .doc(id)
+        .snapshots()
+        .map((event) => UserModel.fromMap(event.data()!));
+  }
+
+
 
 }

@@ -15,20 +15,21 @@ class GetContactsNotOnAppCubit extends Cubit<GetContactsNotOnAppState> {
   int _totalContacts = 0; // class-level variable to store the total number of contacts
   int get totalContacts => _totalContacts; // getter method to access the total number of contacts
 
+  List<Contact> _contactsNotOnApp = [];
+  List<Contact> get contactsNotOnApp => _contactsNotOnApp;
 
-  Stream<GetContactsNotOnAppState> getContactsNotOnApp() async* {
-    yield GetContactsNotOnAppLoading();
+  Future<void> getContactsNotOnApp() async {
+    emit(GetContactsNotOnAppLoading());
     _totalContacts = 0; // Reset total number of contacts to 0
-    await for (final result in repository.contactsNotOnApp()) {
-      result.fold(
-            (error) => emit(GetContactsNotOnAppError(error.message)),
-            (contactsNotOnApp) {
-          _totalContacts += contactsNotOnApp.length; // update total number of contacts
-          print("getContactsNotOnApp $_totalContacts");
-          emit(GetContactsNotOnAppSuccess(contactsNotOnApp));
-        },
-      );
-    }
+    final result = await repository.contactsNotOnApp();
+    result.fold(
+          (error) => emit(GetContactsNotOnAppError(error.message)),
+          (success) {
+        _totalContacts += success.length; // update total number of contacts
+        _contactsNotOnApp.addAll(success);
+        emit(GetContactsNotOnAppSuccess());
+      },
+    );
   }
 
 }

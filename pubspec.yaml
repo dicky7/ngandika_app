@@ -41,6 +41,9 @@ dependencies:
   shared_preferences: ^2.0.17
   flutter_contacts: ^1.1.6
   intl: ^0.17.0
+  uuid: ^3.0.7
+  emoji_picker_flutter: ^1.5.2
+  giphy_get: ^3.3.0
 
   firebase_auth: ^4.3.0
   firebase_core: ^2.1.1

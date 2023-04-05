@@ -31,9 +31,4 @@ class GetAllContactsCubit extends Cubit<GetAllContactsState> {
       },
     );
   }
-
-
-
-
-
 }

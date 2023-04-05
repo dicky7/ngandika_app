@@ -1,4 +1,6 @@
-class UserModel {
+import 'package:equatable/equatable.dart';
+
+class UserModel extends Equatable{
   final String name;
   final String uId;
   final String profilePicture;
@@ -44,4 +46,16 @@ class UserModel {
       lastSeen: DateTime.fromMillisecondsSinceEpoch(map['lastSeen']),
     );
   }
+
+  @override
+  List<Object?> get props => [
+    name,
+    uId,
+    status,
+    profilePicture,
+    phoneNumber,
+    isOnline,
+    groupId,
+    lastSeen,
+  ];
 }

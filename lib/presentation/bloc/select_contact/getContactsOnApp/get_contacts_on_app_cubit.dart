@@ -15,19 +15,21 @@ class GetContactsOnAppCubit extends Cubit<GetContactsOnAppState> {
   int get totalContacts => _totalContacts; // getter method to access the total number of contacts
 
 
-  Stream<GetContactsOnAppState> getContactsOnApp() async* {
-    yield GetContactsOnAppLoading();
+  Map<String, dynamic> _contactsOnApp = {};
+  Map<String, dynamic> get contactsOnApp => _contactsOnApp;
+
+  Future<void> getContactsOnApp() async {
+    emit(GetContactsOnAppLoading());
     _totalContacts = 0; // Reset total number of contacts to 0
-    await repository.contactsOnApp().forEach((result) {
-      result.fold(
-              (error) => emit(GetContactsOnAppError(error.message)),
-              (contactsOnApp) {
-            _totalContacts += contactsOnApp.length; // update total number of contacts
-            print("getContactsOnApp $_totalContacts");
-            emit(GetContactsOnAppSuccess(contactsOnApp));
-          }
-      );
-    });
+    final result = await repository.contactsOnApp();
+    result.fold(
+            (error) => emit(GetContactsOnAppError(error.message)),
+            (success) {
+          _totalContacts += success.length; // update total number of contacts
+          _contactsOnApp.addAll(success);
+          emit(GetContactsOnAppSuccess());
+        }
+    );
   }
 
 }

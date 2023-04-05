@@ -6,6 +6,7 @@ import '../models/user_model.dart';
 
 abstract class UserRepository{
   Future<Either<Failure, UserModel>> getCurrentUserData();
+  Stream<UserModel> getUserById(String id);
 }
 class UserRepositoryImpl extends UserRepository{
   final UserRemoteDataSource userRemoteDataSource;
@@ -21,6 +22,11 @@ class UserRepositoryImpl extends UserRepository{
     }on ServerFailure catch(e){
       return Left(ServerFailure(e.message));
     }
+  }
+
+  @override
+  Stream<UserModel> getUserById(String id) {
+    return userRemoteDataSource.getUserById(id);
   }
 
 }

@@ -13,14 +13,7 @@ abstract class GetContactsOnAppState extends Equatable {
 class GetContactsOnAppInitial extends GetContactsOnAppState {}
 
 class GetContactsOnAppLoading extends GetContactsOnAppState{}
-class GetContactsOnAppSuccess extends GetContactsOnAppState{
-  final Map<String, dynamic> contactsOnApp;
-
-  GetContactsOnAppSuccess(this.contactsOnApp);
-
-  @override
-  List<Object> get props => [contactsOnApp];
-}
+class GetContactsOnAppSuccess extends GetContactsOnAppState{}
 class GetContactsOnAppError extends GetContactsOnAppState{
   final String message;
 

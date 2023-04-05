@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:ngandika_app/presentation/pages/main/calls/call_page.dart';
-import 'package:ngandika_app/presentation/pages/main/contacts_chat/contacts_chat_page.dart';
-import 'package:ngandika_app/presentation/pages/main/select_contact/select_contact_page.dart';
 import 'package:ngandika_app/presentation/pages/main/settings/setting_page.dart';
 import 'package:ngandika_app/presentation/pages/main/status/status_page.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
 import '../../bloc/main_page/page_cubit.dart';
 import '../../widget/custom_buttom_navigation_item.dart';
+import 'messages/contacts_chat/contacts_chat_page.dart';
 
 class MainPage extends StatefulWidget {
   static const routeName = "main";

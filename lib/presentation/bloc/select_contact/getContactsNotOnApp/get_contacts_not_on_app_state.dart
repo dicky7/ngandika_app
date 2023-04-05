@@ -14,15 +14,7 @@ class GetContactsNotOnAppInitial extends GetContactsNotOnAppState {}
  * GetContactsNotOnApp
  */
 class GetContactsNotOnAppLoading extends GetContactsNotOnAppState{}
-class GetContactsNotOnAppSuccess extends GetContactsNotOnAppState {
-  final List<Contact> contactsNotOnApp;
-
-  GetContactsNotOnAppSuccess(this.contactsNotOnApp);
-
-  @override
-  // TODO: implement props
-  List<Object> get props => [contactsNotOnApp];
-}
+class GetContactsNotOnAppSuccess extends GetContactsNotOnAppState {}
 class GetContactsNotOnAppError extends GetContactsNotOnAppState{
   final String message;
 

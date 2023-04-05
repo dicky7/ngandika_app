@@ -113,10 +113,18 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
         status: 'Hey,$userName Here!',
         lastSeen: DateTime.now(),
       );
-      //Finally, it saves the UserModel object to the users collection in Firestore using the set method on a document with the current user's uId.
-      //The toMap method is called on this UserModel instance to obtain a Map representation of the user data.
-      firestore.collection("users").doc(uId).set(user.toMap());
 
+      //check if collection "users" is exist or not, if exists update the users collection using update method with the current id
+      //The toMap method is called on this UserModel instance to obtain a Map representation of the user data.
+      var userDoc = await firestore.collection("users").doc(uId).get();
+      if (userDoc.exists) {
+        await firestore.collection('users').doc(uId).update(user.toMap());
+      } else{
+        //if collection "users" is not exist, it saves the UserModel object to the users collection in Firestore using the set method on a
+        // document with the current user's uId.
+        await firestore.collection("users").doc(uId).set(user.toMap());
+
+      }
     }on FirebaseFirestore catch (e) {
       throw ServerException(e.toString());
     }

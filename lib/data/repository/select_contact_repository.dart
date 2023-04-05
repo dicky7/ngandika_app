@@ -8,8 +8,8 @@ import '../datasource/select_contact/select_contact_remote_data_source.dart';
 
 abstract class SelectContactRepository{
   Future<Either<Failure, void>> getAllContacts();
-  Stream<Either<Failure, Map<String, dynamic>>> contactsOnApp();
-  Stream<Either<Failure, List<Contact>>> contactsNotOnApp();
+  Future<Either<Failure, Map<String, dynamic>>> contactsOnApp();
+  Future<Either<Failure, List<Contact>>> contactsNotOnApp();
 
 }
 class SelectContactRepositoryImpl extends SelectContactRepository{
@@ -34,31 +34,26 @@ class SelectContactRepositoryImpl extends SelectContactRepository{
   }
 
   @override
-  Stream<Either<Failure, List<Contact>>> contactsNotOnApp() async* {
+  Future<Either<Failure, List<Contact>>> contactsNotOnApp() async {
     try {
-      final resultStream = remoteDataSource.contactsNotOnApp();
+      final resultStream = await remoteDataSource.contactsNotOnApp();
       // the resultStream is mapped using the map() method to convert each value in the Stream<List<Contact>> to Either<Failure, List<Contact>>.
       // The resulting Stream of Either<Failure, List<Contact>> is then returned using yield*.
-
-      yield* resultStream.map((result) {
-        return Right(result);
-      });
+      return Right(resultStream);
     } on ServerException catch (e) {
-      yield Left(ServerFailure("repository contactsNotOnApp${e.message}"));
+      return Left(ServerFailure("repository contactsNotOnApp${e.message}"));
     }
   }
 
 
 
   @override
-  Stream<Either<Failure, Map<String, dynamic>>> contactsOnApp() async* {
+  Future<Either<Failure, Map<String, dynamic>>> contactsOnApp() async {
     try {
-      final resultStream = remoteDataSource.contactsOnApp();
-      yield* resultStream.map((result) {
-        return Right(result);
-      });
+      final result = await remoteDataSource.contactsOnApp();
+      return Right(result);
     } on ServerException catch (e) {
-      yield Left(ServerFailure("repository contactsOnApp${e.message}"));
+      return Left(ServerFailure("repository contactsOnApp${e.message}"));
     }
   }
 

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/main_page/page_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/message/bottom_chat/bottom_chat_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/message/chat_contacts/chat_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
@@ -42,15 +45,24 @@ class MyApp extends StatelessWidget {
           create: (context) => di.locator<GetAllContactsCubit>(),
         ),
         BlocProvider(
-          lazy: true,
           create: (context) => di.locator<GetContactsOnAppCubit>(),
         ),
         BlocProvider(
-          lazy: true,
           create: (context) => di.locator<GetContactsNotOnAppCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => BottomChatCubit(),
+        ),
+        BlocProvider(
+          create: (context) => di.locator<ChatCubit>(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => di.locator<ChatContactsCubit>(),
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
           theme: ThemeData(
               brightness: Brightness.light,
               textTheme: myTextTheme,

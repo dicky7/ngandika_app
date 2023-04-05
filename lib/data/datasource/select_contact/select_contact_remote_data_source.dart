@@ -7,8 +7,8 @@ import '../../../utils/error/exception.dart';
 
 abstract class SelectContactRemoteDataSource{
   Future<void> getAllContacts(List<Contact> contact);
-  Stream<Map<String, dynamic>> contactsOnApp();
-  Stream<List<Contact>> contactsNotOnApp();
+  Future<Map<String, dynamic>> contactsOnApp();
+  Future<List<Contact>> contactsNotOnApp();
 
 }
 
@@ -24,15 +24,11 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
 
 // This method returns a stream that emits the map of contacts that are on the app.
   @override
-  Stream<Map<String, dynamic>> contactsOnApp() async* {
-    yield* Stream.value(contactsOnAppMap);
-  }
+  Future<Map<String, dynamic>> contactsOnApp() async => contactsOnAppMap;
 
   // This method returns a stream that emits the list of contacts that are not on the app.
   @override
-  Stream<List<Contact>> contactsNotOnApp() async* {
-    yield* Stream.value(_contactsNotOnApp);
-  }
+  Future<List<Contact>> contactsNotOnApp() async => _contactsNotOnApp;
 
   @override
   Future<void> getAllContacts(List<Contact> contacts) async {
@@ -53,7 +49,7 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
         } else if (!phoneNumber.startsWith('+')) {
           phoneNumber = '+$phoneNumber';
         }
-        print("phoneNumber $phoneNumber");
+
 
         // Use querySnapshot instead of get() with a where() clause
         final querySnapshot = await firestore
@@ -74,7 +70,8 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
               'uId': userData.uId,
               'profilePicture': userData.profilePicture,
               'status': userData.status,
-              'name': contact.displayName,
+              'name': userData.name,
+              // 'name': contact.displayName,
             };
             batch.set(firestore.collection('contacts').doc(auth.currentUser!.uid).collection('users').doc(userData.uId), data);
             contactsOnAppMap[userData.uId] = data;

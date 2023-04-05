@@ -21,4 +21,9 @@ class UserCubit extends Cubit<UserState> {
       (success) => emit(GetCurrentUserSuccess(success)),
     );
   }
+
+  //this function for get your friend data such as name, status, image etc for chat app bar status
+  Stream<UserModel> getUserById(String id){
+    return userRepository.getUserById(id);
+  }
 }
