@@ -1,4 +1,4 @@
-enum MessageType{
+enum MessageType {
   text('text'),
   image('image'),
   gif('gif'),
@@ -9,12 +9,13 @@ enum MessageType{
   poll('poll');
 
   const MessageType(this.type);
+
   final String type;
 }
 
-extension ConvertMessage on String{
-  MessageType toEnum(){
-    switch(this){
+extension ConvertMessage on String {
+  MessageType toEnum() {
+    switch (this) {
       case 'text':
         return MessageType.text;
       case 'image':

@@ -9,15 +9,13 @@ import 'package:ngandika_app/utils/styles/style.dart';
 //The function returns a Future<CroppedFile?>, indicating that the user may or may not select an image to crop. If the user selects an image and crops it,
 // the function returns the CroppedFile object representing the cropped image. If the user cancels the selection or cropping process,
 // the function returns null.
-Future<CroppedFile?> showUpdateProfilePictureBottomSheet(BuildContext context) async {
+Future<CroppedFile?> showUpdateProfilePictureBottomSheet(
+    BuildContext context) async {
   return showModalBottomSheet<CroppedFile>(
     context: context,
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-            topRight: Radius.circular(15),
-            topLeft: Radius.circular(15)
-        )
-    ),
+            topRight: Radius.circular(15), topLeft: Radius.circular(15))),
     builder: (context) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
@@ -36,8 +34,9 @@ Future<CroppedFile?> showUpdateProfilePictureBottomSheet(BuildContext context) a
                 PickProfileImage(
                   title: "Camera",
                   icons: Icons.camera_alt,
-                  onTap: () async{
-                    CroppedFile? croppedFile = await selectImageFromCamera(context);
+                  onTap: () async {
+                    CroppedFile? croppedFile =
+                        await selectImageFromCamera(context);
                     Navigator.of(context).pop(croppedFile);
                   },
                 ),
@@ -49,7 +48,8 @@ Future<CroppedFile?> showUpdateProfilePictureBottomSheet(BuildContext context) a
                   title: "Gallery",
                   icons: Icons.image,
                   onTap: () async {
-                    CroppedFile? croppedFile = await selectImageFromGallery(context);
+                    CroppedFile? croppedFile =
+                        await selectImageFromGallery(context);
                     Navigator.of(context).pop(croppedFile);
                   },
                 ),
@@ -92,7 +92,10 @@ class PickProfileImage extends StatelessWidget {
   final String title;
   final IconData icons;
   final VoidCallback onTap;
-  const PickProfileImage({Key? key, required this.icons, required this.onTap, required this.title}) : super(key: key);
+
+  const PickProfileImage(
+      {Key? key, required this.icons, required this.onTap, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +110,7 @@ class PickProfileImage extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.black12)
-            ),
+                border: Border.all(color: Colors.black12)),
             child: Icon(icons, color: kBlue),
           ),
         ),

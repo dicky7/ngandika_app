@@ -1,4 +1,3 @@
-
 //this class will be using in remote_data_source class and
 // when then response error they will be throw ServerException
 class ServerException implements Exception {

@@ -5,11 +5,12 @@ import 'package:ngandika_app/data/models/user_model.dart';
 
 import '../../../utils/error/exception.dart';
 
-abstract class SelectContactRemoteDataSource{
+abstract class SelectContactRemoteDataSource {
   Future<void> getAllContacts(List<Contact> contact);
-  Future<Map<String, dynamic>> contactsOnApp();
-  Future<List<Contact>> contactsNotOnApp();
 
+  Future<Map<String, dynamic>> contactsOnApp();
+
+  Future<List<Contact>> contactsNotOnApp();
 }
 
 class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
@@ -40,7 +41,9 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
 
       // Use Future.wait() for parallel execution
       final results = await Future.wait(contactSet.map((contact) async {
-        var phoneNumber = contact.phones.isNotEmpty ? contact.phones[0].number.replaceAll(' ', '').replaceAll('-', '') : '';
+        var phoneNumber = contact.phones.isNotEmpty
+            ? contact.phones[0].number.replaceAll(' ', '').replaceAll('-', '')
+            : '';
         if (phoneNumber.isEmpty) return null;
 
         // Add the following code to convert the phone number to the desired format
@@ -49,7 +52,6 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
         } else if (!phoneNumber.startsWith('+')) {
           phoneNumber = '+$phoneNumber';
         }
-
 
         // Use querySnapshot instead of get() with a where() clause
         final querySnapshot = await firestore
@@ -73,7 +75,13 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
               'name': userData.name,
               // 'name': contact.displayName,
             };
-            batch.set(firestore.collection('contacts').doc(auth.currentUser!.uid).collection('users').doc(userData.uId), data);
+            batch.set(
+                firestore
+                    .collection('contacts')
+                    .doc(auth.currentUser!.uid)
+                    .collection('users')
+                    .doc(userData.uId),
+                data);
             contactsOnAppMap[userData.uId] = data;
           }
         });

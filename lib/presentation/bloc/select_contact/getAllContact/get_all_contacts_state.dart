@@ -1,6 +1,4 @@
-
 import 'package:equatable/equatable.dart';
-import 'package:flutter_contacts/contact.dart';
 
 abstract class GetAllContactsState extends Equatable {
   const GetAllContactsState();
@@ -8,12 +6,16 @@ abstract class GetAllContactsState extends Equatable {
   @override
   List<Object> get props => [];
 }
+
 class GetAllContactstInitial extends GetAllContactsState {}
+
 /**
  * GetAllContacts
  */
 class GetAllContactsLoading extends GetAllContactsState {}
-class GetAllContactsSuccess extends GetAllContactsState{}
+
+class GetAllContactsSuccess extends GetAllContactsState {}
+
 class GetAllContactsError extends GetAllContactsState {
   final String message;
 

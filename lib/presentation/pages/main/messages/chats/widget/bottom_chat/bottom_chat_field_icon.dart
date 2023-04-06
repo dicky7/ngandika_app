@@ -12,7 +12,8 @@ class BottomChatFieldIcon extends StatelessWidget {
 
   BottomChatFieldIcon({Key? key, required this.receiverId}) : super(key: key);
 
-  final TextEditingController messageController = TextEditingController(text: "");
+  final TextEditingController messageController =
+      TextEditingController(text: "");
   FocusNode focusNode = FocusNode();
 
   @override
@@ -33,10 +34,11 @@ class BottomChatFieldIcon extends StatelessWidget {
                 focusNode: focusNode,
                 messageController: messageController,
                 toggleEmojiKeyboard: () {},
-                onTextFieldValueChanged: (value) => cubitRead.showSendButton(value),
+                onTextFieldValueChanged: (value) =>
+                    cubitRead.showSendButton(value),
               ),
               // if (cubit.isShowSendButton)
-                buildButtonSend(context, cubitWatch.isShowSendButton)
+              buildButtonSend(context, cubitWatch.isShowSendButton)
             ],
           ),
         ),
@@ -57,9 +59,7 @@ class BottomChatFieldIcon extends StatelessWidget {
       onTap: () {
         if (isShowSendButton) {
           context.read<ChatCubit>().sendTextMessage(
-              text: messageController.text.trim(),
-              receiverId: receiverId
-          );
+              text: messageController.text.trim(), receiverId: receiverId);
         }
       },
       child: Container(
@@ -70,13 +70,10 @@ class BottomChatFieldIcon extends StatelessWidget {
         width: 50,
         height: 50,
         child: Icon(
-          isShowSendButton
-            ? Icons.send
-            : Icons.mic,
+          isShowSendButton ? Icons.send : Icons.mic,
           color: kPrimaryColor,
         ),
       ),
     );
   }
 }
-

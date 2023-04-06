@@ -53,8 +53,8 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 15),
               Text(
                 "What\'s my number?",
-                style: context.titleMedium?.copyWith(
-                    color: kBlue, fontWeight: FontWeight.bold),
+                style: context.titleMedium
+                    ?.copyWith(color: kBlue, fontWeight: FontWeight.bold),
               ),
               Container(
                 margin: const EdgeInsets.only(top: 15),
@@ -93,17 +93,20 @@ class _LoginPageState extends State<LoginPage> {
             child: BlocBuilder<AuthCubit, AuthState>(
               builder: (context, state) {
                 if (state is AuthSetCountrySuccess) {
-                  Future.microtask(() => countryCodeController.text = state.country.phoneCode);
+                  Future.microtask(() =>
+                      countryCodeController.text = state.country.phoneCode);
                   return Text(
                     state.country.name,
                     textAlign: TextAlign.center,
-                    style: context.titleLarge?.copyWith(fontWeight: FontWeight.normal),
+                    style: context.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.normal),
                   );
                 } else {
                   return Text(
                     'No Country Set',
                     textAlign: TextAlign.center,
-                    style: context.titleLarge?.copyWith(fontWeight: FontWeight.normal),
+                    style: context.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.normal),
                   );
                 }
               },
@@ -155,7 +158,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-
       ],
     );
   }
@@ -164,14 +166,18 @@ class _LoginPageState extends State<LoginPage> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          Navigator.pushNamedAndRemoveUntil(context, LoginOtpPage.routeName, arguments: phoneNumber, (route) => false);
-        } else if(state is AuthError){
-         AppDialogs.showCustomDialog(
-             context: context,
-             icons: Icons.close,
-             title: "Error",
-             content: state.message,
-             onPressed: () => Navigator.pop(context));
+          Navigator.pushNamedAndRemoveUntil(
+              context,
+              LoginOtpPage.routeName,
+              arguments: phoneNumber,
+              (route) => false);
+        } else if (state is AuthError) {
+          AppDialogs.showCustomDialog(
+              context: context,
+              icons: Icons.close,
+              title: "Error",
+              content: state.message,
+              onPressed: () => Navigator.pop(context));
         }
       },
       child: CustomButton(
@@ -179,7 +185,8 @@ class _LoginPageState extends State<LoginPage> {
         color: kBlueDark,
         width: context.width(0.65),
         onPress: () {
-          if (countryCodeController.text.isNotEmpty && phoneController.text.isNotEmpty) {
+          if (countryCodeController.text.isNotEmpty &&
+              phoneController.text.isNotEmpty) {
             final number = phoneController.text.trim();
             final countryCode = countryCodeController.text;
             phoneNumber = "+$countryCode$number";
@@ -191,7 +198,6 @@ class _LoginPageState extends State<LoginPage> {
                 context.read<AuthCubit>().signInWithPhone(phoneNumber);
               },
             );
-
           }
         },
       ),

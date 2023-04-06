@@ -17,9 +17,7 @@ class TagChatTime extends StatelessWidget {
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.black12
-        ),
+            borderRadius: BorderRadius.circular(15), color: Colors.black12),
         child: Text(
           dateTime.getChatDayTime,
           style: context.titleSmall?.copyWith(color: kPrimaryColor),

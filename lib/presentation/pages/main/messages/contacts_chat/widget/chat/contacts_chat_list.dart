@@ -25,17 +25,17 @@ class ContactsChatList extends StatelessWidget {
           return const CustomLoading();
         }
         return ListView.builder(
-          padding: const EdgeInsets.only(bottom: 100, top: 10, left: 2, right: 2),
+          padding:
+              const EdgeInsets.only(bottom: 100, top: 10, left: 2, right: 2),
           physics: const NeverScrollableScrollPhysics(),
           itemCount: snapshot.data!.length,
           shrinkWrap: true,
           itemBuilder: (context, index) {
             var chatContactData = snapshot.data![index];
-            return ContactsChatCard(
-                chatContactData: chatContactData
-            );
+            return ContactsChatCard(chatContactData: chatContactData);
           },
-        );;
+        );
+        ;
       },
     );
   }

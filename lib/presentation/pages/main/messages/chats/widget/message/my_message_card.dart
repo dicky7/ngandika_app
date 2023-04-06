@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
-import 'package:ngandika_app/utils/styles/style.dart';
 import 'package:ngandika_app/utils/extensions/time_extension.dart';
+import 'package:ngandika_app/utils/styles/style.dart';
 
 class MyMessageCard extends StatelessWidget {
   final String message;
@@ -47,10 +47,9 @@ class MyMessageCard extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      timeSent.getTimeSentAmPmMode,
-                      style: context.bodySmall!.copyWith(color: Colors.white60)
-                    ),
+                    Text(timeSent.getTimeSentAmPmMode,
+                        style:
+                            context.bodySmall!.copyWith(color: Colors.white60)),
                     const SizedBox(
                       width: 5,
                     ),

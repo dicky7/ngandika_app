@@ -4,22 +4,23 @@ import 'package:ngandika_app/utils/error/failure.dart';
 
 import '../models/user_model.dart';
 
-abstract class UserRepository{
+abstract class UserRepository {
   Future<Either<Failure, UserModel>> getCurrentUserData();
+
   Stream<UserModel> getUserById(String id);
 }
-class UserRepositoryImpl extends UserRepository{
+
+class UserRepositoryImpl extends UserRepository {
   final UserRemoteDataSource userRemoteDataSource;
 
   UserRepositoryImpl(this.userRemoteDataSource);
 
   @override
-  Future<Either<Failure, UserModel>> getCurrentUserData() async{
-    try{
+  Future<Either<Failure, UserModel>> getCurrentUserData() async {
+    try {
       final result = await userRemoteDataSource.getCurrentUserData();
       return Right(result!);
-
-    }on ServerFailure catch(e){
+    } on ServerFailure catch (e) {
       return Left(ServerFailure(e.message));
     }
   }
@@ -28,5 +29,4 @@ class UserRepositoryImpl extends UserRepository{
   Stream<UserModel> getUserById(String id) {
     return userRemoteDataSource.getUserById(id);
   }
-
 }

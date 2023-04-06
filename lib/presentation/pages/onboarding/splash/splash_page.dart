@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
 import 'package:ngandika_app/presentation/pages/onboarding/splash/on_boarding_page.dart';
-import 'package:ngandika_app/presentation/pages/onboarding/splash/term_and_condition_page.dart';
-
 
 class SplashPage extends StatefulWidget {
   static const routeName = "splash";
+
   const SplashPage({Key? key}) : super(key: key);
 
   @override
@@ -19,12 +18,14 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 4), () {
-      context.read<AuthCubit>().getCurrentUid().then((uId){
+      context.read<AuthCubit>().getCurrentUid().then((uId) {
         print("USER ID $uId");
         if (uId.isNotEmpty) {
-          Navigator.pushNamedAndRemoveUntil(context, MainPage.routeName, (route) => false);
-        } else{
-          Navigator.pushNamedAndRemoveUntil(context, OnBoardingPage.routeName, (route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+              context, MainPage.routeName, (route) => false);
+        } else {
+          Navigator.pushNamedAndRemoveUntil(
+              context, OnBoardingPage.routeName, (route) => false);
         }
       });
     });

@@ -9,12 +9,11 @@ part 'user_state.dart';
 class UserCubit extends Cubit<UserState> {
   final UserRepository userRepository;
 
-  UserCubit(this.userRepository) : super(UserInitial()){
-   getCurrentUser();
+  UserCubit(this.userRepository) : super(UserInitial()) {
+    getCurrentUser();
   }
 
-  Future<void> getCurrentUser() async{
-
+  Future<void> getCurrentUser() async {
     final result = await userRepository.getCurrentUserData();
     result.fold(
       (error) => emit(UserError(error.message)),
@@ -23,7 +22,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   //this function for get your friend data such as name, status, image etc for chat app bar status
-  Stream<UserModel> getUserById(String id){
+  Stream<UserModel> getUserById(String id) {
     return userRepository.getUserById(id);
   }
 }

@@ -2,15 +2,16 @@ part of 'user_cubit.dart';
 
 abstract class UserState extends Equatable {
   const UserState();
+
   @override
   List<Object> get props => [];
 }
 
 class UserInitial extends UserState {}
 
-class UserLoading extends UserState{}
+class UserLoading extends UserState {}
 
-class UserError extends UserState{
+class UserError extends UserState {
   final String message;
 
   UserError(this.message);
@@ -20,7 +21,7 @@ class UserError extends UserState{
   List<Object> get props => [message];
 }
 
-class GetCurrentUserSuccess extends UserState{
+class GetCurrentUserSuccess extends UserState {
   final UserModel userModel;
 
   GetCurrentUserSuccess(this.userModel);

@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,9 +9,13 @@ import 'package:ngandika_app/utils/error/exception.dart';
 
 abstract class AuthRemoteDataSource {
   Future<void> signInWithPhone(String phoneNumber);
+
   Future<void> verifyOtp(String smsOtpCode);
+
   Future<void> saveUserDataToFirebase(String userName, File? profilePicture);
+
   Future<String> storeFileToFirebase(String path, File file);
+
   Future<String> getCurrentUid();
 }
 
@@ -26,7 +28,8 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   //Storing the verification ID in a variable is important because it is needed later in the verification process to verify the user's phone number.
   String _verificationId = '';
 
-  AuthRemoteDataSourceImpl(this.firebaseAuth, this.firestore, this.firebaseStorage);
+  AuthRemoteDataSourceImpl(
+      this.firebaseAuth, this.firestore, this.firebaseStorage);
 
   @override
   Future<void> signInWithPhone(String phoneNumber) async {
@@ -66,7 +69,6 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
     }
   }
 
-
   // this code is used to verify the OTP code received via SMS and sign in the user using Firebase Authentication's phone number authentication.
   @override
   Future<void> verifyOtp(String smsOtpCode) async {
@@ -74,9 +76,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       //The function first creates a PhoneAuthCredential object using the _verificationId and smsOtpCode parameters. The _verificationId is obtained during
       // the phone number verification process using Firebase's Phone Authentication API. The smsOtpCode is the OTP code sent to the phone number via SMS.
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: _verificationId,
-          smsCode: smsOtpCode
-      );
+          verificationId: _verificationId, smsCode: smsOtpCode);
       //The function then uses the signInWithCredential method of the firebaseAuth instance to sign in with the provided credential. If the sign-in is
       // successful, the function returns without any errors. If the sign-in fails, the function throws a ServerException with the error message
       // obtained from the FirebaseAuthException caught in the catch block.
@@ -88,8 +88,9 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
 
   //This two methods - saveUserDataToFirebase and storeFileToFirebase, that work together to save user data, including a user's name, profile picture, and other information, to Firebase.
   @override
-  Future<void> saveUserDataToFirebase(String userName, File? profilePicture) async{
-    try{
+  Future<void> saveUserDataToFirebase(
+      String userName, File? profilePicture) async {
+    try {
       //The method first gets the current user's unique ID by calling the uid property on the currentUser object of the firebaseAuth instance.
       String uId = firebaseAuth.currentUser!.uid;
 
@@ -97,10 +98,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       // method and sets the resulting URL as the value of the photoUrl variable.
       String photoUrl = "";
       if (profilePicture != null) {
-        photoUrl = await storeFileToFirebase(
-          "profilePic/$uId",
-          profilePicture
-        );
+        photoUrl = await storeFileToFirebase("profilePic/$uId", profilePicture);
       }
       //After that, it creates a UserModel object with the provided userName, uId, phoneNumber, profilePicture, isOnline, and an empty groupId array.
       var user = UserModel(
@@ -119,20 +117,19 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       var userDoc = await firestore.collection("users").doc(uId).get();
       if (userDoc.exists) {
         await firestore.collection('users').doc(uId).update(user.toMap());
-      } else{
+      } else {
         //if collection "users" is not exist, it saves the UserModel object to the users collection in Firestore using the set method on a
         // document with the current user's uId.
         await firestore.collection("users").doc(uId).set(user.toMap());
-
       }
-    }on FirebaseFirestore catch (e) {
+    } on FirebaseFirestore catch (e) {
       throw ServerException(e.toString());
     }
   }
 
   //This is method uploads a file to Firebase Storage and returns the download URL of the uploaded file.
   @override
-  Future<String> storeFileToFirebase(String path, File file) async{
+  Future<String> storeFileToFirebase(String path, File file) async {
     //First, the method creates an UploadTask object using the putFile method of the Firebase Storage reference. The path parameter is used as
     // the path of the file in Firebase Storage, and the file parameter is used as the actual file to be uploaded
     UploadTask uploadTask = firebaseStorage.ref().child(path).putFile(file);
@@ -145,15 +142,13 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   }
 
   @override
-  Future<String> getCurrentUid() async{
-    try{
+  Future<String> getCurrentUid() async {
+    try {
       //The method first gets the current user's unique ID by calling the uid property on the currentUser object of the firebaseAuth instance.
       String uId = firebaseAuth.currentUser!.uid;
       return uId;
-    }on FirebaseAuthException catch(e){
+    } on FirebaseAuthException catch (e) {
       throw ServerException(e.message.toString());
     }
   }
-
-
 }

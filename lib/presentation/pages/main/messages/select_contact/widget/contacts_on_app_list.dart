@@ -4,10 +4,11 @@ import '../../../../../widget/custom_list_tile.dart';
 import '../../../../../widget/custom_network_image.dart';
 import '../../chats/chat_page.dart';
 
-
 class ContactsOnAppList extends StatelessWidget {
-  final Map<String, dynamic>  contactsOnApp;
-  const ContactsOnAppList({Key? key, required this.contactsOnApp}) : super(key: key);
+  final Map<String, dynamic> contactsOnApp;
+
+  const ContactsOnAppList({Key? key, required this.contactsOnApp})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +26,13 @@ class ContactsOnAppList extends StatelessWidget {
           title: contact["name"],
           subTitle: contact["status"],
           onTap: () {
-            Navigator.pushNamed(context,
-                ChatPage.routeName,
-                arguments: ChatPage(name: contact["name"], receiverId: contact["uId"])
-            );
+            Navigator.pushNamed(context, ChatPage.routeName,
+                arguments: ChatPage(
+                    name: contact["name"], receiverId: contact["uId"]));
           },
         );
       },
-    );;
+    );
+    ;
   }
 }

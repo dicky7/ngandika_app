@@ -9,11 +9,11 @@ abstract class AuthState extends Equatable {
 
 class AuthInitial extends AuthState {}
 
-class AuthLoading extends AuthState{}
+class AuthLoading extends AuthState {}
 
-class AuthSuccess extends AuthState{}
+class AuthSuccess extends AuthState {}
 
-class AuthError extends AuthState{
+class AuthError extends AuthState {
   final String message;
 
   AuthError(this.message);
@@ -31,10 +31,9 @@ class AuthSetCountrySuccess extends AuthState {
   @override
   // TODO: implement props
   List<Object> get props => [country];
-
 }
 
-class AuthCurrentUidLoaded extends AuthState{
+class AuthCurrentUidLoaded extends AuthState {
   final String userId;
 
   AuthCurrentUidLoaded(this.userId);

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-
 /// These concrete classes provide specific implementations of the "Failure" class for different
 /// types of failures that may occur in a program. By extending the "Failure" class, they inherit
 /// the "message" field and "get props" method, and can be used to represent specific error

@@ -35,11 +35,9 @@ class NewGroupContact extends StatelessWidget {
           ),
           title: "New contact",
           titleButton: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Image.asset("assets/qr_code.png")
-          ),
+              padding: const EdgeInsets.all(4.0),
+              child: Image.asset("assets/qr_code.png")),
         ),
-
       ],
     );
   }

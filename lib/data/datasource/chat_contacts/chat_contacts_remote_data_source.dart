@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ngandika_app/data/models/chat_contact_model.dart';
-import 'package:ngandika_app/data/models/message_model.dart';
 import 'package:ngandika_app/data/models/user_model.dart';
 
 abstract class ChatContactsRemoteDataSource {
   Stream<List<ChatContactModel>> getChatContacts();
+
   Stream<int> getNumOfMessageNotSeen(String senderId);
 }
 
@@ -27,7 +27,7 @@ class ChatContactsRemoteDataSourceImpl extends ChatContactsRemoteDataSource {
         .collection("chats")
         .snapshots()
         .asyncMap((event) async {
-       // The asyncMap method is used to transform each query snapshot into a List of ChatContactModel objects.
+      // The asyncMap method is used to transform each query snapshot into a List of ChatContactModel objects.
       List<ChatContactModel> messages = [];
       //For each query snapshot, the code iterates through the documents in the snapshot and creates a ChatContactModel object for each document.
       for (var document in event.docs) {
@@ -46,13 +46,11 @@ class ChatContactsRemoteDataSourceImpl extends ChatContactsRemoteDataSource {
             profilePicture: user.profilePicture,
             contactId: chatContact.contactId,
             lastMessage: chatContact.lastMessage,
-            timeSent: chatContact.timeSent
-        ));
+            timeSent: chatContact.timeSent));
       }
       return messages;
     });
   }
-
 
   //This function returns a stream of integers representing the number of unread messages from a specific sender in a chat.
   @override
@@ -71,7 +69,4 @@ class ChatContactsRemoteDataSourceImpl extends ChatContactsRemoteDataSource {
         .snapshots()
         .map((event) => event.docs.length);
   }
-
-
-
 }

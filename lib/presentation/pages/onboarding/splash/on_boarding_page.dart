@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ngandika_app/presentation/pages/main/main_page.dart';
 import 'package:ngandika_app/presentation/pages/onboarding/login/login_page.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
@@ -8,6 +7,7 @@ import '../../../../data/models/onboarding_item.dart';
 
 class OnBoardingPage extends StatefulWidget {
   static const routeName = "on-boarding";
+
   OnBoardingPage({Key? key}) : super(key: key);
 
   @override
@@ -30,12 +30,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             itemCount: onBoardItem.length,
             controller: _pageController,
             itemBuilder: (context, index) {
-              return onBoardingContent(
-                context,
-                image: onBoardItem[index].image,
-                title: onBoardItem[index].tittle,
-                description: onBoardItem[index].description
-              );
+              return onBoardingContent(context,
+                  image: onBoardItem[index].image,
+                  title: onBoardItem[index].tittle,
+                  description: onBoardItem[index].description);
             },
             onPageChanged: (index) {
               setState(() {
@@ -45,7 +43,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             },
           ),
           Container(
-            alignment: const Alignment(0,0.75),
+            alignment: const Alignment(0, 0.75),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -54,21 +52,19 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   child: const Text("Skip"),
                 ),
                 buildIndicator(
-                  itemCount: onBoardItem.length,
-                  currentIndex: _currentIndex
-                ),
+                    itemCount: onBoardItem.length, currentIndex: _currentIndex),
                 onLastPage
-                  ? GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, LoginPage.routeName),
-                      child: const Text("Done"),
-                    )
-                  : GestureDetector(
-                      child: const Text("Nex"),
-                      onTap: () => _pageController.nextPage(
-                        curve: Curves.easeIn,
-                        duration: const Duration(milliseconds: 500)
+                    ? GestureDetector(
+                        onTap: () =>
+                            Navigator.pushNamed(context, LoginPage.routeName),
+                        child: const Text("Done"),
+                      )
+                    : GestureDetector(
+                        child: const Text("Nex"),
+                        onTap: () => _pageController.nextPage(
+                            curve: Curves.easeIn,
+                            duration: const Duration(milliseconds: 500)),
                       ),
-                   ),
               ],
             ),
           )
@@ -78,7 +74,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   }
 
   Widget onBoardingContent(BuildContext context,
-      {required String image, required String title, required String description}){
+      {required String image,
+      required String title,
+      required String description}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,11 +90,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
           child: Column(
             children: [
-              Text(
-                  title,
+              Text(title,
                   textAlign: TextAlign.center,
-                  style: context.headlineMedium?.copyWith(color: kBlackColor)
-              ),
+                  style: context.headlineMedium?.copyWith(color: kBlackColor)),
               const SizedBox(height: 20),
               Text(
                 description,
@@ -110,20 +106,18 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     );
   }
 
-  Widget buildIndicator({required int itemCount, required int currentIndex}){
+  Widget buildIndicator({required int itemCount, required int currentIndex}) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List<Widget>.generate(itemCount, (index){
-        return Container(
-          width: 10,
-          height: 10,
-          margin: const EdgeInsets.symmetric(horizontal: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color:  index == currentIndex ? kBlueLight : kGreyColor
-          ),
-        );
-      })
-    );
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List<Widget>.generate(itemCount, (index) {
+          return Container(
+            width: 10,
+            height: 10,
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: index == currentIndex ? kBlueLight : kGreyColor),
+          );
+        }));
   }
 }

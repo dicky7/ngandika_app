@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 
 import '../../../../../data/models/pop_up_menu_item_model.dart';
@@ -34,15 +33,15 @@ class StatusAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   List<PopUpMenuItemModel> _buttons(context) => [
-    PopUpMenuItemModel(
-      name: "Status privacy",
-      onTap: () {},
-    ),
-    PopUpMenuItemModel(
-      name: "Settings",
-      onTap: () {},
-    ),
-  ];
+        PopUpMenuItemModel(
+          name: "Status privacy",
+          onTap: () {},
+        ),
+        PopUpMenuItemModel(
+          name: "Settings",
+          onTap: () {},
+        ),
+      ];
 
   @override
   // TODO: implement preferredSize

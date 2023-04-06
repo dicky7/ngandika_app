@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class CustomAppbarNetworkImage extends StatelessWidget {
   final String imageUrl;
-  const CustomAppbarNetworkImage({Key? key, required this.imageUrl}) : super(key: key);
+
+  const CustomAppbarNetworkImage({Key? key, required this.imageUrl})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,8 @@ class CustomAppbarNetworkImage extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           placeholder: (context, url) => const CircularProgressIndicator(),
-          errorWidget: (context, url, error) => Image.asset("assets/user_default.png"),
+          errorWidget: (context, url, error) =>
+              Image.asset("assets/user_default.png"),
           fit: BoxFit.cover,
         ),
       ),

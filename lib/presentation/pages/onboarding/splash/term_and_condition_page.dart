@@ -9,6 +9,7 @@ import '../login/login_page.dart';
 
 class TermAndConditionPage extends StatelessWidget {
   static const routeName = "term-condition";
+
   const TermAndConditionPage({Key? key}) : super(key: key);
 
   @override
@@ -35,9 +36,8 @@ class TermAndConditionPage extends StatelessWidget {
             text: "AGREE AND CONTINUE",
             color: kBlueLight,
             width: context.width(0.7),
-            onPress: ()  {
+            onPress: () {
               Navigator.pushNamed(context, LoginPage.routeName);
-
             },
           ),
           const SizedBox(height: 80),
@@ -46,7 +46,7 @@ class TermAndConditionPage extends StatelessWidget {
     );
   }
 
-  Widget buildTermsService(BuildContext context){
+  Widget buildTermsService(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10),

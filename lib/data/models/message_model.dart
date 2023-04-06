@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:ngandika_app/utils/enums/message_type.dart';
 
-class MessageModel extends Equatable{
+class MessageModel extends Equatable {
   final String senderId;
   final String receiverId;
   final String text;

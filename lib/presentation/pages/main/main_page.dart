@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:ngandika_app/presentation/pages/main/calls/call_page.dart';
 import 'package:ngandika_app/presentation/pages/main/settings/setting_page.dart';
 import 'package:ngandika_app/presentation/pages/main/status/status_page.dart';
@@ -14,6 +12,7 @@ import 'messages/contacts_chat/contacts_chat_page.dart';
 
 class MainPage extends StatefulWidget {
   static const routeName = "main";
+
   const MainPage({Key? key}) : super(key: key);
 
   @override
@@ -29,10 +28,7 @@ class _MainPageState extends State<MainPage> {
           backgroundColor: kBackgroundColor,
           body: SafeArea(
             child: Stack(
-              children: [
-                buildContent(state),
-                customBottomBarNavigation()
-              ],
+              children: [buildContent(state), customBottomBarNavigation()],
             ),
           ),
         );
@@ -92,18 +88,18 @@ class _MainPageState extends State<MainPage> {
               text: "Messages",
             ),
             CustomBottomNavigationItem(
-                index: 1,
-                icons: Icons.camera,
+              index: 1,
+              icons: Icons.camera,
               text: "Status",
             ),
             CustomBottomNavigationItem(
-                index: 2,
-                icons: CupertinoIcons.phone_fill,
+              index: 2,
+              icons: CupertinoIcons.phone_fill,
               text: "Calls",
             ),
             CustomBottomNavigationItem(
-                index: 3,
-                icons: CupertinoIcons.settings,
+              index: 3,
+              icons: CupertinoIcons.settings,
               text: "Settings",
             )
           ],

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 extension ContextExtension on BuildContext {
@@ -13,13 +12,13 @@ extension ContextExtension on BuildContext {
 
 extension MediaQueryExtension on BuildContext {
   Size get size => mediaQuery.size;
+
   double height(double value) => mediaQuery.size.height * value;
 
   double width(double value) => mediaQuery.size.width * value;
 }
 
 extension TextThemeExtension on BuildContext {
-
   TextStyle? get headlineLarge => textTheme.headlineLarge;
 
   TextStyle? get headlineMedium => textTheme.headlineMedium;

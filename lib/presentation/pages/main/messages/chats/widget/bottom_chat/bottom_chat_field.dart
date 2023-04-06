@@ -10,13 +10,15 @@ class BottomChatField extends StatelessWidget {
   final FocusNode focusNode;
   final String receiverId;
 
-  const BottomChatField({Key? key,
-        required this.messageController,
-        required this.focusNode,
-        required this.onTextFieldValueChanged,
-        required this.isShowEmoji,
-        required this.toggleEmojiKeyboard,
-        required this.receiverId}) : super(key: key);
+  const BottomChatField(
+      {Key? key,
+      required this.messageController,
+      required this.focusNode,
+      required this.onTextFieldValueChanged,
+      required this.isShowEmoji,
+      required this.toggleEmojiKeyboard,
+      required this.receiverId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +36,9 @@ class BottomChatField extends StatelessWidget {
               onPressed: toggleEmojiKeyboard,
               color: kGreyColor,
               iconSize: 25,
-              icon: Icon(
-                isShowEmoji
+              icon: Icon(isShowEmoji
                   ? Icons.keyboard_alt_outlined
-                  : Icons.emoji_emotions
-              )
-          ),
+                  : Icons.emoji_emotions)),
           Flexible(
             //The ConstrainedBox widget is used to set constraints on the size of its child widget, which is a Scrollbar widget.
             child: ConstrainedBox(
@@ -86,12 +85,9 @@ class BottomChatField extends StatelessWidget {
                 CupertinoIcons.paperclip,
                 color: kGreyColor,
                 size: 25,
-              )
-          ),
+              )),
         ],
       ),
     );
   }
-
-
 }

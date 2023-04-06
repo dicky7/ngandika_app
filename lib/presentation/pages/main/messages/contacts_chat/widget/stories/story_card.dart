@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/presentation/widget/custom_network_image.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
@@ -6,7 +5,9 @@ import 'package:ngandika_app/utils/styles/style.dart';
 class StoryCard extends StatelessWidget {
   final String image;
   final String name;
-  const StoryCard({Key? key, required this.image, required this.name}) : super(key: key);
+
+  const StoryCard({Key? key, required this.image, required this.name})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -5,9 +5,8 @@ import 'package:ngandika_app/utils/extensions/extenstions.dart';
 class CustomEmojiGifPicker extends StatelessWidget {
   final TextEditingController messageController;
 
-  const CustomEmojiGifPicker({
-    Key? key,
-    required this.messageController}) : super(key: key);
+  const CustomEmojiGifPicker({Key? key, required this.messageController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,6 @@ class CustomEmojiGifPicker extends StatelessWidget {
           backspaceColor: Colors.black26,
         ),
       ),
-
     );
   }
 }

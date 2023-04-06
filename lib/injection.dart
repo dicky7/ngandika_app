@@ -15,18 +15,17 @@ import 'package:ngandika_app/data/repository/chat_repository.dart';
 import 'package:ngandika_app/data/repository/select_contact_repository.dart';
 import 'package:ngandika_app/data/repository/user_repository.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/chat_contacts/chat_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
-import 'package:ngandika_app/presentation/bloc/message/chat/chat_state.dart';
 
 final locator = GetIt.instance;
 
-Future<void> init() async{
+Future<void> init() async {
   /**
    * Cubit
    */
@@ -40,18 +39,17 @@ Future<void> init() async{
     () => GetAllContactsCubit(locator()),
   );
   locator.registerFactory(
-        () => GetContactsOnAppCubit(locator()),
+    () => GetContactsOnAppCubit(locator()),
   );
   locator.registerFactory(
-        () => GetContactsNotOnAppCubit(locator()),
+    () => GetContactsNotOnAppCubit(locator()),
   );
   locator.registerFactory(
-        () => ChatCubit(locator()),
+    () => ChatCubit(locator()),
   );
   locator.registerFactory(
     () => ChatContactsCubit(locator()),
   );
-
 
   /**
    * Data Source
@@ -97,11 +95,11 @@ Future<void> init() async{
     () => ChatContactsRepositoryImpl(locator()),
   );
 
-
   //External
   locator.registerLazySingleton(() => FirebaseAuth.instance);
   locator.registerLazySingleton(() => FirebaseFirestore.instance);
   locator.registerLazySingleton(() => FirebaseStorage.instance);
+
   ///shared prefs
   final sharedPref = await SharedPreferences.getInstance();
   locator.registerLazySingleton<SharedPreferences>(() => sharedPref);

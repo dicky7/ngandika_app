@@ -9,7 +9,9 @@ import 'package:uuid/uuid.dart';
 import '../../models/message_model.dart';
 
 abstract class ChatRemoteDataSource {
-  Future<void> sendTextMessage({required String text, required String receiverId});
+  Future<void> sendTextMessage(
+      {required String text, required String receiverId});
+
   Stream<List<MessageModel>> getChatStream(String receiverId);
 }
 
@@ -20,36 +22,36 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
   ChatRemoteDataSourceImpl(this.firestore, this.auth);
 
   Future<UserModel> _getCurrentUser() async {
-    var userCollection = await firestore.collection("users").doc(auth.currentUser!.uid).get();
+    var userCollection =
+        await firestore.collection("users").doc(auth.currentUser!.uid).get();
     UserModel user = UserModel.fromMap(userCollection.data()!);
     return user;
   }
 
   @override
-  Future<void> sendTextMessage({required String text, required String receiverId}) async {
+  Future<void> sendTextMessage(
+      {required String text, required String receiverId}) async {
     try {
       var timeSent = DateTime.now();
       var messageId = const Uuid().v1();
-      var receiverUserCollection = await firestore.collection("users").doc(receiverId).get();
-      UserModel receiverUserData = UserModel.fromMap(receiverUserCollection.data()!);
+      var receiverUserCollection =
+          await firestore.collection("users").doc(receiverId).get();
+      UserModel receiverUserData =
+          UserModel.fromMap(receiverUserCollection.data()!);
       UserModel senderUserData = await _getCurrentUser();
 
       _saveDataToContactsSubCollection(
-          senderUserData,
-          receiverUserData,
-          text,
-          timeSent);
+          senderUserData, receiverUserData, text, timeSent);
 
       _saveMessageToMessageSubCollection(
-        senderId: senderUserData.uId,
-        receiverId: receiverId,
-        text: text,
-        timeSent: timeSent,
+          senderId: senderUserData.uId,
+          receiverId: receiverId,
+          text: text,
+          timeSent: timeSent,
           messageId: messageId,
-        messageType: MessageType.text,
-        receiverUsername: receiverUserData.name,
-        senderUsername: senderUserData.name
-      );
+          messageType: MessageType.text,
+          receiverUsername: receiverUserData.name,
+          senderUsername: senderUserData.name);
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -65,28 +67,25 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
         .collection('chats')
         .doc(receiverId)
         .collection('messages')
-    //The orderBy method is used to sort the messages by the timeSent field in ascending order.
+        //The orderBy method is used to sort the messages by the timeSent field in ascending order.
         .orderBy('timeSent')
-    //The snapshots method returns a stream of QuerySnapshots that contain the results of the query.
+        //The snapshots method returns a stream of QuerySnapshots that contain the results of the query.
         .snapshots()
         .map((event) {
-          //The map function loops over each document in the QuerySnapshot and converts the document data into a MessageModel object using the fromMap
-          // method of the MessageModel class.
-          List<MessageModel> messages = [];
-          for (var document in event.docs) {
-            //The resulting MessageModel objects are then added to a list and returned as the result of the map function.
-            messages.add(MessageModel.fromMap(document.data()));
-          }
-          return messages;
-        });
+      //The map function loops over each document in the QuerySnapshot and converts the document data into a MessageModel object using the fromMap
+      // method of the MessageModel class.
+      List<MessageModel> messages = [];
+      for (var document in event.docs) {
+        //The resulting MessageModel objects are then added to a list and returned as the result of the map function.
+        messages.add(MessageModel.fromMap(document.data()));
+      }
+      return messages;
+    });
   }
 
   //this _saveDataToContactsSubCollection function to save the message data to both sender and receiver's chat collections. and show it in contact chat page
-  void _saveDataToContactsSubCollection(
-      UserModel senderUserData,
-      UserModel receiverUserData,
-      String text,
-      DateTime timeSent) async {
+  void _saveDataToContactsSubCollection(UserModel senderUserData,
+      UserModel receiverUserData, String text, DateTime timeSent) async {
     //The _saveDataToContactsSubCollection function creates two ChatContact objects to store the message data for both the sender and receiver.
     // It includes the sender's name, profile picture, user ID, the text of the last message, and the time it was sent.
 
@@ -96,8 +95,7 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
         profilePicture: senderUserData.profilePicture,
         contactId: senderUserData.uId,
         lastMessage: text,
-        timeSent: timeSent
-    );
+        timeSent: timeSent);
     await firestore
         .collection("users")
         .doc(receiverUserData.uId)
@@ -111,8 +109,7 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
         profilePicture: receiverUserData.profilePicture,
         contactId: receiverUserData.uId,
         lastMessage: text,
-        timeSent: timeSent
-    );
+        timeSent: timeSent);
     await firestore
         .collection("users")
         .doc(senderUserData.uId)
@@ -123,16 +120,15 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
 
   // the _saveMessageToMessageSubCollection method is to save a message sent by one user to another user in a sub-collection called messages and
   // allows users to view their chat history and maintain a record of their conversations.
-  void _saveMessageToMessageSubCollection({
-    required String senderId,
-    required String receiverId,
-    required String text,
-    required DateTime timeSent,
-    required String messageId,
-    required String receiverUsername,
-    required String senderUsername,
-    required MessageType messageType
-  }) async{
+  void _saveMessageToMessageSubCollection(
+      {required String senderId,
+      required String receiverId,
+      required String text,
+      required DateTime timeSent,
+      required String messageId,
+      required String receiverUsername,
+      required String senderUsername,
+      required MessageType messageType}) async {
     //The _saveMessageToMessageSubCollection method then stores this MessageModel object in two locations in the Firestore database.
     final message = MessageModel(
         senderId: senderId,
@@ -141,8 +137,7 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
         messageType: messageType,
         timeSent: timeSent,
         messageId: messageId,
-        isSeen: false
-    );
+        isSeen: false);
 
     // user -> user id -> receiver id -> messages -> messages id -> store message
     //The first location is under the sender's user ID, in a chats collection, which contains a document for the receiver's user ID, which, in turn, contains a messages collection

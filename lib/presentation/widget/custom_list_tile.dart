@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/models_helper.dart';
 import '../../utils/styles/style.dart';
-
-import 'package:flutter/material.dart';
-
 
 class CustomListTile extends StatelessWidget {
   final Widget? leading;
@@ -56,7 +52,10 @@ class CustomListTile extends StatelessWidget {
             Text(
               time!,
               style: numOfMessageNotSeen > 0
-                  ?  Theme.of(context).textTheme.labelLarge!.copyWith(color: kBlueDark)
+                  ? Theme.of(context)
+                      .textTheme
+                      .labelLarge!
+                      .copyWith(color: kBlueDark)
                   : Theme.of(context).textTheme.bodyMedium,
             ),
           if (titleButton != null)
@@ -75,12 +74,15 @@ class CustomListTile extends StatelessWidget {
                   Expanded(
                     child: Text(
                       subTitle!,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: kGreyColor),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: kGreyColor),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                   ),
-                  if ( numOfMessageNotSeen > 0 )
+                  if (numOfMessageNotSeen > 0)
                     CircleAvatar(
                       minRadius: 12,
                       backgroundColor: kBlueLight,
@@ -88,14 +90,16 @@ class CustomListTile extends StatelessWidget {
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
                           numOfMessageNotSeen.toString(),
-                          style: Theme.of(context).textTheme.labelLarge?.copyWith(color: kPrimaryColor),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge
+                              ?.copyWith(color: kPrimaryColor),
                         ),
                       ),
                     ),
                 ],
               ),
             )
-
           : null,
     );
   }

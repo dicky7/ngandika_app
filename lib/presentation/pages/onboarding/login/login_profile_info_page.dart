@@ -30,8 +30,8 @@ class _LoginProfileInfoPageState extends State<LoginProfileInfoPage> {
 
   // Define a method to show the modal bottom sheet and select an image
   Future<void> _updateProfilePicture() async {
-    CroppedFile? croppedFile = await showUpdateProfilePictureBottomSheet(
-        context);
+    CroppedFile? croppedFile =
+        await showUpdateProfilePictureBottomSheet(context);
     if (croppedFile != null) {
       setState(() {
         //convert the selected CroppedFile object to a File
@@ -44,10 +44,7 @@ class _LoginProfileInfoPageState extends State<LoginProfileInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: LoginAppBar(
-        title: Text(
-            "Profile info",
-            style: TextStyle(color: kBlue)
-        ),
+        title: Text("Profile info", style: TextStyle(color: kBlue)),
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
@@ -90,8 +87,7 @@ class _LoginProfileInfoPageState extends State<LoginProfileInfoPage> {
                     if (nameController.text.isNotEmpty) {
                       context.read<AuthCubit>().saveUserDataToFirebase(
                           username: nameController.text,
-                          profilePicture: _selectedImage
-                      );
+                          profilePicture: _selectedImage);
                     }
                   },
                 ),
@@ -103,7 +99,6 @@ class _LoginProfileInfoPageState extends State<LoginProfileInfoPage> {
       ),
     );
   }
-
 
   // Define a method to display the selected image in a CircleAvatar
   Widget _buildAvatar() {
@@ -124,7 +119,6 @@ class _LoginProfileInfoPageState extends State<LoginProfileInfoPage> {
       );
     }
   }
-
 
   Widget buildProfilePicture(BuildContext context) {
     return Stack(

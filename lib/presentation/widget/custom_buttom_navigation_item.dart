@@ -1,10 +1,8 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../utils/styles/style.dart';
 import '../bloc/main_page/page_cubit.dart';
-
 
 class CustomBottomNavigationItem extends StatelessWidget {
   final int index;
@@ -14,7 +12,8 @@ class CustomBottomNavigationItem extends StatelessWidget {
   const CustomBottomNavigationItem({
     Key? key,
     required this.index,
-    required this.icons, required this.text,
+    required this.icons,
+    required this.text,
   }) : super(key: key);
 
   @override
@@ -37,7 +36,10 @@ class CustomBottomNavigationItem extends StatelessWidget {
           Text(
             text,
             style: context.read<PageCubit>().state == index
-                ? TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: kBlueLight)
+                ? TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: kBlueLight)
                 : const TextStyle(fontSize: 11),
           ),
         ],

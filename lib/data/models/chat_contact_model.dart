@@ -1,4 +1,4 @@
-class ChatContactModel{
+class ChatContactModel {
   final String name;
   final String profilePicture;
   final String contactId;

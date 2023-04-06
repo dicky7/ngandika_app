@@ -70,8 +70,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '901787842217',
     projectId: 'ngandika-app',
     storageBucket: 'ngandika-app.appspot.com',
-    androidClientId: '901787842217-gs4u9cef9i2odcvt5g4fbsb7svk7b437.apps.googleusercontent.com',
-    iosClientId: '901787842217-iop5sfa17a7jul44bb5s7ibbveih60cn.apps.googleusercontent.com',
+    androidClientId:
+        '901787842217-gs4u9cef9i2odcvt5g4fbsb7svk7b437.apps.googleusercontent.com',
+    iosClientId:
+        '901787842217-iop5sfa17a7jul44bb5s7ibbveih60cn.apps.googleusercontent.com',
     iosBundleId: 'com.example.ngandikaApp',
   );
 }

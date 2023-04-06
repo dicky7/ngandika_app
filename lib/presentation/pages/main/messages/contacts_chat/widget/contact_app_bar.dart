@@ -1,13 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
 import 'package:ngandika_app/presentation/widget/custom_appbar_network_image.dart';
-import 'package:ngandika_app/presentation/widget/custom_network_image.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/functions/app_dialogs.dart';
-
 
 import '../../../../../../utils/styles/style.dart';
 import '../../select_contact/select_contact_page.dart';

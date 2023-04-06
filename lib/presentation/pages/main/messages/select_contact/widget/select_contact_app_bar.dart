@@ -1,5 +1,3 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,10 +12,14 @@ import '../../../../../bloc/select_contact/getContactsNotOnApp/get_contacts_not_
 import '../../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
 import '../../../../../widget/custom_pop_up_menu_button.dart';
 
-class SelectContactAppBar extends StatelessWidget implements PreferredSizeWidget{
+class SelectContactAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final int numOfContacts;
   final GetAllContactsState state;
-  const SelectContactAppBar({Key? key, required this.numOfContacts,  required this.state}) : super(key: key);
+
+  const SelectContactAppBar(
+      {Key? key, required this.numOfContacts, required this.state})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,40 +56,41 @@ class SelectContactAppBar extends StatelessWidget implements PreferredSizeWidget
           onPressed: () {},
           icon: const Icon(Icons.search),
         ),
-        CustomPopUpMenuButton(buttons: _buttons(context), colors: kPrimaryColor),
+        CustomPopUpMenuButton(
+            buttons: _buttons(context), colors: kPrimaryColor),
       ],
     );
   }
 
   List<PopUpMenuItemModel> _buttons(BuildContext context) => [
-    PopUpMenuItemModel(
-      name: "Invite a friend",
-      onTap: () {},
-    ),
-    PopUpMenuItemModel(
-      name: "contacts",
-      onTap: () {
-        FlutterContacts.openExternalPick().then((value) {
-          if (kDebugMode) {
-            print(value!.displayName);
-          }
-        });
-      },
-    ),
-    PopUpMenuItemModel(
-      name: "Refresh",
-      onTap: () {
-        context.read<GetAllContactsCubit>().getAllContacts().then((value) {
-          context.read<GetContactsOnAppCubit>().getContactsOnApp();
-          context.read<GetContactsNotOnAppCubit>().getContactsNotOnApp();
-        });
-      },
-    ),
-    PopUpMenuItemModel(
-      name: "Help",
-      onTap: () {},
-    ),
-  ];
+        PopUpMenuItemModel(
+          name: "Invite a friend",
+          onTap: () {},
+        ),
+        PopUpMenuItemModel(
+          name: "contacts",
+          onTap: () {
+            FlutterContacts.openExternalPick().then((value) {
+              if (kDebugMode) {
+                print(value!.displayName);
+              }
+            });
+          },
+        ),
+        PopUpMenuItemModel(
+          name: "Refresh",
+          onTap: () {
+            context.read<GetAllContactsCubit>().getAllContacts().then((value) {
+              context.read<GetContactsOnAppCubit>().getContactsOnApp();
+              context.read<GetContactsNotOnAppCubit>().getContactsNotOnApp();
+            });
+          },
+        ),
+        PopUpMenuItemModel(
+          name: "Help",
+          onTap: () {},
+        ),
+      ];
 
   @override
   // TODO: implement preferredSize

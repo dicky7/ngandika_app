@@ -1,5 +1,3 @@
-
-
 import 'package:equatable/equatable.dart';
 
 abstract class GetContactsOnAppState extends Equatable {
@@ -12,9 +10,11 @@ abstract class GetContactsOnAppState extends Equatable {
 
 class GetContactsOnAppInitial extends GetContactsOnAppState {}
 
-class GetContactsOnAppLoading extends GetContactsOnAppState{}
-class GetContactsOnAppSuccess extends GetContactsOnAppState{}
-class GetContactsOnAppError extends GetContactsOnAppState{
+class GetContactsOnAppLoading extends GetContactsOnAppState {}
+
+class GetContactsOnAppSuccess extends GetContactsOnAppState {}
+
+class GetContactsOnAppError extends GetContactsOnAppState {
   final String message;
 
   GetContactsOnAppError(this.message);
@@ -22,6 +22,3 @@ class GetContactsOnAppError extends GetContactsOnAppState{
   @override
   List<Object> get props => [message];
 }
-
-
-

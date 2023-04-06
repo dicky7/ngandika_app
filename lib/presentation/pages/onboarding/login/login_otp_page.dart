@@ -21,7 +21,6 @@ class LoginOtpPage extends StatefulWidget {
 }
 
 class _LoginOtpPageState extends State<LoginOtpPage> {
-
   @override
   void initState() {
     super.initState();
@@ -50,15 +49,15 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.pushNamedAndRemoveUntil(context, LoginProfileInfoPage.routeName, (route) => false);
-          }else if(state is AuthError){
+            Navigator.pushNamedAndRemoveUntil(
+                context, LoginProfileInfoPage.routeName, (route) => false);
+          } else if (state is AuthError) {
             AppDialogs.showCustomDialog(
                 context: context,
                 icons: Icons.close,
                 title: "Error",
                 content: state.message,
-                onPressed: () => Navigator.pop(context)
-            );
+                onPressed: () => Navigator.pop(context));
           }
         },
         builder: (context, state) {
@@ -91,7 +90,8 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
       children: [
         Text(
           widget.phoneNumber,
-          style: context.bodyMedium?.copyWith(color: kBlackColor, fontWeight: FontWeight.bold),
+          style: context.bodyMedium
+              ?.copyWith(color: kBlackColor, fontWeight: FontWeight.bold),
         ),
         TextButton(
           onPressed: () => Navigator.pushNamed(context, LoginPage.routeName),
@@ -108,12 +108,7 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
           width: context.width(0.45),
           child: PinFieldAutoFill(
             codeLength: 6,
-            cursor: Cursor(
-                color: kBlue,
-                enabled: true,
-                height: 30,
-                width: 2
-            ),
+            cursor: Cursor(color: kBlue, enabled: true, height: 30, width: 2),
             onCodeChanged: (value) {
               if (value!.length == 6) {
                 context.read<AuthCubit>().verifyOtp(value.trim());

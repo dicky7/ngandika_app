@@ -6,7 +6,9 @@ class CustomPopUpMenuButton extends StatelessWidget {
   final List<PopUpMenuItemModel> buttons;
   final Color colors;
 
-  const CustomPopUpMenuButton({Key? key, required this.buttons, required this.colors}) : super(key: key);
+  const CustomPopUpMenuButton(
+      {Key? key, required this.buttons, required this.colors})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +16,9 @@ class CustomPopUpMenuButton extends StatelessWidget {
       icon: Icon(Icons.more_vert, color: colors),
       onSelected: (value) {
         buttons[value].onTap();
-
       },
       itemBuilder: (context) {
-        return buttons.map((value){
+        return buttons.map((value) {
           int index = buttons.indexOf(value);
           return PopupMenuItem(
             value: index,
@@ -27,7 +28,6 @@ class CustomPopUpMenuButton extends StatelessWidget {
             ),
           );
         }).toList();
-
       },
     );
   }

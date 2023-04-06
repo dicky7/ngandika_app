@@ -6,19 +6,23 @@ extension DateUtil on DateTime {
   String get getLastSeen {
     return 'last seen ${DateConverter.getLastSeenDayTime(this)} at ${DateConverter.dateConverterHoursAmPmMode(this)}';
   }
-  String get getChatContactTime{
+
+  String get getChatContactTime {
     return DateConverter.getChatContactTime(this);
   }
+
   //this extension using for text time sent
-  String get getTimeSentAmPmMode{
+  String get getTimeSentAmPmMode {
     return DateConverter.dateConverterHoursAmPmMode(this);
   }
+
   //this extension using for Chat Time Card
   String get getChatDayTime {
     return DateConverter.getLastSeenDayTime(this);
   }
+
   //this one check is same day with time send
-  bool getIsSameDay(DateTime previousTime){
+  bool getIsSameDay(DateTime previousTime) {
     return DateConverter.getIsSameDay(this, previousTime);
   }
 }

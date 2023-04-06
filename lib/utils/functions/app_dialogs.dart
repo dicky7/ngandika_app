@@ -1,12 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 
-import '../helpers.dart';
 import '../styles/style.dart';
 
-class AppDialogs{
+class AppDialogs {
   static Future<void> submitPhoneDialog({
     required BuildContext context,
     required String phoneNumber,
@@ -59,12 +56,12 @@ class AppDialogs{
     );
   }
 
-  static Future<void> showCustomDialog({
-    required BuildContext context,
-    required IconData icons,
-    required String title,
-    required String content,
-    required VoidCallback onPressed}) async{
+  static Future<void> showCustomDialog(
+      {required BuildContext context,
+      required IconData icons,
+      required String title,
+      required String content,
+      required VoidCallback onPressed}) async {
     return showMyDialog(
       context: context,
       contentPadding: const EdgeInsets.all(15),
@@ -81,52 +78,52 @@ class AppDialogs{
           const SizedBox(height: 12),
           Text(
             title,
-            style: Theme.of(context).textTheme.headline6?.copyWith(color: kBlackColor),
+            style: Theme.of(context)
+                .textTheme
+                .headline6
+                ?.copyWith(color: kBlackColor),
           ),
           const SizedBox(height: 12),
           Text(
             content,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.subtitle1?.copyWith(color: kGreyColor),
+            style: Theme.of(context)
+                .textTheme
+                .subtitle1
+                ?.copyWith(color: kGreyColor),
           ),
           Container(
             margin: const EdgeInsets.only(top: 15),
             width: context.width(0.35),
             height: 45,
             decoration: BoxDecoration(
-                color: kBlue,
-                borderRadius: BorderRadius.circular(10)
-            ),
+                color: kBlue, borderRadius: BorderRadius.circular(10)),
             child: TextButton(
                 onPressed: onPressed,
                 child: Text(
                   "Ok",
                   style: TextStyle(color: kPrimaryColor),
-                )
-            ),
+                )),
           )
         ],
       ),
     );
-
   }
-
-
 }
 
-Future<void> showMyDialog({
-  required BuildContext context,
-  bool barrierDismissible = false,
-  double borderRadius = 0,
-  EdgeInsetsGeometry? contentPadding,
-  required Widget content,
-  List<Widget>? actions,
-  bool actionSpacer = false,
-  EdgeInsetsGeometry? actionsPadding}) async{
-
+Future<void> showMyDialog(
+    {required BuildContext context,
+    bool barrierDismissible = false,
+    double borderRadius = 0,
+    EdgeInsetsGeometry? contentPadding,
+    required Widget content,
+    List<Widget>? actions,
+    bool actionSpacer = false,
+    EdgeInsetsGeometry? actionsPadding}) async {
   return showDialog(
     context: context,
-    barrierDismissible: barrierDismissible, // if condition false, user must tap button!
+    barrierDismissible: barrierDismissible,
+    // if condition false, user must tap button!
     builder: (context) {
       return AlertDialog(
         contentPadding: contentPadding,
@@ -141,9 +138,7 @@ Future<void> showMyDialog({
         actionsAlignment: actionSpacer
             ? MainAxisAlignment.spaceBetween
             : MainAxisAlignment.end,
-
       );
     },
   );
-
 }

@@ -1,11 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/helpers.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
-Future<void> showContactProfileDialog(BuildContext context){
+Future<void> showContactProfileDialog(BuildContext context) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -29,7 +28,8 @@ Future<void> showContactProfileDialog(BuildContext context){
                     )
                   ],
                 ),
-                errorWidget: (context, url, error) => Image.asset("assets/user_default.png"),
+                errorWidget: (context, url, error) =>
+                    Image.asset("assets/user_default.png"),
               ),
             ),
 

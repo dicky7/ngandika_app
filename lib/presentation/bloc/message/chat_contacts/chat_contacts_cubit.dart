@@ -11,13 +11,10 @@ class ChatContactsCubit extends Cubit<ChatContactsState> {
 
   ChatContactsCubit(this.repository) : super(ChatContactsInitial());
 
-  Stream<List<ChatContactModel>> getChatContacts(){
+  Stream<List<ChatContactModel>> getChatContacts() {
     return repository.getChatContacts();
   }
 
   Stream<int> getNumOfMessageNotSeen(String senderId) =>
-    repository.getNumOfMessageNotSeen(senderId);
-
-
-
+      repository.getNumOfMessageNotSeen(senderId);
 }
