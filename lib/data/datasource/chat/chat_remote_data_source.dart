@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ngandika_app/data/models/chat_contact_model.dart';
 import 'package:ngandika_app/data/models/user_model.dart';
 import 'package:ngandika_app/utils/enums/message_type.dart';
@@ -9,40 +12,49 @@ import 'package:uuid/uuid.dart';
 import '../../models/message_model.dart';
 
 abstract class ChatRemoteDataSource {
-  Future<void> sendTextMessage(
-      {required String text, required String receiverId});
-
+  Future<void> sendTextMessage({required String text, required String receiverId});
   Stream<List<MessageModel>> getChatStream(String receiverId);
+  Future<void> sendFileMessage({required File file, required String receiverId, required MessageType messageType});
+
 }
 
 class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
   final FirebaseFirestore firestore;
   final FirebaseAuth auth;
+  final FirebaseStorage firebaseStorage;
 
-  ChatRemoteDataSourceImpl(this.firestore, this.auth);
+  ChatRemoteDataSourceImpl(this.firestore, this.auth, this.firebaseStorage);
 
   Future<UserModel> _getCurrentUser() async {
-    var userCollection =
-        await firestore.collection("users").doc(auth.currentUser!.uid).get();
+    var userCollection = await firestore.collection("users").doc(auth.currentUser!.uid).get();
     UserModel user = UserModel.fromMap(userCollection.data()!);
     return user;
   }
 
+  // The sendTextMessage method is a function that sends a text message from the current user to a receiver user in a chat application.
   @override
-  Future<void> sendTextMessage(
-      {required String text, required String receiverId}) async {
+  Future<void> sendTextMessage({required String text, required String receiverId}) async {
     try {
+      //It gets the current time when the message is sent using DateTime.now()
       var timeSent = DateTime.now();
+      // generates a unique message ID using Uuid().v1().
       var messageId = const Uuid().v1();
-      var receiverUserCollection =
-          await firestore.collection("users").doc(receiverId).get();
-      UserModel receiverUserData =
-          UserModel.fromMap(receiverUserCollection.data()!);
+      //Retrieves the current user's data using the _getCurrentUser() method.
       UserModel senderUserData = await _getCurrentUser();
+      var receiverUserCollection = await firestore.collection("users").doc(receiverId).get();
+      UserModel receiverUserData = UserModel.fromMap(receiverUserCollection.data()!);
 
+      //It calls the _saveDataToContactsSubCollection method to save the message data to both the sender and receiver's chat collections,
+      // which includes their names, profile pictures, user IDs, the text of the last message, and the time it was sent.
       _saveDataToContactsSubCollection(
-          senderUserData, receiverUserData, text, timeSent);
-
+          senderUserData,
+          receiverUserData,
+          text,
+          timeSent
+      );
+      //calls the _saveMessageToMessageSubCollection method to save the message in a sub-collection called messages under both the sender and
+      // receiver's chat collections, which allows users to view their chat history and maintain a record of their conversations.
+      // It includes the sender's and receiver's IDs, the text of the message, the type of message (in this case, text), and more
       _saveMessageToMessageSubCollection(
           senderId: senderUserData.uId,
           receiverId: receiverId,
@@ -55,32 +67,6 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
     } catch (e) {
       throw ServerException(e.toString());
     }
-  }
-
-  // The method uses Firebase Firestore to retrieve messages from a chat between the current user (identified by their user ID) and another user identified by receiverId.
-  @override
-  Stream<List<MessageModel>> getChatStream(String receiverId) {
-    //The method first gets a reference to the Firestore database and constructs a query to fetch messages from the current user's chat with the given receiverId.
-    return firestore
-        .collection('users')
-        .doc(auth.currentUser!.uid)
-        .collection('chats')
-        .doc(receiverId)
-        .collection('messages')
-        //The orderBy method is used to sort the messages by the timeSent field in ascending order.
-        .orderBy('timeSent')
-        //The snapshots method returns a stream of QuerySnapshots that contain the results of the query.
-        .snapshots()
-        .map((event) {
-      //The map function loops over each document in the QuerySnapshot and converts the document data into a MessageModel object using the fromMap
-      // method of the MessageModel class.
-      List<MessageModel> messages = [];
-      for (var document in event.docs) {
-        //The resulting MessageModel objects are then added to a list and returned as the result of the map function.
-        messages.add(MessageModel.fromMap(document.data()));
-      }
-      return messages;
-    });
   }
 
   //this _saveDataToContactsSubCollection function to save the message data to both sender and receiver's chat collections. and show it in contact chat page
@@ -120,8 +106,8 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
 
   // the _saveMessageToMessageSubCollection method is to save a message sent by one user to another user in a sub-collection called messages and
   // allows users to view their chat history and maintain a record of their conversations.
-  void _saveMessageToMessageSubCollection(
-      {required String senderId,
+  void _saveMessageToMessageSubCollection({
+    required String senderId,
       required String receiverId,
       required String text,
       required DateTime timeSent,
@@ -161,4 +147,112 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
         .doc(messageId)
         .set(message.toMap());
   }
+
+  // The method uses Firebase Firestore to retrieve messages from a chat between the current user (identified by their user ID) and another user identified by receiverId.
+  @override
+  Stream<List<MessageModel>> getChatStream(String receiverId) {
+    //The method first gets a reference to the Firestore database and constructs a query to fetch messages from the current user's chat with the given receiverId.
+    return firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+    //The orderBy method is used to sort the messages by the timeSent field in ascending order.
+        .orderBy('timeSent')
+    //The snapshots method returns a stream of QuerySnapshots that contain the results of the query.
+        .snapshots()
+        .map((event) {
+      //The map function loops over each document in the QuerySnapshot and converts the document data into a MessageModel object using the fromMap
+      // method of the MessageModel class.
+      List<MessageModel> messages = [];
+      for (var document in event.docs) {
+        //The resulting MessageModel objects are then added to a list and returned as the result of the map function.
+        messages.add(MessageModel.fromMap(document.data()));
+      }
+      return messages;
+    });
+  }
+
+  //The sendFileMessage method is used to send a file message from one user to another in a chat application.
+  @override
+  Future<void> sendFileMessage({
+    required File file,
+    required String receiverId,
+    required MessageType messageType}) async{
+
+    try{
+      //It gets the current date and time when the message is sent
+      var timeSent = DateTime.now();
+      //generates a unique message ID
+      var messageId = const Uuid().v1();
+      //It retrieves the sender user's data by calling the _getCurrentUser() method.
+      UserModel senderUserData = await _getCurrentUser();
+      var receiverUserCollection = await firestore.collection("users").doc(receiverId).get();
+      UserModel receiverUserData = UserModel.fromMap(receiverUserCollection.data()!);
+
+      //Stores the file to Firebase Storage using the _storeFileToFirebase() method, which uploads the file to Firebase Storage and
+      // returns the download URL of the uploaded file.
+      var fileUrl = await _storeFileToFirebase(
+        'chat/${messageType.type}/${senderUserData.uId}/$receiverId/$messageId}', file,
+      );
+
+      String contactMessage;
+      switch (messageType) {
+        case MessageType.image:
+          contactMessage = '📷 Photo';
+          break;
+        case MessageType.video:
+          contactMessage = '🎥 Video';
+          break;
+        case MessageType.audio:
+          contactMessage = '🎙️ Audio';
+          break;
+        case MessageType.gif:
+          contactMessage = 'Gif';
+          break;
+        default:
+          contactMessage = 'Other';
+      }
+
+      //this only show in contact chat, and show in the last text message like String photo and etc.
+      ////Saves the contact message data to both the sender and receiver's chat collections in the Firestore database using the _saveDataToContactsSubCollection() method.
+      _saveDataToContactsSubCollection(
+          senderUserData,
+          receiverUserData,
+          contactMessage,
+          timeSent
+      );
+
+      //Saves the message data to the sender's and receiver's message sub-collections in the Firestore database using the _saveMessageToMessageSubCollection() method.
+      // This includes the sender ID, receiver ID, text of the message (which is the download URL of the uploaded file), message type, and more
+      _saveMessageToMessageSubCollection(
+          senderId: senderUserData.uId,
+          receiverId: receiverId,
+          text: fileUrl,
+          timeSent: timeSent,
+          messageId: messageId,
+          receiverUsername: receiverUserData.name,
+          senderUsername: senderUserData.name,
+          messageType: messageType
+      );
+    }catch (e){
+      throw ServerException(e.toString());
+    }
+  }
+
+
+  //This is method uploads a file to Firebase Storage and returns the download URL of the uploaded file.
+  Future<String> _storeFileToFirebase(String path, File file) async {
+    //First, the method creates an UploadTask object using the putFile method of the Firebase Storage reference. The path parameter is used as
+    // the path of the file in Firebase Storage, and the file parameter is used as the actual file to be uploaded
+    UploadTask uploadTask = firebaseStorage.ref().child(path).putFile(file);
+    //Next, the method waits for the upload to complete by awaiting the UploadTask object. The result of the upload is a TaskSnapshot object,
+    // which contains information about the uploaded file, such as its download URL.
+    TaskSnapshot snapshot = await uploadTask;
+    //Finally, the method gets the download URL of the uploaded file by calling the getDownloadURL method on the TaskSnapshot object, and returns it as a String.
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
 }

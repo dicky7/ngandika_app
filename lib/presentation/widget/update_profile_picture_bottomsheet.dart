@@ -36,7 +36,7 @@ Future<CroppedFile?> showUpdateProfilePictureBottomSheet(
                   icons: Icons.camera_alt,
                   onTap: () async {
                     CroppedFile? croppedFile =
-                        await selectImageFromCamera(context);
+                        await updateImageFromCamera(context);
                     Navigator.of(context).pop(croppedFile);
                   },
                 ),
@@ -48,8 +48,7 @@ Future<CroppedFile?> showUpdateProfilePictureBottomSheet(
                   title: "Gallery",
                   icons: Icons.image,
                   onTap: () async {
-                    CroppedFile? croppedFile =
-                        await selectImageFromGallery(context);
+                    CroppedFile? croppedFile = await updateImageFromGallery(context);
                     Navigator.of(context).pop(croppedFile);
                   },
                 ),
@@ -64,7 +63,7 @@ Future<CroppedFile?> showUpdateProfilePictureBottomSheet(
 
 // This  function that selects an image from the device's gallery, crops it to a specific size, and returns a CroppedFile object.
 // The function returns a Future that resolves to a CroppedFile object or null if an error occurs.
-Future<CroppedFile?> selectImageFromGallery(BuildContext context) async {
+Future<CroppedFile?> updateImageFromGallery(BuildContext context) async {
   File? image = await pickImageFromGallery(context);
   if (image != null) {
     CroppedFile? croppedFile = await cropImage(image.path);
@@ -77,7 +76,7 @@ Future<CroppedFile?> selectImageFromGallery(BuildContext context) async {
 
 // This  function that selects an image from the device's camera, crops it to a specific size, and returns a CroppedFile object.
 // The function returns a Future that resolves to a CroppedFile object or null if an error occurs.
-Future<CroppedFile?> selectImageFromCamera(BuildContext context) async {
+Future<CroppedFile?> updateImageFromCamera(BuildContext context) async {
   File? image = await pickImageFromCamera(context);
   if (image != null) {
     CroppedFile? croppedFile = await cropImage(image.path);

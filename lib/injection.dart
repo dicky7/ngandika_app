@@ -70,7 +70,7 @@ Future<void> init() async {
     () => SelectContactRemoteDataSourceImpl(locator(), locator()),
   );
   locator.registerLazySingleton<ChatRemoteDataSource>(
-    () => ChatRemoteDataSourceImpl(locator(), locator()),
+    () => ChatRemoteDataSourceImpl(locator(), locator(), locator()),
   );
   locator.registerLazySingleton<ChatContactsRemoteDataSource>(
     () => ChatContactsRemoteDataSourceImpl(locator(), locator()),

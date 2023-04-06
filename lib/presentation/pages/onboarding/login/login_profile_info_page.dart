@@ -30,8 +30,7 @@ class _LoginProfileInfoPageState extends State<LoginProfileInfoPage> {
 
   // Define a method to show the modal bottom sheet and select an image
   Future<void> _updateProfilePicture() async {
-    CroppedFile? croppedFile =
-        await showUpdateProfilePictureBottomSheet(context);
+    CroppedFile? croppedFile = await showUpdateProfilePictureBottomSheet(context);
     if (croppedFile != null) {
       setState(() {
         //convert the selected CroppedFile object to a File

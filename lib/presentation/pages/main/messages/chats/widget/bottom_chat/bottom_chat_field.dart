@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/bottom_chat/custom_attachment_pop_up.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
 class BottomChatField extends StatelessWidget {
@@ -79,13 +80,9 @@ class BottomChatField extends StatelessWidget {
               ),
             ),
           ),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                CupertinoIcons.paperclip,
-                color: kGreyColor,
-                size: 25,
-              )),
+
+          //this to attach file, image or audio
+          CustomAttachmentPopUp(receiverId: receiverId)
         ],
       ),
     );

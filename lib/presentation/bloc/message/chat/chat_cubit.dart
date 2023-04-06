@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 
 import '../../../../data/models/message_model.dart';
 import '../../../../data/repository/chat_repository.dart';
+import '../../../../utils/enums/message_type.dart';
 import 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
@@ -9,8 +12,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   ChatCubit(this.repository) : super(ChatInitial());
 
-  Future<void> sendTextMessage(
-      {required String text, required String receiverId}) async {
+  Future<void> sendTextMessage({required String text, required String receiverId}) async {
     final result =
         await repository.sendTextMessage(text: text, receiverId: receiverId);
     result.fold(
@@ -21,5 +23,17 @@ class ChatCubit extends Cubit<ChatState> {
 
   Stream<List<MessageModel>> getChatStream(String receiverId) {
     return repository.getChatStream(receiverId);
+  }
+
+  Future<void> sendFileMessage({required File file, required String receiverId, required MessageType messageType}) async {
+    final result = await repository.sendFileMessage(
+        file: file,
+        receiverId: receiverId,
+        messageType:
+        messageType);
+    result.fold(
+      (e) => emit(ChatErrorState(e.message)),
+      (success) => emit(SendFileMessageSuccess()),
+    );
   }
 }
