@@ -20,21 +20,21 @@ class ContactsChatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<int>(
-      stream: context
-          .read<ChatContactsCubit>()
-          .getNumOfMessageNotSeen(chatContactData.contactId),
+      stream: context.read<ChatContactsCubit>().getNumOfMessageNotSeen(chatContactData.contactId),
       builder: (context, snapshot) {
         return CustomListTile(
           onTap: () {
             Navigator.pushNamed(context, ChatPage.routeName,
                 arguments: ChatPage(
                     name: chatContactData.name,
-                    receiverId: chatContactData.contactId));
+                    receiverId: chatContactData.contactId
+                )
+            );
           },
           leading: Hero(
             tag: chatContactData.name,
             child: InkWell(
-                onTap: () => showContactProfileDialog(context),
+                onTap: () => showContactProfileDialog(context,chatContactData),
                 child: CustomNetworkImage(
                   imageUrl: chatContactData.profilePicture,
                   radius: 30,

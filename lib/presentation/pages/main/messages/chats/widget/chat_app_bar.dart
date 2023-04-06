@@ -70,7 +70,9 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                 const SizedBox(height: 3),
                 Text(
                   user.isOnline ? "Online" : user.lastSeen.getLastSeen,
-                  style: TextStyle(fontSize: 10, color: kGreyColor),
+                  style: user.isOnline
+                      ? TextStyle(fontSize: 12, color: kBlueLight)
+                      : TextStyle(fontSize: 10, color: kGreyColor)
                 )
               ],
             ),

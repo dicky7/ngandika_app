@@ -5,8 +5,8 @@ import '../../models/user_model.dart';
 
 abstract class UserRemoteDataSource {
   Future<UserModel?> getCurrentUserData();
-
   Stream<UserModel> getUserById(String id);
+  Future<void> setUserStateStatus(bool isOnline);
 }
 
 class UserRemoteDataSourceImpl extends UserRemoteDataSource {
@@ -44,4 +44,15 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
         .snapshots()
         .map((event) => UserModel.fromMap(event.data()!));
   }
+
+  //This is an implementation of the setUserStateStatus method that updates the online status and last seen time of a user in a Firestore database.
+  @override
+  Future<void> setUserStateStatus(bool isOnline) async{
+    await firestore.collection('users').doc(firebaseAuth.currentUser!.uid).update({
+      'isOnline': isOnline,
+      'lastSeen': DateTime.now().millisecondsSinceEpoch,
+    });
+  }
+
+
 }

@@ -25,4 +25,12 @@ class UserCubit extends Cubit<UserState> {
   Stream<UserModel> getUserById(String id) {
     return userRepository.getUserById(id);
   }
+
+  Future<void> setUserStateStatus(bool isOnline) async{
+    final result = await userRepository.setUserStateStatus(isOnline);
+    result.fold(
+      (l) => emit(SetUserStatusError()),
+      (r) => emit(SetUserStatusSuccess()),
+    );
+  }
 }

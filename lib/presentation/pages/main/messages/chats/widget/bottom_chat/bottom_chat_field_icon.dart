@@ -59,7 +59,10 @@ class BottomChatFieldIcon extends StatelessWidget {
       onTap: () {
         if (isShowSendButton) {
           context.read<ChatCubit>().sendTextMessage(
-              text: messageController.text.trim(), receiverId: receiverId);
+              text: messageController.text.trim(),
+              receiverId: receiverId
+          );
+          messageController.clear();
         }
       },
       child: Container(

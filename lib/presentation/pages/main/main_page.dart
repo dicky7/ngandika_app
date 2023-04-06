@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
 import 'package:ngandika_app/presentation/pages/main/calls/call_page.dart';
 import 'package:ngandika_app/presentation/pages/main/settings/setting_page.dart';
 import 'package:ngandika_app/presentation/pages/main/status/status_page.dart';
@@ -19,7 +20,38 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  // didChangeAppLifecycleState is a method provided by the Flutter framework that is called whenever the lifecycle state of the application changes.
+  // this code updates the user's online status in response to changes in the lifecycle state of the application.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch(state) {
+      case AppLifecycleState.resumed:
+        context.read<UserCubit>().setUserStateStatus(true);
+        break;
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.detached:
+      case AppLifecycleState.paused:
+        context.read<UserCubit>().setUserStateStatus(false);
+        break;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PageCubit, int>(

@@ -30,3 +30,6 @@ class GetCurrentUserSuccess extends UserState {
   // TODO: implement props
   List<Object> get props => [userModel];
 }
+
+class SetUserStatusSuccess extends UserState{}
+class SetUserStatusError extends UserState{}

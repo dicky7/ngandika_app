@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ngandika_app/data/models/chat_contact_model.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/helpers.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
-Future<void> showContactProfileDialog(BuildContext context) {
+import '../../../chats/chat_page.dart';
+
+Future<void> showContactProfileDialog(BuildContext context, ChatContactModel chatContactData) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -14,22 +17,19 @@ Future<void> showContactProfileDialog(BuildContext context) {
           children: [
             //this for show photo
             Hero(
-              tag: "Tag",
+              tag: chatContactData.name,
               child: CachedNetworkImage(
-                imageUrl: Helpers.randomPictureUrl(),
+                imageUrl: chatContactData.profilePicture,
                 height: 300,
                 width: 400,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Stack(
                   children: [
                     Image.asset("assets/user_default.png"),
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    )
+                    const Center(child: CircularProgressIndicator())
                   ],
                 ),
-                errorWidget: (context, url, error) =>
-                    Image.asset("assets/user_default.png"),
+                errorWidget: (context, url, error) => Image.asset("assets/user_default.png"),
               ),
             ),
 
@@ -41,7 +41,7 @@ Future<void> showContactProfileDialog(BuildContext context) {
                 padding: const EdgeInsets.all(8),
                 color: Colors.black26,
                 child: Text(
-                  "Name Contact",
+                  chatContactData.name,
                   style: context.bodyLarge?.copyWith(color: kPrimaryColor),
                 ),
               ),
@@ -54,7 +54,14 @@ Future<void> showContactProfileDialog(BuildContext context) {
         actionsPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, ChatPage.routeName,
+                  arguments: ChatPage(
+                      name: chatContactData.name,
+                      receiverId: chatContactData.contactId
+                  )
+              );
+            },
             icon: Icon(
               Icons.message,
               color: kBlueDark,
