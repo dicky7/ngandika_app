@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
+import 'package:ngandika_app/presentation/pages/main/cameras/camera_page.dart';
 import 'package:ngandika_app/utils/routes/AppRoutes.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
@@ -18,6 +20,8 @@ import 'injection.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Fetch the available cameras before initializing the app.
+  cameras = await availableCameras();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

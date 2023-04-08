@@ -80,8 +80,8 @@ Future<CroppedFile?> cropImage(String filePath) async {
       uiSettings: [
         //The Android UI settings are also customized with specific values for the toolbar title, toolbar color, and initial aspect ratio.
         AndroidUiSettings(
-          toolbarTitle: 'Profile Image',
-          toolbarColor: kBlueLight,
+          toolbarTitle: 'Crop Image',
+          toolbarColor: kBlue,
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.square,
           hideBottomControls: true,

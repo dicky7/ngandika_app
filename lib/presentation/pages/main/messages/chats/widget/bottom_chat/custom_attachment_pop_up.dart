@@ -2,19 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
-import 'package:ngandika_app/utils/enums/message_type.dart';
+import 'package:ngandika_app/presentation/pages/main/cameras/camera_page.dart';
 
 import '../../../../../../../utils/functions/image_picker.dart';
 import '../../../../../../../utils/styles/style.dart';
+import '../../../../cameras/widget/preview/image_preview_page.dart';
 
 class CustomAttachmentPopUp extends StatelessWidget {
   final String receiverId;
 
-  CustomAttachmentPopUp({Key? key, required this.receiverId}) : super(key: key);
+  const CustomAttachmentPopUp({Key? key, required this.receiverId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,30 +49,19 @@ class CustomAttachmentPopUp extends StatelessWidget {
                   name: "Camera",
                   color: Colors.redAccent,
                   icon: Icons.camera_alt,
-                  onPress: () async{
-                    File? selectedImage;
-                    CroppedFile? croppedFile = await selectImageFromGallery(context);
-                    if (croppedFile != null) {
-                      //convert the selected CroppedFile object to a File
-                      selectedImage = File(croppedFile.path);
-                      context.read<ChatCubit>().sendFileMessage(file: selectedImage, receiverId: receiverId, messageType: MessageType.image);
-                    }
-                    Navigator.of(context).pop();
+                  onPress: () {
+                    Navigator.pushNamed(context, CameraPage.routeName, arguments: CameraPage(
+                        receiverId: receiverId,
+                        isCameraChat: true
+                    ));
                   },
                 ),
                 AttachmentCardItem(
                   name: "Gallery",
                   color: Colors.purpleAccent,
                   icon: Icons.photo,
-                  onPress: () async {
-                    File? selectedImage;
-                    CroppedFile? croppedFile = await selectImageFromGallery(context);
-                    if (croppedFile != null) {
-                        //convert the selected CroppedFile object to a File
-                        selectedImage = File(croppedFile.path);
-                        context.read<ChatCubit>().sendFileMessage(file: selectedImage, receiverId: receiverId, messageType: MessageType.image);
-                    }
-                    Navigator.of(context).pop();
+                  onPress: () {
+                    selectImageFromGallery(context);
                   },
                 ),
                 AttachmentCardItem(
@@ -99,32 +86,21 @@ class CustomAttachmentPopUp extends StatelessWidget {
       },
     );
   }
-}
 
-// This  function that selects an image from the device's gallery, crops it to a specific size, and returns a CroppedFile object.
-// The function returns a Future that resolves to a CroppedFile object or null if an error occurs.
-Future<CroppedFile?> selectImageFromGallery(BuildContext context) async {
-  File? image = await pickImageFromGallery(context);
-  if (image != null) {
-    CroppedFile? croppedFile = await cropImage(image.path);
-    if (croppedFile != null) {
-      return croppedFile;
+  // This  function that selects an image from the device's gallery,
+  void selectImageFromGallery(BuildContext context) async {
+    File? image = await pickImageFromGallery(context);
+    if (image != null) {
+      Navigator.pushNamed(
+          context,
+          ImagePreviewPage.routeName,
+          arguments: ImagePreviewPage(
+              isCameraChat: true,
+              imageFilePath: image.path,
+              receiverId: receiverId,)
+      );
     }
   }
-  return null;
-}
-
-// This  function that selects an image from the device's camera, crops it to a specific size, and returns a CroppedFile object.
-// The function returns a Future that resolves to a CroppedFile object or null if an error occurs.
-Future<CroppedFile?> selectImageFromCamera(BuildContext context) async {
-  File? image = await pickImageFromCamera(context);
-  if (image != null) {
-    CroppedFile? croppedFile = await cropImage(image.path);
-    if (croppedFile != null) {
-      return croppedFile;
-    }
-  }
-  return null;
 }
 
 class AttachmentCardItem extends StatelessWidget {

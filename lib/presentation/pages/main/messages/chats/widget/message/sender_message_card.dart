@@ -16,7 +16,10 @@ class SenderMessageCard extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-            maxWidth: context.width(0.8), minWidth: 120, maxHeight: 400),
+            maxWidth: context.width(0.8),
+            minWidth: 120,
+            maxHeight: 400
+        ),
         child: Card(
           elevation: 2,
           shape: const RoundedRectangleBorder(

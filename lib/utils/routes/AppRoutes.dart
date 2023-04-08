@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ngandika_app/presentation/pages/main/cameras/camera_page.dart';
+import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/image_preview_page.dart';
+import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/video_preview_page.dart';
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
 
 import '../../presentation/pages/main/messages/chats/chat_page.dart';
@@ -25,9 +28,7 @@ class AppRoutes {
       case LoginOtpPage.routeName:
         final phoneNumber = settings.arguments as String;
         return MaterialPageRoute(
-            builder: (context) => LoginOtpPage(
-                  phoneNumber: phoneNumber,
-                ));
+            builder: (context) => LoginOtpPage(phoneNumber: phoneNumber));
       case LoginProfileInfoPage.routeName:
         return MaterialPageRoute(
             builder: (context) => const LoginProfileInfoPage());
@@ -43,6 +44,26 @@ class AppRoutes {
                   name: arguments.name,
                   receiverId: arguments.receiverId,
                 ));
+      case CameraPage.routeName:
+        final arguments = settings.arguments as CameraPage;
+        return MaterialPageRoute(
+          builder: (context) => CameraPage(
+              receiverId: arguments.receiverId,
+              isCameraChat: arguments.isCameraChat));
+      case ImagePreviewPage.routeName:
+        final arguments = settings.arguments as ImagePreviewPage;
+        return MaterialPageRoute(
+          builder: (context) => ImagePreviewPage(
+              isCameraChat: arguments.isCameraChat,
+              imageFilePath: arguments.imageFilePath,
+              receiverId: arguments.receiverId));
+      case VideoPreviewPage.routeName:
+        final arguments = settings.arguments as VideoPreviewPage;
+        return MaterialPageRoute(
+          builder: (context) => VideoPreviewPage(
+              isCameraChat: arguments.isCameraChat,
+              receiverId: arguments.receiverId,
+              videoFilePath: arguments.videoFilePath));
       default:
         return MaterialPageRoute(builder: (context) => const SplashPage());
     }
