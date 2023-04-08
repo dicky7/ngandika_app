@@ -44,7 +44,7 @@ dependencies:
   uuid: ^3.0.7
   camera: ^0.10.3+2
   video_player: ^2.4.9
-  cached_video_player: ^2.0.3
+  cached_video_player: ^2.0.4
   emoji_picker_flutter: ^1.5.2
   giphy_get: ^3.3.0
 
