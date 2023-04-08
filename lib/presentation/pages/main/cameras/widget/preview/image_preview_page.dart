@@ -29,7 +29,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: kBlackColor,
+        backgroundColor: Colors.black,
         body: Stack(
           children: [
             Image.file(

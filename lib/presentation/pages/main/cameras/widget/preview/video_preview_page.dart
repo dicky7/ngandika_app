@@ -46,7 +46,7 @@ class _VideoPreviewPageState extends State<VideoPreviewPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: kBlackColor,
+        backgroundColor: Colors.black,
         body: Stack(
           children: [
             buildVideoPreview(),

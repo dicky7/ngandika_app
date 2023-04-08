@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ngandika_app/data/models/message_model.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/camera_page.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/image_preview_page.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/video_preview_page.dart';
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
+import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/preview_message_content/image_message_preview.dart';
 
 import '../../presentation/pages/main/messages/chats/chat_page.dart';
 import '../../presentation/pages/main/messages/select_contact/select_contact_page.dart';
@@ -44,6 +46,11 @@ class AppRoutes {
                   name: arguments.name,
                   receiverId: arguments.receiverId,
                 ));
+      case ImageMessagePreview.routeName:
+        final arguments = settings.arguments as MessageModel;
+        return MaterialPageRoute(
+          builder: (context) => ImageMessagePreview(messageData: arguments),
+        );
       case CameraPage.routeName:
         final arguments = settings.arguments as CameraPage;
         return MaterialPageRoute(

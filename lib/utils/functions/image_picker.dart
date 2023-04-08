@@ -33,8 +33,7 @@ Future<File?> pickImageFromCamera(BuildContext context) async {
   try {
     // then uses the ImagePicker package to pick an image from the camera using the pickImage method. If the user successfully picks an image,
     // the function sets the image variable to a File object with the path to the selected image.
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       image = File(pickedImage.path);
     }

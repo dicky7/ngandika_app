@@ -53,9 +53,7 @@ class _MessagesListState extends State<MessagesList> {
             return Column(
               children: [
                 //If the message is the first one in the list or if it was sent on a different day than the previous message, a TagChatTime widget should be displayed.
-                if (index == 0 ||
-                    !DateConverter.getIsSameDay(messageData.timeSent,
-                        snapshot.data![index - 1].timeSent))
+                if (index == 0 || !DateConverter.getIsSameDay(messageData.timeSent, snapshot.data![index - 1].timeSent))
                   TagChatTime(dateTime: messageData.timeSent),
 
                 if (messageData.receiverId == widget.receiverId)
