@@ -39,11 +39,22 @@ class CustomEmojiGifPicker extends StatelessWidget {
               backspaceColor: Colors.black26,
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.gif_box_outlined),
-            color: kBlackColor,
-            iconSize: 40,
-            onPressed: onGifButtonTap,
+          Container(
+            alignment: Alignment.bottomCenter,
+            height: 40,
+            color: Colors.grey[200],
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: GestureDetector(
+              onTap: onGifButtonTap,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 2, color: kBlackColor)
+                ),
+                child: Icon(size: 30, Icons.gif, color: kBlackColor),
+              ),
+            )
           )
         ],
       )
