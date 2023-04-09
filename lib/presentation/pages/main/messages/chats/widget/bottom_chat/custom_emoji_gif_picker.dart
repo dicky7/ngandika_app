@@ -1,18 +1,25 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngandika_app/presentation/bloc/message/bottom_chat/bottom_chat_cubit.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 
 class CustomEmojiGifPicker extends StatelessWidget {
   final TextEditingController messageController;
+  final bool isShowSendButton;
 
-  const CustomEmojiGifPicker({Key? key, required this.messageController})
-      : super(key: key);
+  const CustomEmojiGifPicker({Key? key, required this.messageController, required this.isShowSendButton}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 250,
       child: EmojiPicker(
+        onEmojiSelected: (category, emoji) {
+          if (!isShowSendButton) {
+            context.read<BottomChatCubit>().emojiSelectedShowButton();
+          }
+        },
         onBackspacePressed: () => messageController.text.trimRight(),
         textEditingController: messageController,
         config: Config(

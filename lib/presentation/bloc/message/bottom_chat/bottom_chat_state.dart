@@ -12,3 +12,7 @@ class BottomChatInitial extends BottomChatState {}
 class IsShowSendButtonTrueState extends BottomChatState {}
 
 class IsShowSendButtonFalseState extends BottomChatState {}
+
+class HideEmojiContainerState extends BottomChatState{}
+
+class ShowEmojiContainerState extends BottomChatState{}

@@ -13,44 +13,63 @@ class BottomChatFieldIcon extends StatelessWidget {
   BottomChatFieldIcon({Key? key, required this.receiverId}) : super(key: key);
 
   final TextEditingController messageController =
-      TextEditingController(text: "");
+  TextEditingController(text: "");
   FocusNode focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    final cubitRead = context.read<BottomChatCubit>();
-    final cubitWatch = context.watch<BottomChatCubit>();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-          child: Row(
+    return BlocBuilder<BottomChatCubit, BottomChatState>(
+      builder: (context, state) {
+        final cubitRead = context.read<BottomChatCubit>();
+        return WillPopScope(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BottomChatField(
-                receiverId: receiverId,
-                isShowEmoji: false,
-                focusNode: focusNode,
-                messageController: messageController,
-                toggleEmojiKeyboard: () {},
-                onTextFieldValueChanged: (value) =>
-                    cubitRead.showSendButton(value),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                child: Row(
+                  children: [
+                    BottomChatField(
+                      receiverId: receiverId,
+                      isShowEmoji: cubitRead.isShowEmojiContainer,
+                      focusNode: focusNode,
+                      messageController: messageController,
+                      onTapTextField: () => cubitRead.hideEmojiContainer(),
+                      toggleEmojiKeyboard: () => cubitRead.toggleEmojiKeyboard(focusNode),
+                      onTextFieldValueChanged: (value) => cubitRead.showSendButton(value),
+                    ),
+                    // if (cubit.isShowSendButton)
+                    buildButtonSend(context, cubitRead.isShowSendButton)
+                  ],
+                ),
               ),
-              // if (cubit.isShowSendButton)
-              buildButtonSend(context, cubitWatch.isShowSendButton)
+
+              //Offstage is being used to show or hide a CustomEmojiGifPicker widget based on the value of cubitRead.isShowEmojiContainer.
+              // If isShowEmojiContainer is true, the CustomEmojiGifPicker widget will be visible, otherwise it will be hidden.
+              Offstage(
+                offstage: !cubitRead.isShowEmojiContainer,
+                child: CustomEmojiGifPicker(
+                  isShowSendButton: cubitRead.isShowSendButton,
+                  messageController: messageController,
+                ),
+              )
             ],
           ),
-        ),
 
-        //this for show emoji EmojiPicker and Gif
-        Offstage(
-          offstage: true,
-          child: CustomEmojiGifPicker(
-            messageController: messageController,
-          ),
-        )
-      ],
+          //onWillPop property is set to a callback function that handles the behavior when the back button is pressed. Inside the callback function,
+          // it first checks if the isShowEmojiContainer property  is true, which means that the emoji container is currently visible. If it is, it calls
+          // the hideEmojiContainer() method to hide the emoji container. Otherwise, it calls Navigator.pop(context) to navigate back to the previous screen.
+          onWillPop: () {
+            if (cubitRead.isShowEmojiContainer) {
+              cubitRead.hideEmojiContainer();
+            } else {
+              Navigator.pop(context);
+            }
+            //the callback function returns a Future.value(false), which means that it prevents the back button press from leaving the current screen.
+            return Future.value(false);
+          },
+        );
+      },
     );
   }
 

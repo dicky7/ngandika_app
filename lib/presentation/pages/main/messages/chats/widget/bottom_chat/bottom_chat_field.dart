@@ -5,21 +5,22 @@ import 'package:ngandika_app/utils/styles/style.dart';
 
 class BottomChatField extends StatelessWidget {
   final VoidCallback toggleEmojiKeyboard;
+  final VoidCallback onTapTextField;
   final bool isShowEmoji;
   final TextEditingController messageController;
   final Function(String) onTextFieldValueChanged;
   final FocusNode focusNode;
   final String receiverId;
 
-  const BottomChatField(
-      {Key? key,
-      required this.messageController,
-      required this.focusNode,
-      required this.onTextFieldValueChanged,
-      required this.isShowEmoji,
-      required this.toggleEmojiKeyboard,
-      required this.receiverId})
-      : super(key: key);
+  const BottomChatField({
+    Key? key,
+    required this.onTapTextField,
+    required this.messageController,
+    required this.focusNode,
+    required this.onTextFieldValueChanged,
+    required this.isShowEmoji,
+    required this.toggleEmojiKeyboard,
+    required this.receiverId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,7 @@ class BottomChatField extends StatelessWidget {
               //The ConstrainedBox widget is used to set constraints on the size of its child widget, which is a Scrollbar widget.
               child: Scrollbar(
                 child: TextField(
+                  onTap: onTapTextField,
                   onChanged: onTextFieldValueChanged,
                   controller: messageController,
                   focusNode: focusNode,
