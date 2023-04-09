@@ -9,7 +9,7 @@ import 'package:ngandika_app/presentation/widget/custom_loading.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
-import '../../../../utils/functions/image_picker.dart';
+import '../../../../utils/functions/image_griphy_picker.dart';
 
 late List<CameraDescription> cameras;
 

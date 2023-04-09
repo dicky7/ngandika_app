@@ -20,8 +20,10 @@ class MessageContentType extends StatelessWidget {
         return ImageMessageWidget(messageData: messageData);
       case MessageType.video:
         return VideoMessageWidget(messageData: messageData);
-      case MessageType.audio:
       case MessageType.gif:
+        return ImageMessageWidget(messageData: messageData);
+      case MessageType.audio:
+
       default:
         return TextMessageWidget(messageData: messageData);
     }

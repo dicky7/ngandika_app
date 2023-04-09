@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
-import 'package:ngandika_app/utils/functions/image_picker.dart';
+import 'package:ngandika_app/utils/functions/image_griphy_picker.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
 //The function returns a Future<CroppedFile?>, indicating that the user may or may not select an image to crop. If the user selects an image and crops it,

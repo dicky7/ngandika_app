@@ -13,6 +13,7 @@ import '../../models/message_model.dart';
 
 abstract class ChatRemoteDataSource {
   Future<void> sendTextMessage({required String text, required String receiverId});
+  Future<void> sendGIFMessage({required String gifUrl, required String receiverId});
   Stream<List<MessageModel>> getChatStream(String receiverId);
   Future<void> sendFileMessage({required File file, required String receiverId, required MessageType messageType});
 
@@ -68,6 +69,37 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
       throw ServerException(e.toString());
     }
   }
+
+  // The sendGIFMessage method is a function that sends a GIF message from the current user to a receiver user in a chat application.
+  @override
+  Future<void> sendGIFMessage({required String gifUrl, required String receiverId}) async {
+    try {
+      var timeSent = DateTime.now();
+      var messageId = const Uuid().v1();
+      UserModel senderUserData = await _getCurrentUser();
+      var receiverUserCollection = await firestore.collection("users").doc(receiverId).get();
+      UserModel receiverUserData = UserModel.fromMap(receiverUserCollection.data()!);
+
+      _saveDataToContactsSubCollection(
+          senderUserData,
+          receiverUserData,
+          "GIF",
+          timeSent
+      );
+      _saveMessageToMessageSubCollection(
+          senderId: senderUserData.uId,
+          receiverId: receiverId,
+          text: gifUrl,
+          timeSent: timeSent,
+          messageId: messageId,
+          messageType: MessageType.gif,
+          receiverUsername: receiverUserData.name,
+          senderUsername: senderUserData.name);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
 
   //this _saveDataToContactsSubCollection function to save the message data to both sender and receiver's chat collections. and show it in contact chat page
   void _saveDataToContactsSubCollection(UserModel senderUserData,

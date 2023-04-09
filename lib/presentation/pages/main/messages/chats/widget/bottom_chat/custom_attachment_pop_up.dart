@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/camera_page.dart';
 
-import '../../../../../../../utils/functions/image_picker.dart';
+import '../../../../../../../utils/functions/image_griphy_picker.dart';
 import '../../../../../../../utils/styles/style.dart';
 import '../../../../cameras/widget/preview/image_preview_page.dart';
 

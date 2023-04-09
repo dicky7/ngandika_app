@@ -5,6 +5,7 @@ import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/bottom_chat/bottom_chat_field.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/bottom_chat/custom_emoji_gif_picker.dart';
 
+import '../../../../../../../utils/functions/image_griphy_picker.dart';
 import '../../../../../../../utils/styles/style.dart';
 
 class BottomChatFieldIcon extends StatelessWidget {
@@ -51,6 +52,9 @@ class BottomChatFieldIcon extends StatelessWidget {
                 child: CustomEmojiGifPicker(
                   isShowSendButton: cubitRead.isShowSendButton,
                   messageController: messageController,
+                  onGifButtonTap: () {
+                    selectGif(context);
+                  },
                 ),
               )
             ],
@@ -97,5 +101,15 @@ class BottomChatFieldIcon extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void selectGif(BuildContext context) async {
+    final gif = await pickGif(context);
+    if (gif != null) {
+      context.read<ChatCubit>().sendGIFMessage(
+          gifUrl: gif.url!,
+          receiverId: receiverId
+      );
+    }
   }
 }

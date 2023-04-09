@@ -1,10 +1,29 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:giphy_get/giphy_get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../styles/style.dart';
+
+// The pickGif function appears to be a Flutter function that retrieves a GIF using the Giphy API
+Future<GiphyGif?> pickGif(BuildContext context) async {
+  //Define a GiphyGif? variable gif to store the retrieved GIF.
+  GiphyGif? gif;
+  try {
+    //fetch a GIF using the GiphyGet.getGif() function, passing in the context and an API key as arguments.
+    //If the GIF is successfully fetched, it is stored in the gif variable.
+    gif = await GiphyGet.getGif(
+      context: context,
+      apiKey: 'U9IfXl9GfrGS2CTkAmSLd2HXqVBf3Xg5',
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+  }
+  //Finally, the function returns the retrieved gif variable,
+  return gif;
+}
 
 //This function pickImageFromGallery uses the ImagePicker package to allow the user to pick an image from their device's gallery.
 Future<File?> pickImageFromGallery(BuildContext context) async {
@@ -20,8 +39,7 @@ Future<File?> pickImageFromGallery(BuildContext context) async {
     }
     //If an error occurs during the image picking process, the function catches the error and displays a snack bar with the error message.
   } catch (e) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(e.toString())));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
   }
   return image;
 }
@@ -39,8 +57,7 @@ Future<File?> pickImageFromCamera(BuildContext context) async {
     }
     //If an error occurs during the image picking process, the function catches the error and displays a snack bar with the error message.
   } catch (e) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(e.toString())));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
   }
   return image;
 }

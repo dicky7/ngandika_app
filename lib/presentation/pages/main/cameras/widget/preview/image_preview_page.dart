@@ -8,7 +8,7 @@ import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/prev
 import 'package:ngandika_app/utils/styles/style.dart';
 
 import '../../../../../../utils/enums/message_type.dart';
-import '../../../../../../utils/functions/image_picker.dart';
+import '../../../../../../utils/functions/image_griphy_picker.dart';
 
 class ImagePreviewPage extends StatefulWidget {
   static const routeName = "image-preview";

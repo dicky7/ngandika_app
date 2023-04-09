@@ -425,10 +425,10 @@ packages:
     dependency: "direct main"
     description:
       name: giphy_get
-      sha256: c8b37433b78eb7c959f7b39f52db57b1c9ca02a8b82e33b607f1503bead667ea
+      sha256: a1b3699bdf3ea0e243b98f808da23e4fb542625c37d229f98f35b08848814990
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0"
+    version: "3.3.1"
   google_fonts:
     dependency: "direct main"
     description:

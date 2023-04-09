@@ -10,6 +10,7 @@ import '../models/message_model.dart';
 
 abstract class ChatRepository {
   Future<Either<Failure, void>> sendTextMessage({required String text, required String receiverId});
+  Future<Either<Failure, void>> sendGIFMessage({required String gifUrl, required String receiverId});
   Stream<List<MessageModel>> getChatStream(String receiverId);
   Future<Either<Failure, void>> sendFileMessage({required File file, required String receiverId, required MessageType messageType});
 }
@@ -22,8 +23,7 @@ class ChatRepositoryImpl extends ChatRepository {
   @override
   Future<Either<Failure, void>> sendTextMessage({required String text, required String receiverId}) async {
     try {
-      final result = await remoteDataSource.sendTextMessage(
-          text: text, receiverId: receiverId);
+      final result = await remoteDataSource.sendTextMessage(text: text, receiverId: receiverId);
       return right(result);
     } on ServerException catch (e) {
       return left(ServerFailure(e.message.toString()));
@@ -42,6 +42,16 @@ class ChatRepositoryImpl extends ChatRepository {
       return Right(result);
     }on ServerException catch(e){
       return Left(ServerFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> sendGIFMessage({required String gifUrl, required String receiverId}) async{
+    try {
+      final result = await remoteDataSource.sendGIFMessage(gifUrl: gifUrl, receiverId: receiverId);
+      return right(result);
+    } on ServerException catch (e) {
+      return left(ServerFailure(e.message.toString()));
     }
   }
 }
