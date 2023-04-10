@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/data/models/user_model.dart';
@@ -8,6 +9,7 @@ import 'package:ngandika_app/utils/extensions/time_extension.dart';
 
 import '../../../../../../data/models/pop_up_menu_item_model.dart';
 import '../../../../../../utils/styles/style.dart';
+import '../../../../../bloc/message/chat/chat_cubit.dart';
 import '../../../../../widget/custom_loading.dart';
 import '../../../../../widget/custom_pop_up_menu_button.dart';
 
@@ -15,7 +17,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String name;
   final String receiverId;
 
-  const ChatAppBar({Key? key, required this.name, required this.receiverId})
+  ChatAppBar({Key? key, required this.name, required this.receiverId})
       : super(key: key);
 
   @override
@@ -76,48 +78,81 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                 )
               ],
             ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                splashRadius: 20,
-                icon: Icon(Icons.videocam, color: kBlackColor),
-              ),
-              IconButton(
-                onPressed: () {},
-                splashRadius: 20,
-                icon: Icon(Icons.call, color: kBlackColor),
-              ),
-              CustomPopUpMenuButton(
-                buttons: _buttons(context),
-                colors: kBlackColor,
-              ),
-            ],
+            actions: context.watch<ChatCubit>().isPressed 
+              ? getIconOnPressed(context) 
+              : getIconButtons(context)
           );
         });
   }
+  
+
+  List<Widget> getIconButtons(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () {},
+        splashRadius: 20,
+        icon: Icon(Icons.videocam, color: kBlackColor),
+      ),
+      IconButton(
+        onPressed: () {},
+        splashRadius: 20,
+        icon: Icon(Icons.call, color: kBlackColor),
+      ),
+      CustomPopUpMenuButton(
+        buttons: _buttons(context),
+        colors: kBlackColor,
+      ),
+    ];
+  }
+
+  List<Widget> getIconOnPressed(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () {},
+        splashRadius: 20,
+        icon: Icon(Icons.delete, color: kBlackColor),
+      ),
+      IconButton(
+        onPressed: () {},
+        splashRadius: 20,
+        icon: Icon(Icons.star_border, color: kBlackColor),
+      ),
+      IconButton(
+        onPressed: () {},
+        splashRadius: 20,
+        icon: Icon(CupertinoIcons.arrow_turn_up_right, color: kBlackColor),
+      ),
+      CustomPopUpMenuButton(
+        buttons: _buttons(context),
+        colors: kBlackColor,
+      ),
+    ];
+  }
 
   List<PopUpMenuItemModel> _buttons(context) => [
-        PopUpMenuItemModel(
-          name: "View Contact",
-          onTap: () {},
-        ),
-        PopUpMenuItemModel(
-          name: "Block",
-          onTap: () {},
-        ),
-        PopUpMenuItemModel(
-          name: "Search",
-          onTap: () {},
-        ),
-        PopUpMenuItemModel(
-          name: "Block Notification",
-          onTap: () {},
-        ),
-        PopUpMenuItemModel(
-          name: "More",
-          onTap: () {},
-        ),
-      ];
+    PopUpMenuItemModel(
+      name: "View Contact",
+      onTap: () {},
+    ),
+    PopUpMenuItemModel(
+      name: "Block",
+      onTap: () {},
+    ),
+    PopUpMenuItemModel(
+      name: "Search",
+      onTap: () {},
+    ),
+    PopUpMenuItemModel(
+      name: "Block Notification",
+      onTap: () {},
+    ),
+    PopUpMenuItemModel(
+      name: "More",
+      onTap: () {},
+    ),
+  ];
+
+
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);

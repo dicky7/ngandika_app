@@ -10,6 +10,8 @@ import 'chat_state.dart';
 class ChatCubit extends Cubit<ChatState> {
   final ChatRepository repository;
 
+  bool isPressed = false;
+  int selectedMessageIndex = -1; // Add the isPressed variable here
   ChatCubit(this.repository) : super(ChatInitial());
 
   Future<void> sendTextMessage({required String text, required String receiverId}) async {
@@ -46,5 +48,18 @@ class ChatCubit extends Cubit<ChatState> {
           (error) => emit(ChatErrorState(error.message)),
           (success) => emit(SendTextMessageSuccess()),
     );
+  }
+
+  // Update the value of isPressed
+  void updateIsPressed(int  selectedIndex, MessageModel message) {
+    isPressed = true;
+    selectedMessageIndex = selectedIndex;
+    emit(MessageSelected()); // Emit a state updated event
+  }
+
+  void clearSelectedIndex() {
+    isPressed = false;
+    selectedMessageIndex = -1; // Clear the selectedIndex value
+    emit(SelectedMessageIndexCleared());
   }
 }

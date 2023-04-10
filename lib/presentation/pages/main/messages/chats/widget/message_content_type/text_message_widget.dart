@@ -8,8 +8,7 @@ import '../../../../../../../utils/styles/style.dart';
 class TextMessageWidget extends StatelessWidget {
   final MessageModel messageData;
 
-  const TextMessageWidget({Key? key, required this.messageData})
-      : super(key: key);
+  const TextMessageWidget({Key? key, required this.messageData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -22,3 +22,6 @@ class ChatErrorState extends ChatState {
 
 class SendTextMessageSuccess extends ChatState {}
 class SendFileMessageSuccess extends ChatState{}
+
+class MessageSelected extends ChatState{}
+class SelectedMessageIndexCleared extends ChatState{}

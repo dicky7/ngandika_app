@@ -57,12 +57,10 @@ class _MessagesListState extends State<MessagesList> {
                   TagChatTime(dateTime: messageData.timeSent),
 
                 if (messageData.receiverId == widget.receiverId)
-                  MyMessageCard(message: messageData),
+                  MyMessageCard(message: messageData, index: index),
 
                 if (messageData.receiverId != widget.receiverId)
-                  SenderMessageCard(
-                      message: messageData.text,
-                      date: messagesList[index]["time"].toString())
+                  SenderMessageCard(message: messageData, index: index)
               ],
             );
           },
