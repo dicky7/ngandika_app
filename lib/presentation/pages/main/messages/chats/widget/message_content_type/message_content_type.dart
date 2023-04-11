@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/data/models/message_model.dart';
+import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/message_content_type/audio_message_widget.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/message_content_type/text_message_widget.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/message_content_type/video_message_widget.dart';
 import 'package:ngandika_app/utils/enums/message_type.dart';
@@ -23,6 +24,7 @@ class MessageContentType extends StatelessWidget {
       case MessageType.gif:
         return ImageMessageWidget(messageData: messageData);
       case MessageType.audio:
+        return AudioMessageWidget(messageData: messageData);
 
       default:
         return TextMessageWidget(messageData: messageData);

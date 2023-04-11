@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/bottom_chat/mic/recording_timer.dart';
+import 'package:ngandika_app/presentation/widget/custom_timer_count_up.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -443,7 +443,7 @@ class _RecordingMicWidgetState extends State<RecordingMicWidget> with SingleTick
             left: 45,
             child: Visibility(
               visible: isShowTime,
-              child: const RecordingTimer(),
+              child: CustomTimerCountUp(colors: Colors.teal.shade700),
             ),
           ),
         ],

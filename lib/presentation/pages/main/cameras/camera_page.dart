@@ -6,6 +6,7 @@ import 'package:ngandika_app/presentation/pages/main/cameras/widget/appbar/camer
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/image_preview_page.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/video_preview_page.dart';
 import 'package:ngandika_app/presentation/widget/custom_loading.dart';
+import 'package:ngandika_app/presentation/widget/custom_timer_count_up.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
@@ -102,23 +103,14 @@ class _CameraPageState extends State<CameraPage> {
   Widget buildTimerRecording() {
     return Align(
       alignment: Alignment.topCenter,
-      child:TweenAnimationBuilder(
-        tween: Tween(begin: 0.0, end: 60.0),
-        duration: const Duration(seconds: 60),
-        onEnd: () {},
-        builder: (context, value, child) {
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(19),
-              color: kRedColor
-            ),
-            child: Text(
-              "00:${value.toInt()}",
-              style: context.titleMedium?.copyWith(color: kPrimaryColor),
-            ),
-          );
-        },
+      child : Container(
+          margin: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(19),
+            color: kRedColor
+        ),
+        child: CustomTimerCountUp(colors: kPrimaryColor)
       ),
     );
   }

@@ -3,14 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 /// This widget shows the count-up timer
-class RecordingTimer extends StatefulWidget {
-  const RecordingTimer({Key? key}) : super(key: key);
+class CustomTimerCountUp extends StatefulWidget {
+  final Color colors;
+  const CustomTimerCountUp({Key? key, required this.colors}) : super(key: key);
 
   @override
-  State<RecordingTimer> createState() => _RecordingTimerState();
+  State<CustomTimerCountUp> createState() => _CustomTimerCountUpState();
 }
 
-class _RecordingTimerState extends State<RecordingTimer> {
+class _CustomTimerCountUpState extends State<CustomTimerCountUp> {
   Duration duration = const Duration();
   Timer? timer;
 
@@ -42,7 +43,7 @@ class _RecordingTimerState extends State<RecordingTimer> {
       "$minutes:$seconds",
       style: TextStyle(
         fontSize: 20,
-        color: Colors.teal.shade700,
+        color: widget.colors,
       ),
     );
   }
