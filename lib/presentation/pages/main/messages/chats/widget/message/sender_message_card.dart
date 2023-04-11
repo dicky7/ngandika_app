@@ -16,33 +16,55 @@ class SenderMessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isSelected = context.watch<ChatCubit>().selectedMessageIndex == index;
     return GestureDetector(
       onLongPress: () => context.read<ChatCubit>().updateIsPressed(index, message),
       onTap: () => context.read<ChatCubit>().clearSelectedIndex(),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-              maxWidth: context.width(0.8),
-              minWidth: 120,
-              maxHeight: 400
-          ),
-          child: Card(
-            elevation: 2,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
-                  topLeft: Radius.zero),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: context.width(0.8),
+                  minWidth: 120,
+                  maxHeight: 400
+              ),
+              child: Card(
+                elevation: 2,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                      topLeft: Radius.zero),
+                ),
+                color: context.watch<ChatCubit>().selectedMessageIndex == index
+                      ? kBlue
+                      : kBlueLight,
+                  margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  child: MessageContentType(messageData: message)
+              ),
             ),
-            color: context.watch<ChatCubit>().selectedMessageIndex == index
-                  ? kBlue
-                  : kBlueLight,
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-              child: MessageContentType(messageData: message)
           ),
-        ),
+
+          if (isSelected) // Add a shadow or stacked container when selected
+            Positioned.fill(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: kBlue.withOpacity(0.5),
+                        spreadRadius: 5,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

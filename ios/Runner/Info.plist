@@ -51,5 +51,7 @@
     <string>Mic Use</string>
     <key>NSContactsUsageDescription</key>
     <string>Reason we need access to the contact list</string>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>Needs to hear recordings</string>
 </dict>
 </plist>

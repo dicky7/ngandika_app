@@ -40,7 +40,8 @@ class BottomChatFieldIcon extends StatelessWidget {
                       onTextFieldValueChanged: (value) => cubitRead.showSendButton(value),
                     ),
                     // if (cubit.isShowSendButton)
-                    buildButtonSend(context, cubitRead.isShowSendButton)
+                    if (cubitRead.isShowSendButton)
+                      buildButtonSend(context, cubitRead.isShowSendButton)
                   ],
                 ),
               ),
@@ -80,13 +81,11 @@ class BottomChatFieldIcon extends StatelessWidget {
   Widget buildButtonSend(BuildContext context, bool isShowSendButton) {
     return GestureDetector(
       onTap: () {
-        if (isShowSendButton) {
-          context.read<ChatCubit>().sendTextMessage(
-              text: messageController.text.trim(),
-              receiverId: receiverId
-          );
-          messageController.clear();
-        }
+        context.read<ChatCubit>().sendTextMessage(
+            text: messageController.text.trim(),
+            receiverId: receiverId
+        );
+        messageController.clear();
       },
       child: Container(
         decoration: BoxDecoration(
@@ -95,10 +94,7 @@ class BottomChatFieldIcon extends StatelessWidget {
         ),
         width: 50,
         height: 50,
-        child: Icon(
-          isShowSendButton ? Icons.send : Icons.mic,
-          color: kPrimaryColor,
-        ),
+        child: Icon(Icons.send, color: kPrimaryColor),
       ),
     );
   }

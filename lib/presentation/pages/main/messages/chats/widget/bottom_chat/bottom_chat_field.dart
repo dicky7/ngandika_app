@@ -28,8 +28,9 @@ class BottomChatField extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 85,
       margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
-        color: Colors.black12,
+        color: kPrimaryColor,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 1, color: kGreyColor)
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,

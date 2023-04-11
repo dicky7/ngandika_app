@@ -16,40 +16,32 @@ class ImageMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatCubit, ChatState>(
-      builder: (context, state) {
-        var cubitWatch = context.watch<ChatCubit>();
-        var cubitRead = context.read<ChatCubit>();
-        return GestureDetector(
-          onTap: () {
-            cubitWatch.isPressed
-                ? cubitRead.clearSelectedIndex()
-                : Navigator.pushNamed(context, ImageMessagePreview.routeName, arguments: messageData);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(5),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Stack(
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: messageData.text,
-                    maxHeightDiskCache: 390,
-                    fit: BoxFit.cover,
-                    // ignore: prefer_const_constructors
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                  ),
-                  Positioned(
-                    bottom: 2,
-                    right: 2,
-                    child: TimeSentMessageWidget(messageData: messageData),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, ImageMessagePreview.routeName, arguments: messageData);
       },
+      child: Padding(
+        padding: const EdgeInsets.all(5),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Stack(
+            children: [
+              CachedNetworkImage(
+                imageUrl: messageData.text,
+                maxHeightDiskCache: 390,
+                fit: BoxFit.cover,
+                // ignore: prefer_const_constructors
+                placeholder: (context, url) => CircularProgressIndicator(),
+              ),
+              Positioned(
+                bottom: 2,
+                right: 2,
+                child: TimeSentMessageWidget(messageData: messageData),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

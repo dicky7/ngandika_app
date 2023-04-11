@@ -47,6 +47,9 @@ dependencies:
   cached_video_player: ^2.0.4
   emoji_picker_flutter: ^1.5.2
   giphy_get: ^3.3.1
+  shimmer: ^2.0.0
+  audio_waveforms: ^1.0.3
+  audioplayers: ^3.0.1
   swipe_to: ^1.0.2
 
   firebase_auth: ^4.3.0

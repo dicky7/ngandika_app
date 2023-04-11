@@ -20,12 +20,12 @@ import 'injection.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Fetch the available cameras before initializing the app.
-  cameras = await availableCameras();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.init();
+  // Fetch the available cameras before initializing the app.
+  cameras = await availableCameras();
   runApp(const MyApp());
 }
 

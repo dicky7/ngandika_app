@@ -16,36 +16,57 @@ class MyMessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isSelected = context.watch<ChatCubit>().selectedMessageIndex == index;
     return GestureDetector(
       onLongPress: () => context.read<ChatCubit>().updateIsPressed(index, message),
       onTap: () => context.read<ChatCubit>().clearSelectedIndex(),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: context.width(0.8),
-            minWidth: 120,
-            maxHeight: 400,
-          ),
-          child: Card(
-            elevation: 1,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
-                  topRight: Radius.zero
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: context.width(0.8),
+                minWidth: 120,
+                maxHeight: 400,
+              ),
+              child: Card(
+                elevation: 1,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                      topRight: Radius.zero
+                  ),
+                ),
+                color: isSelected ? kBlue : kBlueLight,
+                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                child: MessageContentType(messageData: message),
               ),
             ),
-            color: context.watch<ChatCubit>().selectedMessageIndex == index
-                  ? kBlue
-                  : kBlueLight,
-            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-            child: MessageContentType(messageData: message)
           ),
-        ),
+
+          if (isSelected) // Add a shadow or stacked container when selected
+            Positioned.fill(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: kBlue.withOpacity(0.5),
+                        spreadRadius: 5,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
+
 }
 

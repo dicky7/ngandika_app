@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/bottom_chat/bottom_chat_field_icon.dart';
+import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/bottom_chat/mic/recording_mic.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/chat_app_bar.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/message/messages_list.dart';
 
@@ -16,10 +17,15 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ChatAppBar(name: name, receiverId: receiverId),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(child: MessagesList(receiverId: receiverId)),
-          BottomChatFieldIcon(receiverId: receiverId)
+          Column(
+            children: [
+              Expanded(child: MessagesList(receiverId: receiverId)),
+              BottomChatFieldIcon(receiverId: receiverId)
+            ],
+          ),
+          RecordingMic(receiverId: receiverId)
         ],
       ),
     );
