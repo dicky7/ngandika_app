@@ -4,12 +4,15 @@ import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/extensions/time_extension.dart';
 
 class TimeSentMessageWidget extends StatelessWidget {
+  final MessageModel messageData;
+  final Color colors;
+  final bool isSender;
+
   const TimeSentMessageWidget({
     super.key,
     required this.messageData,
+    required this.colors, required this.isSender,
   });
-
-  final MessageModel messageData;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +21,14 @@ class TimeSentMessageWidget extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(messageData.timeSent.getTimeSentAmPmMode,
-              style: context.bodySmall!.copyWith(color: Colors.white60)),
+          Text(messageData.timeSent.getTimeSentAmPmMode, style: context.bodySmall!.copyWith(color: colors)),
           const SizedBox(width: 5),
-          const Icon(
-            Icons.done_all,
-            size: 20,
-            color: Colors.white60,
-          ),
+          if(isSender)
+            Icon(
+              Icons.done_all,
+              size: 20,
+              color: colors,
+            ),
         ],
       ),
     );

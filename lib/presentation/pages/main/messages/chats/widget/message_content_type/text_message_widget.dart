@@ -7,8 +7,9 @@ import '../../../../../../../utils/styles/style.dart';
 
 class TextMessageWidget extends StatelessWidget {
   final MessageModel messageData;
+  final bool isSender;
 
-  const TextMessageWidget({Key? key, required this.messageData}) : super(key: key);
+  const TextMessageWidget({Key? key, required this.isSender, required this.messageData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +21,15 @@ class TextMessageWidget extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             messageData.text,
-            style: context.bodyLarge?.copyWith(color: kPrimaryColor),
+            style: context.bodyLarge?.copyWith(color: isSender ? kPrimaryColor : kBlackColor),
             overflow: TextOverflow.visible,
           ),
         ),
-        TimeSentMessageWidget(messageData: messageData)
+        TimeSentMessageWidget(
+            isSender: isSender,
+            messageData: messageData,
+            colors: isSender ? kPrimaryColor : kGreyColor
+        )
       ],
     );
   }

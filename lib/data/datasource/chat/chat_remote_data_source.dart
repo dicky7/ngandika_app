@@ -10,12 +10,13 @@ import 'package:ngandika_app/utils/error/exception.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../models/message_model.dart';
+import '../../models/message_reply_model.dart';
 
 abstract class ChatRemoteDataSource {
-  Future<void> sendTextMessage({required String text, required String receiverId});
-  Future<void> sendGIFMessage({required String gifUrl, required String receiverId});
+  Future<void> sendTextMessage({required String text, required String receiverId, required MessageReplyModel? messageReply});
+  Future<void> sendGIFMessage({required String gifUrl, required String receiverId, required MessageReplyModel? messageReply});
   Stream<List<MessageModel>> getChatStream(String receiverId);
-  Future<void> sendFileMessage({required File file, required String receiverId, required MessageType messageType});
+  Future<void> sendFileMessage({required File file, required String receiverId, required MessageType messageType, required MessageReplyModel? messageReply});
 
 }
 
@@ -34,7 +35,7 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
 
   // The sendTextMessage method is a function that sends a text message from the current user to a receiver user in a chat application.
   @override
-  Future<void> sendTextMessage({required String text, required String receiverId}) async {
+  Future<void> sendTextMessage({required String text, required String receiverId, required MessageReplyModel? messageReply}) async {
     try {
       //It gets the current time when the message is sent using DateTime.now()
       var timeSent = DateTime.now();
@@ -64,7 +65,9 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
           messageId: messageId,
           messageType: MessageType.text,
           receiverUsername: receiverUserData.name,
-          senderUsername: senderUserData.name);
+          senderUsername: senderUserData.name,
+          messageReply: messageReply
+      );
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -72,7 +75,7 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
 
   // The sendGIFMessage method is a function that sends a GIF message from the current user to a receiver user in a chat application.
   @override
-  Future<void> sendGIFMessage({required String gifUrl, required String receiverId}) async {
+  Future<void> sendGIFMessage({required String gifUrl, required String receiverId, required MessageReplyModel? messageReply}) async {
     try {
       var timeSent = DateTime.now();
       var messageId = const Uuid().v1();
@@ -94,7 +97,9 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
           messageId: messageId,
           messageType: MessageType.gif,
           receiverUsername: receiverUserData.name,
-          senderUsername: senderUserData.name);
+          senderUsername: senderUserData.name,
+          messageReply: messageReply
+      );
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -146,7 +151,9 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
       required String messageId,
       required String receiverUsername,
       required String senderUsername,
-      required MessageType messageType}) async {
+      required MessageType messageType,
+      required MessageReplyModel? messageReply,
+  }) async {
     //The _saveMessageToMessageSubCollection method then stores this MessageModel object in two locations in the Firestore database.
     final message = MessageModel(
         senderId: senderId,
@@ -155,7 +162,16 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
         messageType: messageType,
         timeSent: timeSent,
         messageId: messageId,
-        isSeen: false);
+        isSeen: false,
+        repliedMessage: messageReply == null ? '' : messageReply.message,
+        senderName: senderUsername,
+        repliedTo: messageReply == null
+            ? ''
+            : messageReply.isMe
+              ? senderUsername
+              : messageReply.repliedTo,
+      repliedMessageType: messageReply == null ? MessageType.text : messageReply.messageType,
+    );
 
     // user -> user id -> receiver id -> messages -> messages id -> store message
     //The first location is under the sender's user ID, in a chats collection, which contains a document for the receiver's user ID, which, in turn, contains a messages collection
@@ -211,7 +227,8 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
   Future<void> sendFileMessage({
     required File file,
     required String receiverId,
-    required MessageType messageType}) async{
+    required MessageType messageType,
+    required MessageReplyModel? messageReply}) async{
 
     try{
       //It gets the current date and time when the message is sent
@@ -266,7 +283,8 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
           messageId: messageId,
           receiverUsername: receiverUserData.name,
           senderUsername: senderUserData.name,
-          messageType: messageType
+          messageType: messageType,
+          messageReply: messageReply
       );
     }catch (e){
       throw ServerException(e.toString());

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:ngandika_app/data/models/message_reply_model.dart';
 
 import '../../../../data/models/message_model.dart';
 import '../../../../data/repository/chat_repository.dart';
@@ -14,8 +15,34 @@ class ChatCubit extends Cubit<ChatState> {
   int selectedMessageIndex = -1; // Add the isPressed variable here
   ChatCubit(this.repository) : super(ChatInitial());
 
+  MessageReplyModel? messageReplay;
+
+  //set messageReplay to null if user click cancel replay
+  void cancelReplay() {
+    messageReplay = null;
+    emit(CancelReplayState());
+  }
+
+  //when user swipe it'll insert the value from parameter into messageReplay
+  void onMessageSwipe({
+    required String message,
+    required bool isMe,
+    required MessageType messageType,
+    required String repliedTo
+  }) {
+    messageReplay = MessageReplyModel(
+      message: message,
+      isMe: isMe,
+      messageType: messageType,
+      repliedTo: repliedTo,
+    );
+    emit(MessageSwipeState());
+  }
+
   Future<void> sendTextMessage({required String text, required String receiverId}) async {
-    final result = await repository.sendTextMessage(text: text, receiverId: receiverId);
+    final result = await repository.sendTextMessage(text: text, receiverId: receiverId, messageReply: messageReplay);
+    //set messageReplay to null after sending data and it'll make replay preview disappear
+    messageReplay = null;
     result.fold(
       (error) => emit(ChatErrorState(error.message)),
       (success) => emit(SendTextMessageSuccess()),
@@ -27,11 +54,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendFileMessage({required File file, required String receiverId, required MessageType messageType}) async {
-    final result = await repository.sendFileMessage(
-        file: file,
-        receiverId: receiverId,
-        messageType:
-        messageType);
+    final result = await repository.sendFileMessage(file: file, receiverId: receiverId, messageType: messageType, messageReply: messageReplay);
+    messageReplay = null;
     result.fold(
       (e) => emit(ChatErrorState(e.message)),
       (success) => emit(SendFileMessageSuccess()),
@@ -43,7 +67,8 @@ class ChatCubit extends Cubit<ChatState> {
     String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
     String newGifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
 
-    final result = await repository.sendGIFMessage(gifUrl: newGifUrl, receiverId: receiverId);
+    final result = await repository.sendGIFMessage(gifUrl: newGifUrl, receiverId: receiverId, messageReply: messageReplay);
+    messageReplay = null;
     result.fold(
           (error) => emit(ChatErrorState(error.message)),
           (success) => emit(SendTextMessageSuccess()),
@@ -62,4 +87,5 @@ class ChatCubit extends Cubit<ChatState> {
     selectedMessageIndex = -1; // Clear the selectedIndex value
     emit(SelectedMessageIndexCleared());
   }
+
 }

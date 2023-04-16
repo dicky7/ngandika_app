@@ -36,7 +36,7 @@ class _VideoMessagePreviewState extends State<VideoMessagePreview> {
       appBar: AppBarMessagePreview(messageData: widget.messageData),
       body: Center(
         child: AspectRatio(
-          aspectRatio: 1/1,
+          aspectRatio: 9/16,
           child: Stack(
             children: [
               CachedVideoPlayer(_videoPlayerController),

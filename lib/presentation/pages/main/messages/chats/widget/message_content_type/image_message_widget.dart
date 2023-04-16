@@ -6,13 +6,14 @@ import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/messa
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/preview_message_content/image_message_preview.dart';
 
 import '../../../../../../../data/models/message_model.dart';
+import '../../../../../../../utils/styles/style.dart';
 import '../../../../../../bloc/message/chat/chat_state.dart';
 
 class ImageMessageWidget extends StatelessWidget {
   final MessageModel messageData;
+  final bool isSender;
 
-  const ImageMessageWidget({Key? key, required this.messageData})
-      : super(key: key);
+  const ImageMessageWidget({Key? key, required this.messageData, required this.isSender}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class ImageMessageWidget extends StatelessWidget {
             children: [
               CachedNetworkImage(
                 imageUrl: messageData.text,
-                maxHeightDiskCache: 390,
+                maxHeightDiskCache: 380,
                 fit: BoxFit.cover,
                 // ignore: prefer_const_constructors
                 placeholder: (context, url) => CircularProgressIndicator(),
@@ -36,7 +37,11 @@ class ImageMessageWidget extends StatelessWidget {
               Positioned(
                 bottom: 2,
                 right: 2,
-                child: TimeSentMessageWidget(messageData: messageData),
+                child: TimeSentMessageWidget(
+                    isSender: isSender,
+                    messageData: messageData,
+                    colors: isSender ? kPrimaryColor : kGreyColor
+                ),
               )
             ],
           ),

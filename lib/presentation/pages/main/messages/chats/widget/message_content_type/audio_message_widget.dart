@@ -7,8 +7,9 @@ import 'package:ngandika_app/utils/styles/style.dart';
 
 class AudioMessageWidget extends StatefulWidget {
   final MessageModel messageData;
+  final bool isSender;
 
-  const AudioMessageWidget({Key? key, required this.messageData}) : super(key: key);
+  const AudioMessageWidget({Key? key, required this.messageData, required this.isSender}) : super(key: key);
 
   @override
   State<AudioMessageWidget> createState() => _AudioMessageWidgetState();
@@ -72,7 +73,7 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget> {
             },
             child: Icon(
               isPlaying ? Icons.pause : Icons.play_arrow_rounded,
-              color: kPrimaryColor,
+              color: kBlackColor,
               size: 40,
             ),
           ),
@@ -113,9 +114,13 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget> {
                       (newTiming.toString() == "null")
                           ? "0:00"
                           : newTiming.toString().split('.').first.substring(3),
-                      style: context.bodySmall?.copyWith(color: kPrimaryColor),
+                      style: context.bodySmall?.copyWith(color: widget.isSender ? kPrimaryColor : kBlackColor),
                     ),
-                    TimeSentMessageWidget(messageData: widget.messageData,)
+                    TimeSentMessageWidget(
+                        isSender: widget.isSender,
+                        messageData: widget.messageData,
+                        colors: widget.isSender ? kPrimaryColor : kGreyColor
+                    )
                   ],
                 )
               ],

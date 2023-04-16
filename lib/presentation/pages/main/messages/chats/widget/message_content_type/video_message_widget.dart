@@ -5,10 +5,13 @@ import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/messa
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/preview_message_content/video_message_preview.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../../../../../utils/styles/style.dart';
+
 class VideoMessageWidget extends StatefulWidget {
   final MessageModel messageData;
+  final bool isSender;
 
-  const VideoMessageWidget({Key? key, required this.messageData}) : super(key: key);
+  const VideoMessageWidget({Key? key, required this.messageData, required this.isSender}) : super(key: key);
 
   @override
   State<VideoMessageWidget> createState() => _VideoMessageWidgetState();
@@ -44,7 +47,7 @@ class _VideoMessageWidgetState extends State<VideoMessageWidget> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: AspectRatio(
-            aspectRatio: 9/16,
+            aspectRatio: 16 / 9,
             child: Stack(
               children: [
                 CachedVideoPlayer(_videoPlayerController),
@@ -52,7 +55,11 @@ class _VideoMessageWidgetState extends State<VideoMessageWidget> {
                 Positioned(
                   bottom: 2,
                   right: 2,
-                  child: TimeSentMessageWidget(messageData: widget.messageData),
+                  child: TimeSentMessageWidget(
+                      messageData: widget.messageData,
+                      colors: widget.isSender ? kPrimaryColor : kGreyColor,
+                      isSender: widget.isSender,
+                  ),
                 )
               ],
             ),
@@ -81,6 +88,7 @@ class _VideoMessageWidgetState extends State<VideoMessageWidget> {
         icon: Icon(
           isPlay ? Icons.pause_circle : Icons.play_circle,
           size: 40,
+          color: kBlackColor,
         ),
       ),
     );
