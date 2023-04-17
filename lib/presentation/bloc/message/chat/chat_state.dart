@@ -28,3 +28,5 @@ class SelectedMessageIndexCleared extends ChatState{}
 
 class CancelReplayState extends ChatState{}
 class MessageSwipeState extends ChatState{}
+
+class MessageSeenSuccess extends ChatState{}

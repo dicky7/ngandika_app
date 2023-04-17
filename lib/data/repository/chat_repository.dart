@@ -27,6 +27,8 @@ abstract class ChatRepository {
     required String receiverId,
     required MessageType messageType,
     required MessageReplyModel? messageReply});
+
+  Future<Either<Failure,void>> setMessageSeen(String receiverId, String messageId);
 }
 
 class ChatRepositoryImpl extends ChatRepository {
@@ -79,6 +81,16 @@ class ChatRepositoryImpl extends ChatRepository {
       return right(result);
     } on ServerException catch (e) {
       return left(ServerFailure(e.message.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> setMessageSeen(String receiverId, String messageId) async{
+    try{
+      final result = await remoteDataSource.setMessageSeen(receiverId, messageId);
+      return right(result);
+    }on ServerException catch(e){
+      return left(ServerFailure(e.message));
     }
   }
 }

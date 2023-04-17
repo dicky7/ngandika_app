@@ -7,6 +7,7 @@ import 'package:ngandika_app/data/models/chat_contact_model.dart';
 import 'package:ngandika_app/data/models/user_model.dart';
 import 'package:ngandika_app/utils/enums/message_type.dart';
 import 'package:ngandika_app/utils/error/exception.dart';
+import 'package:ngandika_app/utils/error/failure.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../models/message_model.dart';
@@ -17,6 +18,7 @@ abstract class ChatRemoteDataSource {
   Future<void> sendGIFMessage({required String gifUrl, required String receiverId, required MessageReplyModel? messageReply});
   Stream<List<MessageModel>> getChatStream(String receiverId);
   Future<void> sendFileMessage({required File file, required String receiverId, required MessageType messageType, required MessageReplyModel? messageReply});
+  Future<void> setMessageSeen(String receiverId, String messageId);
 
 }
 
@@ -303,6 +305,38 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
     //Finally, the method gets the download URL of the uploaded file by calling the getDownloadURL method on the TaskSnapshot object, and returns it as a String.
     String downloadUrl = await snapshot.ref.getDownloadURL();
     return downloadUrl;
+  }
+
+  //The function for marking a message as seen
+  //Inside the function, there are two update operations being performed using await on two different documents in Firestore.
+
+  @override
+  Future<void> setMessageSeen(String receiverId, String messageId) async{
+    try{
+      // The first update operation marks the message as seen in the sender's chat,
+      // The isSeen field is updated to true in both cases, indicating that the message has been seen.
+      await firestore
+          .collection("users")
+          .doc(auth.currentUser!.uid)
+          .collection("chats")
+          .doc(receiverId)
+          .collection("messages")
+          .doc(messageId)
+          .update({'isSeen': true});
+
+      // while the second update operation marks the same message as seen in the receiver's chat.
+      await firestore
+          .collection("users")
+          .doc(receiverId)
+          .collection("chats")
+          .doc(auth.currentUser!.uid)
+          .collection("messages")
+          .doc(messageId)
+          .update({'isSeen': true});
+
+    }catch (e){
+      throw ServerException(e.toString());
+    }
   }
 
 }

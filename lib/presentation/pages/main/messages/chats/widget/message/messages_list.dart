@@ -50,6 +50,12 @@ class _MessagesListState extends State<MessagesList> {
           padding: const EdgeInsets.symmetric(vertical: 20),
           itemBuilder: (context, index) {
             var messageData = snapshot.data![index];
+
+            //set chat message seen
+            // if message not seen and receiver not equal the update seen to true because we already in listview or open the chat
+            if(!messageData.isSeen && widget.receiverId != messageData.receiverId){
+              context.read<ChatCubit>().setMessageSeen(widget.receiverId, messageData.messageId);
+            }
             return Column(
               children: [
                 //If the message is the first one in the list or if it was sent on a different day than the previous message, a TagChatTime widget should be displayed.

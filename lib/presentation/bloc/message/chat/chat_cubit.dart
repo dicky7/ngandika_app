@@ -88,4 +88,12 @@ class ChatCubit extends Cubit<ChatState> {
     emit(SelectedMessageIndexCleared());
   }
 
+  Future<void> setMessageSeen(String receiverId, String messageId) async{
+    final result = await repository.setMessageSeen(receiverId, messageId);
+    result.fold(
+      (l) => emit(ChatErrorState(l.message)),
+      (r) => emit(MessageSeenSuccess()),
+    );
+  }
+
 }

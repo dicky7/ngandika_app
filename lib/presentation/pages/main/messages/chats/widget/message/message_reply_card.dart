@@ -30,7 +30,7 @@ class MessageReplyCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: isMessageCard ? Colors.grey.shade200 : Colors.black.withOpacity(0.03),
+          color: Colors.black.withOpacity(0.05),
           border: Border(
             left: BorderSide(
               width: 5,
@@ -49,7 +49,7 @@ class MessageReplyCard extends StatelessWidget {
                     isMe ? "You" : repliedTo,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: isMe ? kBlueLight : kBlue
+                      color: isMe ? kBlue : kBlueDark
                     ),
                   ),
                 ),

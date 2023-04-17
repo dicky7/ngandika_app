@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ngandika_app/data/models/message_model.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/extensions/time_extension.dart';
+import 'package:ngandika_app/utils/styles/style.dart';
 
 class TimeSentMessageWidget extends StatelessWidget {
   final MessageModel messageData;
@@ -25,9 +26,9 @@ class TimeSentMessageWidget extends StatelessWidget {
           const SizedBox(width: 5),
           if(isSender)
             Icon(
-              Icons.done_all,
+              messageData.isSeen ? Icons.done_all : Icons.check,
               size: 20,
-              color: colors,
+              color: messageData.isSeen ? kBlueLight2 : kGreyColor,
             ),
         ],
       ),
