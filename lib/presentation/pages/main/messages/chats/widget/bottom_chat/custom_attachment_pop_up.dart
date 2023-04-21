@@ -50,10 +50,10 @@ class CustomAttachmentPopUp extends StatelessWidget {
                   color: Colors.redAccent,
                   icon: Icons.camera_alt,
                   onPress: () {
-                    Navigator.pushNamed(context, CameraPage.routeName, arguments: CameraPage(
-                        receiverId: receiverId,
-                        isCameraChat: true
-                    ));
+                    Navigator.pushNamed(
+                        context,
+                        CameraPage.routeName,
+                        arguments: CameraPage(receiverId: receiverId));
                   },
                 ),
                 AttachmentCardItem(
@@ -95,7 +95,6 @@ class CustomAttachmentPopUp extends StatelessWidget {
           context,
           ImagePreviewPage.routeName,
           arguments: ImagePreviewPage(
-              isCameraChat: true,
               imageFilePath: image.path,
               receiverId: receiverId,)
       );

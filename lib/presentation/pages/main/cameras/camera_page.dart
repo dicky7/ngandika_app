@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngandika_app/data/models/user_model.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/appbar/camera_app_bar.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/image_preview_page.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/video_preview_page.dart';
@@ -11,16 +13,17 @@ import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
 import '../../../../utils/functions/image_griphy_picker.dart';
+import '../../../bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
+import '../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
 
 late List<CameraDescription> cameras;
 
 class CameraPage extends StatefulWidget {
   static const routeName = "camera";
 
-  // to define where camera is open up
-  final bool isCameraChat;
-  final String receiverId;
-  const CameraPage({Key? key, required this.receiverId, required this.isCameraChat}) : super(key: key);
+  final String? receiverId;
+  final UserModel? userData;
+  const CameraPage({Key? key, this.receiverId, this.userData}) : super(key: key);
 
   @override
   State<CameraPage> createState() => _CameraPageState();
@@ -51,32 +54,39 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: CameraAppBar(
-        isFlashOn: isFlashOn,
-        onFlashPressed: onFlashPressed,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                buildPreviewImage(),
-                isRecording ? buildTimerRecording() : const SizedBox(),
-                buildCameraButton()
-              ],
-            ),
+    return Builder(
+      builder: (context) {
+        context.read<GetAllContactsCubit>().getAllContacts().then((value) {
+          context.read<GetContactsOnAppCubit>().getContactsOnApp();
+        });
+        return Scaffold(
+          backgroundColor: Colors.black,
+          appBar: CameraAppBar(
+            isFlashOn: isFlashOn,
+            onFlashPressed: onFlashPressed,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 10),
-            child: Text(
-              'Hold for video, tap for photo',
-              style: TextStyle(fontSize: 16, color: kPrimaryColor),
-            ),
+          body: Column(
+            children: [
+              Expanded(
+                child: Stack(
+                  children: [
+                    buildPreviewImage(),
+                    isRecording ? buildTimerRecording() : const SizedBox(),
+                    buildCameraButton()
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 10),
+                child: Text(
+                  'Hold for video, tap for photo',
+                  style: TextStyle(fontSize: 16, color: kPrimaryColor),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      }
     );
   }
 
@@ -142,7 +152,6 @@ class _CameraPageState extends State<CameraPage> {
             color: kPrimaryColor,
             iconSize: 30,
           )
-
         ],
       ),
     );
@@ -170,9 +179,9 @@ class _CameraPageState extends State<CameraPage> {
           context,
           ImagePreviewPage.routeName,
           arguments: ImagePreviewPage(
-              imageFilePath: image.path,
-              isCameraChat: widget.isCameraChat,
-              receiverId: widget.receiverId
+            imageFilePath: image.path,
+            receiverId: widget.receiverId,
+            userData: widget.userData,
           )
       );
     }
@@ -210,8 +219,9 @@ class _CameraPageState extends State<CameraPage> {
           ImagePreviewPage.routeName,
           arguments: ImagePreviewPage(
               imageFilePath: file.path,
-              isCameraChat: widget.isCameraChat,
-              receiverId: widget.receiverId)
+              receiverId: widget.receiverId,
+              userData: widget.userData,
+          )
       );
     }
   }
@@ -232,9 +242,10 @@ class _CameraPageState extends State<CameraPage> {
     });
     if(!mounted) return;
     Navigator.pushNamed(context, VideoPreviewPage.routeName, arguments: VideoPreviewPage(
-        isCameraChat: widget.isCameraChat,
         receiverId: widget.receiverId,
-        videoFilePath: videoPath.path));
+        videoFilePath: videoPath.path,
+        userData: widget.userData,
+    ));
 
   }
 

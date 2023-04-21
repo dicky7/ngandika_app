@@ -9,6 +9,7 @@ abstract class UserRepository {
   Future<Either<Failure, UserModel>> getCurrentUserData();
   Stream<UserModel> getUserById(String id);
   Future<Either<Failure, void>> setUserStateStatus(bool isOnline);
+  Future<Either<Failure, void>> updateProfilePic(String path);
 }
 
 class UserRepositoryImpl extends UserRepository {
@@ -38,6 +39,16 @@ class UserRepositoryImpl extends UserRepository {
       return Right(result);
     } on FirebaseAuthException catch(e){
       return Left(ServerFailure(e.message!));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateProfilePic(String path) async{
+    final result = await userRemoteDataSource.updateProfilePic(path);
+    try {
+      return Right(result);
+    } on FirebaseAuthException catch (failure) {
+      return Left(ServerFailure(failure.message!));
     }
   }
 }

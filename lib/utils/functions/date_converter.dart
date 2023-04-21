@@ -77,6 +77,25 @@ class DateConverter {
     return '$hour:$minute $period';
   }
 
+  //The dateConverter24HoursMode method is used to convert a DateTime object to a string representation in 24-hour format. It calculates the difference
+  // between the current time and the input DateTime object, and returns the time in the format of hh:mm if the difference is greater
+  // than or equal to 1 hour, or the difference in minutes with the string 'minutes ago' if the difference is less than 1 hour.
+  static String dateConverter24HoursMode(DateTime dateTime) {
+    //The method first creates a new DateTime object for the current time using DateTime.now()
+    DateTime now = DateTime.now();
+    //It then calculates the difference between the current time and the input DateTime object using the difference method of the Duration class.
+    //The difference is stored in the difference variable as a Duration object.
+    Duration difference = now.difference(dateTime);
+    if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} minutes ago';
+    } else {
+      int hour = dateTime.hour;
+      String minute = dateTime.minute.toString().padLeft(2, '0');
+      return '$hour:$minute';
+    }
+  }
+
+
   //The dateConverterMonthNum method takes a string that represents a date in the format "yyyy-mm-dd hh:mm:ss" and
   // returns a string in the format "dd/mm" for the date.
   static String dateConverterMonthNum(String string) {

@@ -4,8 +4,9 @@ import '../../../../../../utils/styles/style.dart';
 
 class BottomFieldPreview extends StatelessWidget {
   final VoidCallback onSendButtonTaped;
+  final TextEditingController captionController;
 
-  const BottomFieldPreview({Key? key, required this.onSendButtonTaped}) : super(key: key);
+  const BottomFieldPreview({Key? key, required this.onSendButtonTaped, required this.captionController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class BottomFieldPreview extends StatelessWidget {
               ),
               child: TextField(
                 // onChanged: onTextFieldValueChanged,
-                // controller: messageController,
+                controller: captionController,
                 // focusNode: focusNode,
                 cursorColor: kGreyColor,
                 maxLines: null,

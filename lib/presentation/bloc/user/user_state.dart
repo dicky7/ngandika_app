@@ -21,15 +21,9 @@ class UserError extends UserState {
   List<Object> get props => [message];
 }
 
-class GetCurrentUserSuccess extends UserState {
-  final UserModel userModel;
-
-  GetCurrentUserSuccess(this.userModel);
-
-  @override
-  // TODO: implement props
-  List<Object> get props => [userModel];
-}
+class GetCurrentUserSuccess extends UserState {}
 
 class SetUserStatusSuccess extends UserState{}
 class SetUserStatusError extends UserState{}
+
+class UpdateProfilePicSuccess extends UserState{}

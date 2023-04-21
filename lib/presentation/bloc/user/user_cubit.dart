@@ -13,11 +13,15 @@ class UserCubit extends Cubit<UserState> {
     getCurrentUser();
   }
 
+  UserModel? userModel;
   Future<void> getCurrentUser() async {
     final result = await userRepository.getCurrentUserData();
     result.fold(
       (error) => emit(UserError(error.message)),
-      (success) => emit(GetCurrentUserSuccess(success)),
+      (success){
+        userModel = success;
+        emit(GetCurrentUserSuccess());
+      },
     );
   }
 
@@ -31,6 +35,14 @@ class UserCubit extends Cubit<UserState> {
     result.fold(
       (l) => emit(SetUserStatusError()),
       (r) => emit(SetUserStatusSuccess()),
+    );
+  }
+
+  Future<void> updateProfilePic(String path) async {
+    final result = await userRepository.updateProfilePic(path);
+    result.fold(
+          (l) => emit(UserError(l.message)),
+          (r) => emit(UpdateProfilePicSuccess()),
     );
   }
 }

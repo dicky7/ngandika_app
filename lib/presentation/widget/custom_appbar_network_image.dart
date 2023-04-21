@@ -14,8 +14,7 @@ class CustomAppbarNetworkImage extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           placeholder: (context, url) => const CircularProgressIndicator(),
-          errorWidget: (context, url, error) =>
-              Image.asset("assets/user_default.png"),
+          errorWidget: (context, url, error) => Image.asset("assets/user_default.png"),
           fit: BoxFit.cover,
         ),
       ),

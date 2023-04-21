@@ -8,7 +8,6 @@ import '../../../../../../../utils/styles/style.dart';
 class MessageReplyCard extends StatelessWidget {
   final bool showCloseButton;
   final bool isMe;
-  final bool isMessageCard;
   final String repliedTo;
   final String text;
   final MessageType repliedMessageType;
@@ -17,7 +16,6 @@ class MessageReplyCard extends StatelessWidget {
   const MessageReplyCard({
     Key? key,
     this.showCloseButton = false,
-    this.isMessageCard = false,
     required this.isMe,
     required this.repliedTo,
     required this.text,
@@ -30,12 +28,12 @@ class MessageReplyCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.05),
+          color: Colors.white38,
           border: Border(
             left: BorderSide(
               width: 5,
-              color: isMe ? kBlue : kBlueLight
-            )
+              color: isMe ? Colors.purpleAccent : kBlueLight2
+            ),
           )
         ),
         child: Column(

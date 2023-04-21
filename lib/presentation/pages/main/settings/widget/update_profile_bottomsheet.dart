@@ -1,17 +1,20 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:ngandika_app/utils/extensions/extenstions.dart';
-import 'package:ngandika_app/utils/functions/image_griphy_picker.dart';
-import 'package:ngandika_app/utils/styles/style.dart';
-
 //The function returns a Future<CroppedFile?>, indicating that the user may or may not select an image to crop. If the user selects an image and crops it,
 // the function returns the CroppedFile object representing the cropped image. If the user cancels the selection or cropping process,
 // the function returns null.
-Future<CroppedFile?> showUpdateProfilePictureBottomSheet(
-    BuildContext context) async {
-  return showModalBottomSheet<CroppedFile>(
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
+import 'package:ngandika_app/utils/extensions/extenstions.dart';
+
+import '../../../../../utils/functions/image_griphy_picker.dart';
+import '../../../onboarding/login/pick_profile_picture_bottomsheet.dart';
+
+Future<void> showUpdateProfilePictureBottomSheet(BuildContext context) async {
+  return showModalBottomSheet(
     context: context,
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -34,10 +37,8 @@ Future<CroppedFile?> showUpdateProfilePictureBottomSheet(
                 PickProfileImage(
                   title: "Camera",
                   icons: Icons.camera_alt,
-                  onTap: () async {
-                    CroppedFile? croppedFile =
-                        await updateImageFromCamera(context);
-                    Navigator.of(context).pop(croppedFile);
+                  onTap: ()  {
+                    updateImageFromCamera(context);
                   },
                 ),
                 const SizedBox(width: 30),
@@ -47,9 +48,9 @@ Future<CroppedFile?> showUpdateProfilePictureBottomSheet(
                 PickProfileImage(
                   title: "Gallery",
                   icons: Icons.image,
-                  onTap: () async {
-                    CroppedFile? croppedFile = await updateImageFromGallery(context);
-                    Navigator.of(context).pop(croppedFile);
+                  onTap: () {
+                    updateImageFromGallery(context);
+
                   },
                 ),
               ],
@@ -63,61 +64,26 @@ Future<CroppedFile?> showUpdateProfilePictureBottomSheet(
 
 // This  function that selects an image from the device's gallery, crops it to a specific size, and returns a CroppedFile object.
 // The function returns a Future that resolves to a CroppedFile object or null if an error occurs.
-Future<CroppedFile?> updateImageFromGallery(BuildContext context) async {
+void updateImageFromGallery(BuildContext context) async {
   File? image = await pickImageFromGallery(context);
   if (image != null) {
     CroppedFile? croppedFile = await cropImage(image.path);
     if (croppedFile != null) {
-      return croppedFile;
+      context.read<UserCubit>().updateProfilePic(croppedFile.path);
+      Navigator.pop(context);
     }
   }
-  return null;
 }
 
 // This  function that selects an image from the device's camera, crops it to a specific size, and returns a CroppedFile object.
 // The function returns a Future that resolves to a CroppedFile object or null if an error occurs.
-Future<CroppedFile?> updateImageFromCamera(BuildContext context) async {
+void updateImageFromCamera(BuildContext context) async {
   File? image = await pickImageFromCamera(context);
   if (image != null) {
     CroppedFile? croppedFile = await cropImage(image.path);
     if (croppedFile != null) {
-      return croppedFile;
+      context.read<UserCubit>().updateProfilePic(croppedFile.path);
+      Navigator.pop(context);
     }
-  }
-  return null;
-}
-
-class PickProfileImage extends StatelessWidget {
-  final String title;
-  final IconData icons;
-  final VoidCallback onTap;
-
-  const PickProfileImage(
-      {Key? key, required this.icons, required this.onTap, required this.title})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            margin: const EdgeInsets.only(top: 30, bottom: 20),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.black12)),
-            child: Icon(icons, color: kBlue),
-          ),
-        ),
-        Text(
-          title,
-          style: context.bodyLarge?.copyWith(color: kBlackColor),
-        )
-      ],
-    );
   }
 }

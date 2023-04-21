@@ -9,7 +9,7 @@ class ContactsChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ContactAppBar(),
+      appBar: ContactAppBar(),
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [ContactsChatStories(), ContactsChatList()],

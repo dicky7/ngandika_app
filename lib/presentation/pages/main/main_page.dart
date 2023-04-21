@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       case 2:
         return const CallPage();
       case 3:
-        return const SettingPage();
+        return  SettingPage();
       default:
         return const ContactsChatPage();
     }

@@ -67,23 +67,21 @@ class SelectContactRemoteDataSourceImpl extends SelectContactRemoteDataSource {
         final batch = firestore.batch();
         querySnapshot.docs.forEach((document) {
           final userData = UserModel.fromMap(document.data());
-          if (userData.uId != auth.currentUser!.uid) {
-            final data = {
-              'uId': userData.uId,
-              'profilePicture': userData.profilePicture,
-              'status': userData.status,
-              'name': userData.name,
-              // 'name': contact.displayName,
-            };
-            batch.set(
-                firestore
-                    .collection('contacts')
-                    .doc(auth.currentUser!.uid)
-                    .collection('users')
-                    .doc(userData.uId),
-                data);
-            contactsOnAppMap[userData.uId] = data;
-          }
+          final data = {
+            'uId': userData.uId,
+            'profilePicture': userData.profilePicture,
+            'status': userData.status,
+            'name': userData.name,
+            // 'name': contact.displayName,
+          };
+          batch.set(
+              firestore
+                  .collection('contacts')
+                  .doc(auth.currentUser!.uid)
+                  .collection('users')
+                  .doc(userData.uId),
+              data);
+          contactsOnAppMap[userData.uId] = data;
         });
         await batch.commit();
       }).whereType<Future>());

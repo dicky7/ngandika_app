@@ -10,6 +10,7 @@ import 'package:ngandika_app/presentation/bloc/message/chat_contacts/chat_contac
 import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/status/status_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/camera_page.dart';
 import 'package:ngandika_app/utils/routes/AppRoutes.dart';
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
           lazy: false,
           create: (context) => di.locator<ChatContactsCubit>(),
         ),
+        BlocProvider(
+          create: (context) => di.locator<StatusCubit>(),
+        )
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

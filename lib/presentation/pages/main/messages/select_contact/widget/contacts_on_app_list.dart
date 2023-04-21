@@ -33,6 +33,5 @@ class ContactsOnAppList extends StatelessWidget {
         );
       },
     );
-    ;
   }
 }

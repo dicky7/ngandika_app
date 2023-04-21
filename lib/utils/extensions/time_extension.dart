@@ -16,6 +16,11 @@ extension DateUtil on DateTime {
     return DateConverter.dateConverterHoursAmPmMode(this);
   }
 
+  //this extension using for status time createAt
+  String get getStatusTime24HoursMode {
+    return DateConverter.dateConverter24HoursMode(this);
+  }
+
   //this extension using for Chat Time Card
   String get getChatDayTime {
     return DateConverter.getLastSeenDayTime(this);

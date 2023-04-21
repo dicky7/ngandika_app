@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ngandika_app/data/models/message_model.dart';
+import 'package:ngandika_app/data/models/status_model.dart';
+import 'package:ngandika_app/data/models/user_model.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/camera_page.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/image_preview_page.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/video_preview_page.dart';
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/preview_message_content/image_message_preview.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/preview_message_content/video_message_preview.dart';
+import 'package:ngandika_app/presentation/pages/main/settings/widget/my_profile_detail_page.dart';
 
 import '../../presentation/pages/main/messages/chats/chat_page.dart';
 import '../../presentation/pages/main/messages/select_contact/select_contact_page.dart';
+import '../../presentation/pages/main/status/status_detail_page.dart';
 import '../../presentation/pages/onboarding/login/login_otp_page.dart';
 import '../../presentation/pages/onboarding/login/login_page.dart';
 import '../../presentation/pages/onboarding/login/login_profile_info_page.dart';
@@ -62,21 +66,37 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (context) => CameraPage(
               receiverId: arguments.receiverId,
-              isCameraChat: arguments.isCameraChat));
+              userData: arguments.userData,
+          ));
       case ImagePreviewPage.routeName:
         final arguments = settings.arguments as ImagePreviewPage;
         return MaterialPageRoute(
           builder: (context) => ImagePreviewPage(
-              isCameraChat: arguments.isCameraChat,
               imageFilePath: arguments.imageFilePath,
-              receiverId: arguments.receiverId));
+              receiverId: arguments.receiverId,
+              userData: arguments.userData,
+          ));
       case VideoPreviewPage.routeName:
         final arguments = settings.arguments as VideoPreviewPage;
         return MaterialPageRoute(
           builder: (context) => VideoPreviewPage(
-              isCameraChat: arguments.isCameraChat,
               receiverId: arguments.receiverId,
-              videoFilePath: arguments.videoFilePath));
+              videoFilePath: arguments.videoFilePath,
+              userData: arguments.userData,
+          ));
+      case StatusDetailPage.routeName:
+        final arguments = settings.arguments as StatusDetailPage;
+        return MaterialPageRoute(
+          builder: (context) => StatusDetailPage(
+              status: arguments.status,
+              myNumber: arguments.myNumber,
+          ),
+        );
+      case MyProfileDetailPage.routeName:
+        final arguments = settings.arguments as UserModel;
+        return MaterialPageRoute(
+          builder: (context) => MyProfileDetailPage(user: arguments),
+        );
       default:
         return MaterialPageRoute(builder: (context) => const SplashPage());
     }

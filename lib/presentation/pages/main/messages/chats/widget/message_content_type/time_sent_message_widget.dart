@@ -28,7 +28,7 @@ class TimeSentMessageWidget extends StatelessWidget {
             Icon(
               messageData.isSeen ? Icons.done_all : Icons.check,
               size: 20,
-              color: messageData.isSeen ? kBlueLight2 : kGreyColor,
+              color: messageData.isSeen ? kBlueLight2 : kPrimaryColor,
             ),
         ],
       ),

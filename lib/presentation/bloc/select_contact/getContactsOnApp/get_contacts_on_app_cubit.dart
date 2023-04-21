@@ -10,12 +10,16 @@ class GetContactsOnAppCubit extends Cubit<GetContactsOnAppState> {
 
   int _totalContacts =
       0; // class-level variable to store the total number of contacts
-  int get totalContacts =>
-      _totalContacts; // getter method to access the total number of contacts
+  int get totalContacts => _totalContacts; // getter method to access the total number of contacts
 
   Map<String, dynamic> _contactsOnApp = {};
 
   Map<String, dynamic> get contactsOnApp => _contactsOnApp;
+
+  List<String> _contactUid = [];
+
+  List<String> get contactUid => _contactUid; // to fetch user id on app for upload status
+
 
   Future<void> getContactsOnApp() async {
     emit(GetContactsOnAppLoading());
@@ -25,6 +29,10 @@ class GetContactsOnAppCubit extends Cubit<GetContactsOnAppState> {
         (success) {
       _totalContacts += success.length; // update total number of contacts
       _contactsOnApp.addAll(success);
+
+      // Extract uIds from success and store in _contactUid
+      _contactUid = success.values.map((value) => value['uId'] as String).toList();
+
       emit(GetContactsOnAppSuccess());
     });
   }

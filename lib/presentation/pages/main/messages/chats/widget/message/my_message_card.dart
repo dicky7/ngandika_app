@@ -65,7 +65,6 @@ class MyMessageCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: MessageReplyCard(
-                            isMessageCard: true,
                             isMe: message.repliedTo == message.senderName,
                             repliedTo: message.repliedTo,
                             text: message.repliedMessage,

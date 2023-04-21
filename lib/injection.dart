@@ -8,11 +8,13 @@ import 'package:ngandika_app/data/datasource/chat/chat_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/chat_contacts/chat_contacts_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/select_contact/select_contact_local_data_source.dart';
 import 'package:ngandika_app/data/datasource/select_contact/select_contact_remote_data_source.dart';
+import 'package:ngandika_app/data/datasource/status/status_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/user/user_remote_data_source.dart';
 import 'package:ngandika_app/data/repository/auth_repository.dart';
 import 'package:ngandika_app/data/repository/chat_contats_repository.dart';
 import 'package:ngandika_app/data/repository/chat_repository.dart';
 import 'package:ngandika_app/data/repository/select_contact_repository.dart';
+import 'package:ngandika_app/data/repository/status_repository.dart';
 import 'package:ngandika_app/data/repository/user_repository.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
@@ -20,6 +22,7 @@ import 'package:ngandika_app/presentation/bloc/message/chat_contacts/chat_contac
 import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/status/status_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,6 +53,9 @@ Future<void> init() async {
   locator.registerFactory(
     () => ChatContactsCubit(locator()),
   );
+  locator.registerFactory(
+    () => StatusCubit(locator()),
+  );
 
   /**
    * Data Source
@@ -61,7 +67,7 @@ Future<void> init() async {
     () => AuthLocalDataSourceImpl(locator()),
   );
   locator.registerLazySingleton<UserRemoteDataSource>(
-    () => UserRemoteDataSourceImpl(locator(), locator()),
+    () => UserRemoteDataSourceImpl(locator(), locator(), locator()),
   );
   locator.registerLazySingleton<SelectContactLocalDataSource>(
     () => SelectContactLocalDataSourceImpl(),
@@ -74,6 +80,9 @@ Future<void> init() async {
   );
   locator.registerLazySingleton<ChatContactsRemoteDataSource>(
     () => ChatContactsRemoteDataSourceImpl(locator(), locator()),
+  );
+  locator.registerLazySingleton<StatusRemoteDataSource>(
+    () => StatusRemoteDataSourceImpl(locator(), locator(), locator()),
   );
 
   /**
@@ -93,6 +102,9 @@ Future<void> init() async {
   );
   locator.registerLazySingleton<ChatContactsRepository>(
     () => ChatContactsRepositoryImpl(locator()),
+  );
+  locator.registerLazySingleton<StatusRepository>(
+    () => StatusRepositoryImpl(locator()),
   );
 
   //External

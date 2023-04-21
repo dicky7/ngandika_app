@@ -2,22 +2,24 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngandika_app/data/models/user_model.dart';
 import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/status/status_cubit.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/preview_app_bar_icon.dart';
 import 'package:ngandika_app/utils/enums/message_type.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
 import 'bottom_field_preview.dart';
 
 class VideoPreviewPage extends StatefulWidget {
   static const routeName = "video-preview";
 
-  // to define where camera is open up
-  final bool isCameraChat;
   final String videoFilePath;
-  final String receiverId;
+  final String? receiverId;
+  final UserModel? userData;
 
-  const VideoPreviewPage({Key? key, required this.isCameraChat, required this.receiverId, required this.videoFilePath}) : super(key: key);
+  const VideoPreviewPage({Key? key, this.receiverId, required this.videoFilePath, this.userData}) : super(key: key);
 
   @override
   State<VideoPreviewPage> createState() => _VideoPreviewPageState();
@@ -25,6 +27,7 @@ class VideoPreviewPage extends StatefulWidget {
 
 class _VideoPreviewPageState extends State<VideoPreviewPage> {
   late VideoPlayerController _controller;
+  final TextEditingController captionController = TextEditingController(text: "");
 
   @override
   void initState() {
@@ -61,12 +64,27 @@ class _VideoPreviewPageState extends State<VideoPreviewPage> {
               right: 0,
               left: 0,
               child: BottomFieldPreview(
+                captionController: captionController,
                 onSendButtonTaped: () {
-                  if (widget.isCameraChat) {
+                  if (widget.receiverId != null) {
                     context.read<ChatCubit>().sendFileMessage(
                         file: File(widget.videoFilePath),
-                        receiverId: widget.receiverId,
+                        receiverId: widget.receiverId!,
                         messageType: MessageType.video
+                    );
+                    //to back to chat screen
+                    int count = 0;
+                    Navigator.of(context).popUntil((route) => count++ >= 2);
+                  }else{
+                    List<String> contactUid = context.read<GetContactsOnAppCubit>().contactUid; // to fetch user id on app for upload status
+
+                    context.read<StatusCubit>().addStatus(
+                        username: widget.userData!.name,
+                        profilePicture: widget.userData!.profilePicture,
+                        phoneNumber: widget.userData!.phoneNumber,
+                        statusImage: File(widget.videoFilePath),
+                        uidOnAppContact: contactUid,
+                        caption: captionController.text.trim()
                     );
                     //to back to chat screen
                     int count = 0;

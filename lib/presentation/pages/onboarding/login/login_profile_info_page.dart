@@ -6,7 +6,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
 import 'package:ngandika_app/presentation/pages/onboarding/widgets/login_app_bar.dart';
 import 'package:ngandika_app/presentation/widget/custom_button.dart';
-import 'package:ngandika_app/presentation/widget/update_profile_picture_bottomsheet.dart';
+import 'package:ngandika_app/presentation/pages/onboarding/login/pick_profile_picture_bottomsheet.dart';
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 
 import '../../../../utils/functions/app_dialogs.dart';
@@ -30,7 +30,7 @@ class _LoginProfileInfoPageState extends State<LoginProfileInfoPage> {
 
   // Define a method to show the modal bottom sheet and select an image
   Future<void> _updateProfilePicture() async {
-    CroppedFile? croppedFile = await showUpdateProfilePictureBottomSheet(context);
+    CroppedFile? croppedFile = await showPickProfilePictureBottomSheet(context);
     if (croppedFile != null) {
       setState(() {
         //convert the selected CroppedFile object to a File

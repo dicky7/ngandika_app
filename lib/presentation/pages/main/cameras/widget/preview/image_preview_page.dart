@@ -7,24 +7,31 @@ import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/bott
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/preview_app_bar_icon.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
+import '../../../../../../data/models/user_model.dart';
 import '../../../../../../utils/enums/message_type.dart';
+import '../../../../../../utils/functions/app_dialogs.dart';
 import '../../../../../../utils/functions/image_griphy_picker.dart';
+import '../../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
+import '../../../../../bloc/status/status_cubit.dart';
 
 class ImagePreviewPage extends StatefulWidget {
   static const routeName = "image-preview";
 
-  // to define where camera is open up
-  final bool isCameraChat;
   String imageFilePath;
-  final String receiverId;
+  final String? receiverId;
+  final UserModel? userData;
 
-  ImagePreviewPage({Key? key, required this.imageFilePath, required this.receiverId, required this.isCameraChat}) : super(key: key);
+  ImagePreviewPage(
+      {Key? key, required this.imageFilePath, this.receiverId, this.userData})
+      : super(key: key);
 
   @override
   State<ImagePreviewPage> createState() => _ImagePreviewPageState();
 }
 
 class _ImagePreviewPageState extends State<ImagePreviewPage> {
+  final TextEditingController captionController = TextEditingController(text: "");
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -55,12 +62,27 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
               right: 0,
               left: 0,
               child: BottomFieldPreview(
+                captionController: captionController,
                 onSendButtonTaped: () {
-                  if (widget.isCameraChat) {
+                  if (widget.receiverId != null) {
                     context.read<ChatCubit>().sendFileMessage(
                         file: File(widget.imageFilePath),
-                        receiverId: widget.receiverId,
+                        receiverId: widget.receiverId!,
                         messageType: MessageType.image
+                    );
+                    //to back to chat screen
+                    int count = 0;
+                    Navigator.of(context).popUntil((route) => count++ >= 2);
+                  } else {
+                    List<String> contactUid = context.read<GetContactsOnAppCubit>().contactUid; // to fetch user id on app for upload status
+
+                    context.read<StatusCubit>().addStatus(
+                        username: widget.userData!.name,
+                        profilePicture: widget.userData!.profilePicture,
+                        phoneNumber: widget.userData!.phoneNumber,
+                        statusImage: File(widget.imageFilePath),
+                        uidOnAppContact: contactUid,
+                        caption: captionController.text.trim()
                     );
                     //to back to chat screen
                     int count = 0;
