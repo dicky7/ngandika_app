@@ -59,16 +59,18 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
     });
   }
 
+  //The updateProfilePic method is a function that updates the user's profile picture in Firebase.
   @override
   Future<void> updateProfilePic(String path) async {
     String uId = auth.currentUser!.uid;
-    //firstly delete previus image
+    //The method first deletes the previous profile picture by checking if the user has a profile picture and calling the _deleteFileFromFirebase method
+    // to remove the file from Firebase storage.
     var userData = await firestore.collection('users').doc(uId).get();
     UserModel user = UserModel.fromMap(userData.data()!);
     if(user.profilePicture.isNotEmpty){
       await _deleteFileFromFirebase(user.profilePicture);
     }
-    //then upload new image
+    //Then it uploads the new profile picture using the _storeFileToFirebase method and stores the download URL of the new picture in the Firestore database.
     String photoUrl = await _storeFileToFirebase(
       'profilePicture/$uId',
       File(path),
@@ -77,7 +79,8 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       'profilePicture': photoUrl,
     });
   }
-
+  
+  //The _deleteFileFromFirebase method is used to delete the previous profile picture from Firebase storage,
   Future<void> _deleteFileFromFirebase(String path)async{
     return await firebaseStorage.refFromURL(path).delete();
   }
