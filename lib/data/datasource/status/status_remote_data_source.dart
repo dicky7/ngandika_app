@@ -58,7 +58,7 @@ class StatusRemoteDataSourceImpl extends StatusRemoteDataSource{
           .get();
 
       //If the user has previously uploaded a status, the method retrieves the existing status data from Firestore, adds the new photo URL to the photoUrl
-      // field, and updates the Firestore document.
+      // field, and updates the Firestore document with current time uploaded.
       if (statusesSnapshot.docs.isNotEmpty) {
         StatusModel status = StatusModel.fromMap(statusesSnapshot.docs[0].data());
         statusImageUrls = status.photoUrl;
@@ -66,7 +66,10 @@ class StatusRemoteDataSourceImpl extends StatusRemoteDataSource{
         await firestore
             .collection("status")
             .doc(statusesSnapshot.docs[0].id)
-            .update({'photoUrl': statusImageUrls});
+            .update({
+              'photoUrl': statusImageUrls,
+              "createdAt": DateTime.now().millisecondsSinceEpoch
+            });
         return;
       }
       //If the user has not uploaded a status before, the method creates a new StatusModel object and adds it to Firestore.
@@ -120,11 +123,13 @@ class StatusRemoteDataSourceImpl extends StatusRemoteDataSource{
           .where('createdAt', isGreaterThan: DateTime.now().subtract(const Duration(hours: 24)).millisecondsSinceEpoch)
           .orderBy('createdAt',descending: true);
 
+      print("query $query");
       //The method then listens to changes to the query using snapshots() and retrieves any new or updated documents matching the query criteria.
       await for (QuerySnapshot<Map<String, dynamic>> statusesSnapshot in query.snapshots()) {
-        statusData.clear();
+        print("statusesSnapshot $statusesSnapshot");
         //For each snapshot, it creates a new list of StatusModel objects by iterating through each document in the snapshot and converting its data to a StatusModel object.
         statusesSnapshot.docs.forEach((doc) {
+          print("status $doc");
           final StatusModel tempStatus = StatusModel.fromMap(doc.data());
           statusData.add(tempStatus);
         });

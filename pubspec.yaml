@@ -43,15 +43,19 @@ dependencies:
   intl: ^0.17.0
   uuid: ^3.0.7
   camera: ^0.10.3+2
-  video_player: ^2.4.9
-  cached_video_player: ^2.0.4
+  video_player: ^2.6.0
+  cached_video_player:
+    git:
+      url: https://github.com/vikram25897/flutter_cached_video_player
+      ref: feature/gradle_version_bump
   emoji_picker_flutter: ^1.5.2
   giphy_get: ^3.3.1
   shimmer: ^2.0.0
-  audio_waveforms: ^1.0.3
+  audio_waveforms: ^1.0.4
   audioplayers: ^3.0.1
   swipe_to: ^1.0.2
   story_view: ^0.14.0
+  lottie: ^2.3.2
 
   firebase_auth: ^4.3.0
   firebase_core: ^2.1.1

@@ -79,7 +79,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       'profilePicture': photoUrl,
     });
   }
-  
+
   //The _deleteFileFromFirebase method is used to delete the previous profile picture from Firebase storage,
   Future<void> _deleteFileFromFirebase(String path)async{
     return await firebaseStorage.refFromURL(path).delete();

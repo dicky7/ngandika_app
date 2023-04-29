@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/groups/groups_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/main_page/page_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/bottom_chat/bottom_chat_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
@@ -54,6 +55,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => di.locator<GetContactsNotOnAppCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.locator<GroupsCubit>(),
         ),
         BlocProvider(
           create: (context) => BottomChatCubit(),

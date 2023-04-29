@@ -11,6 +11,7 @@ import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
 import '../../../../../utils/functions/app_dialogs.dart';
+import '../../../../bloc/groups/groups_cubit.dart';
 import '../../../../bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 
 class SelectContactPage extends StatelessWidget {
@@ -49,17 +50,16 @@ class SelectContactPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const NewGroupContact(),
+                  NewGroupContact(
+                    contactOnApp: context.read<GetContactsOnAppCubit>().contactsOnApp,
+                  ),
                   titleText(context, "Contacts on App"),
                   ContactsOnAppList(
-                    contactsOnApp:
-                        context.read<GetContactsOnAppCubit>().contactsOnApp,
+                    contactsOnApp: context.read<GetContactsOnAppCubit>().contactsOnApp,
                   ),
                   titleText(context, "Invite to Join Ngandika"),
                   ContactsNotOnAppList(
-                    contactsNotOnApp: context
-                        .read<GetContactsNotOnAppCubit>()
-                        .contactsNotOnApp,
+                    contactsNotOnApp: context.read<GetContactsNotOnAppCubit>().contactsNotOnApp,
                   ),
                 ],
               ),

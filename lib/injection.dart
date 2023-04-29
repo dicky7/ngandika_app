@@ -6,6 +6,7 @@ import 'package:ngandika_app/data/datasource/auth/auth_local_data_source.dart';
 import 'package:ngandika_app/data/datasource/auth/auth_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/chat/chat_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/chat_contacts/chat_contacts_remote_data_source.dart';
+import 'package:ngandika_app/data/datasource/groups/groups_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/select_contact/select_contact_local_data_source.dart';
 import 'package:ngandika_app/data/datasource/select_contact/select_contact_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/status/status_remote_data_source.dart';
@@ -13,10 +14,12 @@ import 'package:ngandika_app/data/datasource/user/user_remote_data_source.dart';
 import 'package:ngandika_app/data/repository/auth_repository.dart';
 import 'package:ngandika_app/data/repository/chat_contats_repository.dart';
 import 'package:ngandika_app/data/repository/chat_repository.dart';
+import 'package:ngandika_app/data/repository/groups_repository.dart';
 import 'package:ngandika_app/data/repository/select_contact_repository.dart';
 import 'package:ngandika_app/data/repository/status_repository.dart';
 import 'package:ngandika_app/data/repository/user_repository.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/groups/groups_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/chat_contacts/chat_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
@@ -46,6 +49,9 @@ Future<void> init() async {
   );
   locator.registerFactory(
     () => GetContactsNotOnAppCubit(locator()),
+  );
+  locator.registerFactory(
+        () => GroupsCubit(locator()),
   );
   locator.registerFactory(
     () => ChatCubit(locator()),
@@ -84,6 +90,9 @@ Future<void> init() async {
   locator.registerLazySingleton<StatusRemoteDataSource>(
     () => StatusRemoteDataSourceImpl(locator(), locator(), locator()),
   );
+  locator.registerLazySingleton<GroupsRemoteDataSource>(
+    () => GroupsRemoteDataSourceImpl(locator(), locator(), locator()),
+  );
 
   /**
    * Repository
@@ -105,6 +114,9 @@ Future<void> init() async {
   );
   locator.registerLazySingleton<StatusRepository>(
     () => StatusRepositoryImpl(locator()),
+  );
+  locator.registerLazySingleton<GroupsRepository>(
+    () => GroupsRepositoryImpl(locator()),
   );
 
   //External

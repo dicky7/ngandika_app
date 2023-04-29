@@ -8,6 +8,7 @@ import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/vide
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/preview_message_content/image_message_preview.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/preview_message_content/video_message_preview.dart';
+import 'package:ngandika_app/presentation/pages/main/messages/groups/create_group_page.dart';
 import 'package:ngandika_app/presentation/pages/main/settings/widget/my_profile_detail_page.dart';
 
 import '../../presentation/pages/main/messages/chats/chat_page.dart';
@@ -44,6 +45,13 @@ class AppRoutes {
       case SelectContactPage.routeName:
         return MaterialPageRoute(
             builder: (context) => const SelectContactPage());
+      case CreateGroupPage.routeName:
+        final arguments = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => CreateGroupPage(
+            contactOnApp: arguments,
+          ),
+        );
       case ChatPage.routeName:
         final arguments = settings.arguments as ChatPage;
         return MaterialPageRoute(

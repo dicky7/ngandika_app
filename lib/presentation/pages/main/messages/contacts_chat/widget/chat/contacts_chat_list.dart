@@ -7,6 +7,7 @@ import 'package:ngandika_app/presentation/pages/main/messages/contacts_chat/widg
 import 'package:ngandika_app/presentation/widget/custom_loading.dart';
 
 import '../../../../../../../utils/helpers.dart';
+import '../../../../../../widget/custom_empty.dart';
 
 class ContactsChatList extends StatelessWidget {
   const ContactsChatList({
@@ -24,18 +25,22 @@ class ContactsChatList extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CustomLoading();
         }
-        return ListView.builder(
-          padding:
-              const EdgeInsets.only(bottom: 100, top: 10, left: 2, right: 2),
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: snapshot.data!.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            var chatContactData = snapshot.data![index];
-            return ContactsChatCard(chatContactData: chatContactData);
-          },
-        );
-        ;
+        else{
+          if (snapshot.data!.isNotEmpty) {
+            return ListView.builder(
+              padding: const EdgeInsets.only(bottom: 100, top: 10, left: 2, right: 2),
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: snapshot.data!.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                var chatContactData = snapshot.data![index];
+                return ContactsChatCard(chatContactData: chatContactData);
+              },
+            );
+          } else{
+            return const CustomEmpty(text: "Messages Empty");
+          }
+        }
       },
     );
   }
