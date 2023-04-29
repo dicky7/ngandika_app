@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_contacts/contact.dart';
+import 'package:ngandika_app/data/models/group_model.dart';
 import 'package:ngandika_app/data/repository/groups_repository.dart';
 
-import '../../../data/repository/chat_repository.dart';
 
 part 'groups_state.dart';
 
@@ -32,4 +32,11 @@ class GroupsCubit extends Cubit<GroupsState> {
       },
     );
   }
+
+  Stream<List<GroupModel>> getChatGroups() {
+    return repository.getChatGroups();
+  }
+
+  Stream<int> getNumOfMessageNotSeen(String senderId) =>
+      repository.getNumOfMessageNotSeen(senderId);
 }

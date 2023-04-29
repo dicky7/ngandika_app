@@ -28,7 +28,7 @@ class ContactsChatList extends StatelessWidget {
         else{
           if (snapshot.data!.isNotEmpty) {
             return ListView.builder(
-              padding: const EdgeInsets.only(bottom: 100, top: 10, left: 2, right: 2),
+              padding: const EdgeInsets.only(top: 5, left: 2, right: 2),
               physics: const NeverScrollableScrollPhysics(),
               itemCount: snapshot.data!.length,
               shrinkWrap: true,

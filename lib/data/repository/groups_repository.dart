@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:ngandika_app/data/datasource/groups/groups_remote_data_source.dart';
+import 'package:ngandika_app/data/models/group_model.dart';
 import 'package:ngandika_app/utils/error/failure.dart';
 
 import '../../utils/error/exception.dart';
 
 abstract class GroupsRepository{
   Future<Either<Failure, void>> createGroup(String name, File profilePicture, List<String> selectedUidContact);
+  Stream<List<GroupModel>> getChatGroups();
+  Stream<int> getNumOfMessageNotSeen(String senderId);
 }
 class GroupsRepositoryImpl extends GroupsRepository{
   final GroupsRemoteDataSource remoteDataSource;
@@ -23,6 +26,17 @@ class GroupsRepositoryImpl extends GroupsRepository{
     }on ServerException catch(e){
       return left(ServerFailure(e.message));
     }
+  }
+
+  @override
+  Stream<List<GroupModel>> getChatGroups() {
+    return remoteDataSource.getChatGroups();
+  }
+
+  @override
+  Stream<int> getNumOfMessageNotSeen(String senderId) {
+    // TODO: implement getNumOfMessageNotSeen
+    throw UnimplementedError();
   }
 
 }

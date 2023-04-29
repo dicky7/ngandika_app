@@ -11,7 +11,6 @@ import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
 import '../../../../../utils/functions/app_dialogs.dart';
-import '../../../../bloc/groups/groups_cubit.dart';
 import '../../../../bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 
 class SelectContactPage extends StatelessWidget {

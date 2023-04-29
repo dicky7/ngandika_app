@@ -10,6 +10,8 @@ import 'package:uuid/uuid.dart';
 
 abstract class GroupsRemoteDataSource {
   Future<void> createGroup(String name, File profilePicture, List<String> selectedUidContact);
+  Stream<List<GroupModel>> getChatGroups();
+  Stream<int> getNumOfMessageNotSeen(String senderId);
 }
 
 class GroupsRemoteDataSourceImpl extends GroupsRemoteDataSource {
@@ -40,6 +42,7 @@ class GroupsRemoteDataSourceImpl extends GroupsRemoteDataSource {
           groupId: groupId,
           lastMessage: '',
           groupProfilePic: groupPhotoUrl,
+          timeSent: DateTime.now(),
           membersUid: [auth.currentUser!.uid, ...selectedUidContact]
       );
 
@@ -62,6 +65,29 @@ class GroupsRemoteDataSourceImpl extends GroupsRemoteDataSource {
     //Finally, the method gets the download URL of the uploaded file by calling the getDownloadURL method on the TaskSnapshot object, and returns it as a String.
     String downloadUrl = await snapshot.ref.getDownloadURL();
     return downloadUrl;
+  }
+
+  @override
+  Stream<List<GroupModel>> getChatGroups() {
+    return firestore
+        .collection("groups")
+        .snapshots()
+        .asyncMap((event) {
+      List<GroupModel> groupsMessage = [];
+      for (var document in event.docs) {
+        var chatGroup = GroupModel.fromMap(document.data());
+        if (chatGroup.membersUid.contains(auth.currentUser!.uid)) {
+         groupsMessage.add(chatGroup);
+        }
+      }
+      return groupsMessage;
+    });
+  }
+
+  @override
+  Stream<int> getNumOfMessageNotSeen(String senderId) {
+    // TODO: implement getNumOfMessageNotSeen
+    throw UnimplementedError();
   }
 
 

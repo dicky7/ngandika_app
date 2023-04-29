@@ -4,6 +4,7 @@ class GroupModel{
   final String groupId;
   final String lastMessage;
   final String groupProfilePic;
+  final DateTime timeSent;
   final List<String> membersUid;
 
   const GroupModel({
@@ -13,6 +14,7 @@ class GroupModel{
     required this.lastMessage,
     required this.groupProfilePic,
     required this.membersUid,
+    required this.timeSent,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +25,7 @@ class GroupModel{
       'lastMessage': lastMessage,
       'groupProfilePic': groupProfilePic,
       'membersUid': membersUid,
+      'timeSent': timeSent.millisecondsSinceEpoch,
     };
   }
 
@@ -34,6 +37,7 @@ class GroupModel{
       lastMessage: map['lastMessage'] as String,
       groupProfilePic: map['groupProfilePic'] as String,
       membersUid: List<String>.from(map['membersUid']),
+      timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent']),
     );
   }
 }
