@@ -28,7 +28,10 @@ class ContactsOnAppList extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(context, ChatPage.routeName,
                 arguments: ChatPage(
-                    name: contact["name"], receiverId: contact["uId"]));
+                    name: contact["name"],
+                    receiverId: contact["uId"],
+                    isGroupChat: false,
+                ));
           },
         );
       },

@@ -20,10 +20,13 @@ class ImagePreviewPage extends StatefulWidget {
   String imageFilePath;
   final String? receiverId;
   final UserModel? userData;
+  final bool isGroupChat;
 
-  ImagePreviewPage(
-      {Key? key, required this.imageFilePath, this.receiverId, this.userData})
-      : super(key: key);
+  ImagePreviewPage({
+    Key? key,
+    required this.imageFilePath,
+    this.receiverId, this.userData,
+    required this.isGroupChat}) : super(key: key);
 
   @override
   State<ImagePreviewPage> createState() => _ImagePreviewPageState();
@@ -68,7 +71,8 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
                     context.read<ChatCubit>().sendFileMessage(
                         file: File(widget.imageFilePath),
                         receiverId: widget.receiverId!,
-                        messageType: MessageType.image
+                        messageType: MessageType.image,
+                        isGroupChat: widget.isGroupChat
                     );
                     //to back to chat screen
                     int count = 0;

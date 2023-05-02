@@ -5,29 +5,30 @@ import 'package:get_it/get_it.dart';
 import 'package:ngandika_app/data/datasource/auth/auth_local_data_source.dart';
 import 'package:ngandika_app/data/datasource/auth/auth_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/chat/chat_remote_data_source.dart';
-import 'package:ngandika_app/data/datasource/chat_contacts/chat_contacts_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/groups/groups_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/select_contact/select_contact_local_data_source.dart';
 import 'package:ngandika_app/data/datasource/select_contact/select_contact_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/status/status_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/user/user_remote_data_source.dart';
 import 'package:ngandika_app/data/repository/auth_repository.dart';
-import 'package:ngandika_app/data/repository/chat_contats_repository.dart';
+import 'package:ngandika_app/data/repository/message_contats_repository.dart';
 import 'package:ngandika_app/data/repository/chat_repository.dart';
-import 'package:ngandika_app/data/repository/groups_repository.dart';
+import 'package:ngandika_app/data/repository/message_groups_repository.dart';
 import 'package:ngandika_app/data/repository/select_contact_repository.dart';
 import 'package:ngandika_app/data/repository/status_repository.dart';
 import 'package:ngandika_app/data/repository/user_repository.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
-import 'package:ngandika_app/presentation/bloc/message/chat_contacts/chat_contacts_cubit.dart';
-import 'package:ngandika_app/presentation/bloc/message/groups/groups_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/message/message_contacts/chat_contacts_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/message/message_groups/message_groups_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/status/status_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'data/datasource/message_contacts/message_contacts_remote_data_source.dart';
 
 final locator = GetIt.instance;
 
@@ -51,13 +52,13 @@ Future<void> init() async {
     () => GetContactsNotOnAppCubit(locator()),
   );
   locator.registerFactory(
-        () => GroupsCubit(locator()),
+        () => MessageGroupsCubit(locator()),
   );
   locator.registerFactory(
     () => ChatCubit(locator()),
   );
   locator.registerFactory(
-    () => ChatContactsCubit(locator()),
+    () => MessageContactsCubit(locator()),
   );
   locator.registerFactory(
     () => StatusCubit(locator()),
@@ -84,8 +85,8 @@ Future<void> init() async {
   locator.registerLazySingleton<ChatRemoteDataSource>(
     () => ChatRemoteDataSourceImpl(locator(), locator(), locator()),
   );
-  locator.registerLazySingleton<ChatContactsRemoteDataSource>(
-    () => ChatContactsRemoteDataSourceImpl(locator(), locator()),
+  locator.registerLazySingleton<MessageContactsRemoteDataSource>(
+    () => MessageContactsRemoteDataSourceImpl(locator(), locator()),
   );
   locator.registerLazySingleton<StatusRemoteDataSource>(
     () => StatusRemoteDataSourceImpl(locator(), locator(), locator()),
@@ -109,14 +110,14 @@ Future<void> init() async {
   locator.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImpl(locator()),
   );
-  locator.registerLazySingleton<ChatContactsRepository>(
-    () => ChatContactsRepositoryImpl(locator()),
+  locator.registerLazySingleton<MessageContactsRepository>(
+    () => MessageContactsRepositoryImpl(locator()),
   );
   locator.registerLazySingleton<StatusRepository>(
     () => StatusRepositoryImpl(locator()),
   );
-  locator.registerLazySingleton<GroupsRepository>(
-    () => GroupsRepositoryImpl(locator()),
+  locator.registerLazySingleton<MessageRepository>(
+    () => MessageGroupsRepositoryImpl(locator()),
   );
 
   //External

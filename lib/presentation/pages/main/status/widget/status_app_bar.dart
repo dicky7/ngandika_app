@@ -28,6 +28,7 @@ class StatusAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               Navigator.pushNamed(context, CameraPage.routeName, arguments: CameraPage(
                 userData: user,
+                isGroupChat: false,
               ));
             },
           ),

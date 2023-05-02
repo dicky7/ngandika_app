@@ -9,23 +9,27 @@ class ChatPage extends StatelessWidget {
 
   final String name;
   final String receiverId;
+  final bool isGroupChat;
 
-  const ChatPage({Key? key, required this.name, required this.receiverId})
-      : super(key: key);
+  const ChatPage({
+    Key? key,
+    required this.name,
+    required this.receiverId,
+    required this.isGroupChat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ChatAppBar(name: name, receiverId: receiverId),
+      appBar: ChatAppBar(name: name, receiverId: receiverId, isGroupChat: isGroupChat),
       body: Stack(
         children: [
           Column(
             children: [
-              Expanded(child: MessagesList(receiverId: receiverId)),
-              BottomChatFieldIcon(receiverId: receiverId)
+              Expanded(child: MessagesList(receiverId: receiverId, isGroupChat: isGroupChat)),
+              BottomChatFieldIcon(receiverId: receiverId, isGroupChat: isGroupChat)
             ],
           ),
-          RecordingMic(receiverId: receiverId)
+          RecordingMic(receiverId: receiverId, isGroupChat: isGroupChat)
         ],
       ),
     );

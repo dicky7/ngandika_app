@@ -18,6 +18,8 @@ class BottomChatField extends StatelessWidget {
   final FocusNode focusNode;
   final String receiverId;
 
+  final bool isGroupChat;
+
   const BottomChatField({
     Key? key,
     required this.onTapTextField,
@@ -26,7 +28,8 @@ class BottomChatField extends StatelessWidget {
     required this.onTextFieldValueChanged,
     required this.isShowEmoji,
     required this.toggleEmojiKeyboard,
-    required this.receiverId}) : super(key: key);
+    required this.receiverId,
+    required this.isGroupChat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +106,7 @@ class BottomChatField extends StatelessWidget {
               ),
 
               //this to attach file, image or audio
-              CustomAttachmentPopUp(receiverId: receiverId)
+              CustomAttachmentPopUp(receiverId: receiverId, isGroupChat: isGroupChat)
             ],
           ),
         ],

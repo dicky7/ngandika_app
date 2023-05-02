@@ -58,7 +58,8 @@ Future<void> showContactProfileDialog(BuildContext context, ChatContactModel cha
               Navigator.pushNamed(context, ChatPage.routeName,
                   arguments: ChatPage(
                       name: chatContactData.name,
-                      receiverId: chatContactData.contactId
+                      receiverId: chatContactData.contactId,
+                      isGroupChat: false,
                   )
               );
             },

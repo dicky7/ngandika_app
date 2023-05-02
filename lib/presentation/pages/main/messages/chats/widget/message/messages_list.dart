@@ -13,8 +13,9 @@ import 'my_message_card.dart';
 
 class MessagesList extends StatefulWidget {
   final String receiverId;
+  final bool isGroupChat;
 
-  const MessagesList({Key? key, required this.receiverId}) : super(key: key);
+  const MessagesList({Key? key, required this.receiverId, required this.isGroupChat}) : super(key: key);
 
   @override
   State<MessagesList> createState() => _MessagesListState();
@@ -31,7 +32,9 @@ class _MessagesListState extends State<MessagesList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<MessageModel>>(
-      stream: context.read<ChatCubit>().getChatStream(widget.receiverId),
+      stream: widget.isGroupChat
+          ? context.read<ChatCubit>().getGroupChatStream(widget.receiverId)
+          : context.read<ChatCubit>().getChatStream(widget.receiverId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CustomLoading();

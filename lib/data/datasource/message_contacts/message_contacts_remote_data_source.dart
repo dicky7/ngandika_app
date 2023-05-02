@@ -3,17 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ngandika_app/data/models/chat_contact_model.dart';
 import 'package:ngandika_app/data/models/user_model.dart';
 
-abstract class ChatContactsRemoteDataSource {
+abstract class MessageContactsRemoteDataSource {
   Stream<List<ChatContactModel>> getChatContacts();
 
   Stream<int> getNumOfMessageNotSeen(String senderId);
 }
 
-class ChatContactsRemoteDataSourceImpl extends ChatContactsRemoteDataSource {
+class MessageContactsRemoteDataSourceImpl extends MessageContactsRemoteDataSource {
   final FirebaseFirestore firestore;
   final FirebaseAuth auth;
 
-  ChatContactsRemoteDataSourceImpl(this.firestore, this.auth);
+  MessageContactsRemoteDataSourceImpl(this.firestore, this.auth);
 
   // This code provides a way to retrieve a list of chat contacts for the currently authenticated user from Firestore, along with some additional
   // information about each contact.

@@ -10,23 +10,28 @@ import '../models/message_model.dart';
 import '../models/message_reply_model.dart';
 
 abstract class ChatRepository {
+  Stream<List<MessageModel>> getChatStream(String receiverId);
+
+  Stream<List<MessageModel>> getGroupChatStream(String groupId);
+
   Future<Either<Failure, void>> sendTextMessage({
     required String text,
     required String receiverId,
-    required MessageReplyModel? messageReply});
+    required MessageReplyModel? messageReply,
+    required bool isGroupChat});
 
   Future<Either<Failure, void>> sendGIFMessage({
     required String gifUrl,
     required String receiverId,
-    required MessageReplyModel? messageReply});
-
-  Stream<List<MessageModel>> getChatStream(String receiverId);
+    required MessageReplyModel? messageReply,
+    required bool isGroupChat});
 
   Future<Either<Failure, void>> sendFileMessage({
     required File file,
     required String receiverId,
     required MessageType messageType,
-    required MessageReplyModel? messageReply});
+    required MessageReplyModel? messageReply,
+    required bool isGroupChat});
 
   Future<Either<Failure,void>> setMessageSeen(String receiverId, String messageId);
 }
@@ -37,13 +42,24 @@ class ChatRepositoryImpl extends ChatRepository {
   ChatRepositoryImpl(this.remoteDataSource);
 
   @override
+  Stream<List<MessageModel>> getChatStream(String receiverId) {
+    return remoteDataSource.getChatStream(receiverId);
+  }
+
+  @override
+  Stream<List<MessageModel>> getGroupChatStream(String groupId) {
+    return remoteDataSource.getGroupChatStream(groupId);
+  }
+
+  @override
   Future<Either<Failure, void>> sendTextMessage({
     required String text,
     required String receiverId,
-    required MessageReplyModel? messageReply
+    required MessageReplyModel? messageReply,
+    required bool isGroupChat
   }) async {
     try {
-      final result = await remoteDataSource.sendTextMessage(text: text, receiverId: receiverId, messageReply: messageReply);
+      final result = await remoteDataSource.sendTextMessage(text: text, receiverId: receiverId, messageReply: messageReply, isGroupChat: isGroupChat);
       return right(result);
     } on ServerException catch (e) {
       return left(ServerFailure(e.message.toString()));
@@ -51,19 +67,16 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Stream<List<MessageModel>> getChatStream(String receiverId) {
-    return remoteDataSource.getChatStream(receiverId);
-  }
-
-  @override
   Future<Either<Failure, void>> sendFileMessage({
     required File file,
     required String receiverId,
     required MessageType messageType,
-    required MessageReplyModel? messageReply
+    required MessageReplyModel? messageReply,
+    required bool isGroupChat
   }) async {
     try {
-      final result = await remoteDataSource.sendFileMessage(file: file, receiverId: receiverId, messageType: messageType, messageReply: messageReply);
+      final result = await remoteDataSource.sendFileMessage(
+          file: file, receiverId: receiverId, messageType: messageType, messageReply: messageReply, isGroupChat: isGroupChat);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
@@ -74,10 +87,12 @@ class ChatRepositoryImpl extends ChatRepository {
   Future<Either<Failure, void>> sendGIFMessage({
     required String gifUrl,
     required String receiverId,
-    required MessageReplyModel? messageReply
+    required MessageReplyModel? messageReply,
+    required bool isGroupChat
   }) async {
     try {
-      final result = await remoteDataSource.sendGIFMessage(gifUrl: gifUrl, receiverId: receiverId, messageReply: messageReply);
+      final result = await remoteDataSource.sendGIFMessage(
+          gifUrl: gifUrl, receiverId: receiverId, messageReply: messageReply, isGroupChat: isGroupChat);
       return right(result);
     } on ServerException catch (e) {
       return left(ServerFailure(e.message.toString()));

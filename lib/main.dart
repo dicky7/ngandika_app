@@ -6,8 +6,8 @@ import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/main_page/page_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/bottom_chat/bottom_chat_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
-import 'package:ngandika_app/presentation/bloc/message/chat_contacts/chat_contacts_cubit.dart';
-import 'package:ngandika_app/presentation/bloc/message/groups/groups_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/message/message_contacts/chat_contacts_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/message/message_groups/message_groups_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsNotOnApp/get_contacts_not_on_app_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
@@ -57,9 +57,6 @@ class MyApp extends StatelessWidget {
           create: (context) => di.locator<GetContactsNotOnAppCubit>(),
         ),
         BlocProvider(
-          create: (context) => di.locator<GroupsCubit>(),
-        ),
-        BlocProvider(
           create: (context) => BottomChatCubit(),
         ),
         BlocProvider(
@@ -67,7 +64,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           lazy: false,
-          create: (context) => di.locator<ChatContactsCubit>(),
+          create: (context) => di.locator<MessageContactsCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.locator<MessageGroupsCubit>(),
         ),
         BlocProvider(
           create: (context) => di.locator<StatusCubit>(),

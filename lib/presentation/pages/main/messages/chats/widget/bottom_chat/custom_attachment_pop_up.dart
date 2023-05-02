@@ -11,8 +11,9 @@ import '../../../../cameras/widget/preview/image_preview_page.dart';
 
 class CustomAttachmentPopUp extends StatelessWidget {
   final String receiverId;
+  final bool isGroupChat;
 
-  const CustomAttachmentPopUp({Key? key, required this.receiverId}) : super(key: key);
+  const CustomAttachmentPopUp({Key? key, required this.receiverId, required this.isGroupChat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,10 @@ class CustomAttachmentPopUp extends StatelessWidget {
                     Navigator.pushNamed(
                         context,
                         CameraPage.routeName,
-                        arguments: CameraPage(receiverId: receiverId));
+                        arguments: CameraPage(
+                          receiverId: receiverId,
+                          isGroupChat: isGroupChat,
+                        ));
                   },
                 ),
                 AttachmentCardItem(
@@ -95,8 +99,10 @@ class CustomAttachmentPopUp extends StatelessWidget {
           context,
           ImagePreviewPage.routeName,
           arguments: ImagePreviewPage(
-              imageFilePath: image.path,
-              receiverId: receiverId,)
+            imageFilePath: image.path,
+            receiverId: receiverId,
+            isGroupChat: isGroupChat,
+          )
       );
     }
   }

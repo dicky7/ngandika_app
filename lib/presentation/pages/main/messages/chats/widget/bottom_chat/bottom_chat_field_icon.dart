@@ -10,8 +10,9 @@ import '../../../../../../../utils/styles/style.dart';
 
 class BottomChatFieldIcon extends StatelessWidget {
   final String receiverId;
+  final bool isGroupChat;
 
-  BottomChatFieldIcon({Key? key, required this.receiverId}) : super(key: key);
+  BottomChatFieldIcon({Key? key, required this.receiverId, required this.isGroupChat}) : super(key: key);
 
   final TextEditingController messageController =
   TextEditingController(text: "");
@@ -31,6 +32,7 @@ class BottomChatFieldIcon extends StatelessWidget {
                 child: Row(
                   children: [
                     BottomChatField(
+                      isGroupChat: isGroupChat,
                       receiverId: receiverId,
                       isShowEmoji: cubitRead.isShowEmojiContainer,
                       focusNode: focusNode,
@@ -83,7 +85,8 @@ class BottomChatFieldIcon extends StatelessWidget {
       onTap: () {
         context.read<ChatCubit>().sendTextMessage(
             text: messageController.text.trim(),
-            receiverId: receiverId
+            receiverId: receiverId,
+            isGroupChat: isGroupChat
         );
         messageController.clear();
       },
@@ -104,7 +107,8 @@ class BottomChatFieldIcon extends StatelessWidget {
     if (gif != null) {
       context.read<ChatCubit>().sendGIFMessage(
           gifUrl: gif.url!,
-          receiverId: receiverId
+          receiverId: receiverId,
+          isGroupChat: isGroupChat
       );
     }
   }

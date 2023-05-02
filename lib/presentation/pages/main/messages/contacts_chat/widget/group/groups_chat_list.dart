@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/data/models/group_model.dart';
-import 'package:ngandika_app/presentation/bloc/message/groups/groups_cubit.dart';
 import 'package:ngandika_app/presentation/pages/main/messages/contacts_chat/widget/group/groups_chat_card.dart';
 
+import '../../../../../../bloc/message/message_groups/message_groups_cubit.dart';
 import '../../../../../../widget/custom_loading.dart';
 
 class GroupsChatList extends StatelessWidget {
@@ -12,7 +12,7 @@ class GroupsChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<GroupModel>>(
-      stream: context.read<GroupsCubit>().getChatGroups(),
+      stream: context.read<MessageGroupsCubit>().getChatGroups(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CustomLoading();

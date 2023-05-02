@@ -7,15 +7,15 @@ import 'package:ngandika_app/utils/error/failure.dart';
 
 import '../../utils/error/exception.dart';
 
-abstract class GroupsRepository{
+abstract class MessageRepository{
   Future<Either<Failure, void>> createGroup(String name, File profilePicture, List<String> selectedUidContact);
   Stream<List<GroupModel>> getChatGroups();
   Stream<int> getNumOfMessageNotSeen(String senderId);
 }
-class GroupsRepositoryImpl extends GroupsRepository{
+class MessageGroupsRepositoryImpl extends MessageRepository{
   final GroupsRemoteDataSource remoteDataSource;
 
-  GroupsRepositoryImpl(this.remoteDataSource);
+  MessageGroupsRepositoryImpl(this.remoteDataSource);
 
   @override
   Future<Either<Failure, void>> createGroup(

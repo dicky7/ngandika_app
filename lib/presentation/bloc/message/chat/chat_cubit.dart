@@ -39,8 +39,26 @@ class ChatCubit extends Cubit<ChatState> {
     emit(MessageSwipeState());
   }
 
-  Future<void> sendTextMessage({required String text, required String receiverId}) async {
-    final result = await repository.sendTextMessage(text: text, receiverId: receiverId, messageReply: messageReplay);
+  Stream<List<MessageModel>> getGroupChatStream(String groupId) {
+    return repository.getGroupChatStream(groupId);
+  }
+
+  Stream<List<MessageModel>> getChatStream(String receiverId) {
+    return repository.getChatStream(receiverId);
+  }
+
+  Future<void> sendTextMessage({
+    required String text,
+    required String receiverId,
+    required bool isGroupChat
+  }) async {
+    final result = await repository.sendTextMessage(
+        text: text,
+        receiverId:
+        receiverId,
+        messageReply: messageReplay,
+        isGroupChat: isGroupChat
+    );
     //set messageReplay to null after sending data and it'll make replay preview disappear
     messageReplay = null;
     result.fold(
@@ -49,12 +67,19 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Stream<List<MessageModel>> getChatStream(String receiverId) {
-    return repository.getChatStream(receiverId);
-  }
-
-  Future<void> sendFileMessage({required File file, required String receiverId, required MessageType messageType}) async {
-    final result = await repository.sendFileMessage(file: file, receiverId: receiverId, messageType: messageType, messageReply: messageReplay);
+  Future<void> sendFileMessage({
+    required File file,
+    required String receiverId,
+    required MessageType messageType,
+    required bool isGroupChat
+  }) async {
+    final result = await repository.sendFileMessage(
+        file: file,
+        receiverId: receiverId,
+        messageType: messageType,
+        messageReply: messageReplay,
+        isGroupChat: isGroupChat
+    );
     messageReplay = null;
     result.fold(
       (e) => emit(ChatErrorState(e.message)),
@@ -62,16 +87,35 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<void> sendGIFMessage({required String gifUrl, required String receiverId}) async {
+  Future<void> sendGIFMessage({
+    required String gifUrl,
+    required String receiverId,
+    required bool isGroupChat
+  }) async {
+    // The function first extracts the unique identifier of the GIF from the gifUrl parameter. It then constructs a new URL for the GIF by
+    // replacing giphy.gif with 200.gif, which returns a lower quality version of the GIF but with a smaller file size.
     int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
     String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
     String newGifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
 
-    final result = await repository.sendGIFMessage(gifUrl: newGifUrl, receiverId: receiverId, messageReply: messageReplay);
+    final result = await repository.sendGIFMessage(
+        gifUrl: newGifUrl,
+        receiverId: receiverId,
+        messageReply: messageReplay,
+        isGroupChat: isGroupChat
+    );
     messageReplay = null;
     result.fold(
           (error) => emit(ChatErrorState(error.message)),
           (success) => emit(SendTextMessageSuccess()),
+    );
+  }
+
+  Future<void> setMessageSeen(String receiverId, String messageId) async{
+    final result = await repository.setMessageSeen(receiverId, messageId);
+    result.fold(
+          (l) => emit(ChatErrorState(l.message)),
+          (r) => emit(MessageSeenSuccess()),
     );
   }
 
@@ -86,14 +130,6 @@ class ChatCubit extends Cubit<ChatState> {
     isPressed = false;
     selectedMessageIndex = -1; // Clear the selectedIndex value
     emit(SelectedMessageIndexCleared());
-  }
-
-  Future<void> setMessageSeen(String receiverId, String messageId) async{
-    final result = await repository.setMessageSeen(receiverId, messageId);
-    result.fold(
-      (l) => emit(ChatErrorState(l.message)),
-      (r) => emit(MessageSeenSuccess()),
-    );
   }
 
 }

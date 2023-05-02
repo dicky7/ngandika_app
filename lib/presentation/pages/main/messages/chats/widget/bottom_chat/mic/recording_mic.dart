@@ -11,8 +11,9 @@ import '../../../../../../../bloc/message/chat/chat_cubit.dart';
 
 class RecordingMic extends StatefulWidget {
   final String receiverId;
+  final bool isGroupChat;
 
-  const RecordingMic({Key? key, required this.receiverId}) : super(key: key);
+  const RecordingMic({Key? key, required this.receiverId, required this.isGroupChat}) : super(key: key);
 
   @override
   State<RecordingMic> createState() => _RecordingMicState();
@@ -69,7 +70,8 @@ class _RecordingMicState extends State<RecordingMic> {
     context.read<ChatCubit>().sendFileMessage(
         file: File(path!),
         receiverId: widget.receiverId,
-        messageType: MessageType.audio
+        messageType: MessageType.audio,
+        isGroupChat: widget.isGroupChat
     );
   }
 

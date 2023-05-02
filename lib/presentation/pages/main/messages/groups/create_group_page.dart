@@ -9,7 +9,7 @@ import 'package:ngandika_app/presentation/pages/main/messages/groups/widget/sele
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
-import '../../../../bloc/message/groups/groups_cubit.dart';
+import '../../../../bloc/message/message_groups/message_groups_cubit.dart';
 import '../../../onboarding/login/pick_profile_picture_bottomsheet.dart';
 
 class CreateGroupPage extends StatefulWidget {
@@ -42,8 +42,8 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
   void createGroup(){
     final String groupName =  groupNameController.text.trim();
     if (groupName.isNotEmpty && _selectedImage != null) {
-      final List<String> selectedUidContact = context.read<GroupsCubit>().selectedContactUId;
-      context.read<GroupsCubit>().createGroup(groupName, _selectedImage!, selectedUidContact);
+      final List<String> selectedUidContact = context.read<MessageGroupsCubit>().selectedContactUId;
+      context.read<MessageGroupsCubit>().createGroup(groupName, _selectedImage!, selectedUidContact);
 
       Navigator.pushNamedAndRemoveUntil(context, MainPage.routeName, (route) => false);
     }

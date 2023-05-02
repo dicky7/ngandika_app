@@ -18,8 +18,14 @@ class VideoPreviewPage extends StatefulWidget {
   final String videoFilePath;
   final String? receiverId;
   final UserModel? userData;
+  final bool isGroupChat;
 
-  const VideoPreviewPage({Key? key, this.receiverId, required this.videoFilePath, this.userData}) : super(key: key);
+  const VideoPreviewPage({
+    Key? key,
+    this.receiverId,
+    required this.videoFilePath,
+    this.userData,
+    required this.isGroupChat}) : super(key: key);
 
   @override
   State<VideoPreviewPage> createState() => _VideoPreviewPageState();
@@ -70,7 +76,8 @@ class _VideoPreviewPageState extends State<VideoPreviewPage> {
                     context.read<ChatCubit>().sendFileMessage(
                         file: File(widget.videoFilePath),
                         receiverId: widget.receiverId!,
-                        messageType: MessageType.video
+                        messageType: MessageType.video,
+                        isGroupChat: widget.isGroupChat
                     );
                     //to back to chat screen
                     int count = 0;

@@ -58,6 +58,7 @@ class AppRoutes {
             builder: (context) => ChatPage(
                   name: arguments.name,
                   receiverId: arguments.receiverId,
+                  isGroupChat: arguments.isGroupChat,
                 ));
       case ImageMessagePreview.routeName:
         final arguments = settings.arguments as MessageModel;
@@ -75,6 +76,7 @@ class AppRoutes {
           builder: (context) => CameraPage(
               receiverId: arguments.receiverId,
               userData: arguments.userData,
+              isGroupChat: arguments.isGroupChat,
           ));
       case ImagePreviewPage.routeName:
         final arguments = settings.arguments as ImagePreviewPage;
@@ -83,14 +85,16 @@ class AppRoutes {
               imageFilePath: arguments.imageFilePath,
               receiverId: arguments.receiverId,
               userData: arguments.userData,
+              isGroupChat: arguments.isGroupChat,
           ));
       case VideoPreviewPage.routeName:
         final arguments = settings.arguments as VideoPreviewPage;
         return MaterialPageRoute(
           builder: (context) => VideoPreviewPage(
-              receiverId: arguments.receiverId,
-              videoFilePath: arguments.videoFilePath,
-              userData: arguments.userData,
+            receiverId: arguments.receiverId,
+            videoFilePath: arguments.videoFilePath,
+            userData: arguments.userData,
+            isGroupChat: arguments.isGroupChat,
           ));
       case StatusDetailPage.routeName:
         final arguments = settings.arguments as StatusDetailPage;

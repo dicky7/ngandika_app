@@ -19,7 +19,8 @@ class GroupsChatCard extends StatelessWidget {
         Navigator.pushNamed(context, ChatPage.routeName,
             arguments: ChatPage(
                 name: groupData.name,
-                receiverId: groupData.groupId
+                receiverId: groupData.groupId,
+                isGroupChat: true,
             )
         );
       },

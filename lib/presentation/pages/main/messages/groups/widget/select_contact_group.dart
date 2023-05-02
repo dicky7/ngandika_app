@@ -4,7 +4,7 @@ import 'package:ngandika_app/presentation/bloc/select_contact/getContactsOnApp/g
 import 'package:ngandika_app/utils/extensions/extenstions.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
 
-import '../../../../../bloc/message/groups/groups_cubit.dart';
+import '../../../../../bloc/message/message_groups/message_groups_cubit.dart';
 import '../../../../../bloc/select_contact/getAllContact/get_all_contacts_cubit.dart';
 import '../../../../../bloc/select_contact/getContactsOnApp/get_contacts_on_app_cubit.dart';
 import '../../../../../widget/custom_list_tile.dart';
@@ -28,18 +28,18 @@ class _SelectContactGroupState extends State<SelectContactGroup> {
       selectedContactsIndex.add(index);
     }
     setState(() {});
-    context.read<GroupsCubit>().selectContact(uIdContact);
+    context.read<MessageGroupsCubit>().selectContact(uIdContact);
   }
 
   @override
   void didChangeDependencies() {
-    context.read<GroupsCubit>().selectedContactUId.clear();
+    context.read<MessageGroupsCubit>().selectedContactUId.clear();
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GroupsCubit, GroupsState>(
+    return BlocBuilder<MessageGroupsCubit, MessageGroupsState>(
       builder: (context, state) {
         return ListView.builder(
           shrinkWrap: true,

@@ -4,15 +4,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:ngandika_app/data/models/group_model.dart';
-import 'package:ngandika_app/data/repository/groups_repository.dart';
+import 'package:ngandika_app/data/repository/message_groups_repository.dart';
 
 
-part 'groups_state.dart';
+part 'message_groups_state.dart';
 
-class GroupsCubit extends Cubit<GroupsState> {
-  final GroupsRepository repository;
+class MessageGroupsCubit extends Cubit<MessageGroupsState> {
+  final MessageRepository repository;
 
-  GroupsCubit(this.repository) : super(GroupsInitial());
+  MessageGroupsCubit(this.repository) : super(GroupsInitial());
 
   List<String> selectedContactUId = [];
 

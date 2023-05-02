@@ -23,7 +23,13 @@ class CameraPage extends StatefulWidget {
 
   final String? receiverId;
   final UserModel? userData;
-  const CameraPage({Key? key, this.receiverId, this.userData}) : super(key: key);
+  final bool isGroupChat;
+
+  const CameraPage({
+    Key? key,
+    this.receiverId,
+    this.userData,
+    required this.isGroupChat}) : super(key: key);
 
   @override
   State<CameraPage> createState() => _CameraPageState();
@@ -182,6 +188,7 @@ class _CameraPageState extends State<CameraPage> {
             imageFilePath: image.path,
             receiverId: widget.receiverId,
             userData: widget.userData,
+            isGroupChat: widget.isGroupChat,
           )
       );
     }
@@ -221,6 +228,7 @@ class _CameraPageState extends State<CameraPage> {
               imageFilePath: file.path,
               receiverId: widget.receiverId,
               userData: widget.userData,
+              isGroupChat: widget.isGroupChat,
           )
       );
     }
@@ -245,6 +253,7 @@ class _CameraPageState extends State<CameraPage> {
         receiverId: widget.receiverId,
         videoFilePath: videoPath.path,
         userData: widget.userData,
+        isGroupChat: widget.isGroupChat,
     ));
 
   }
