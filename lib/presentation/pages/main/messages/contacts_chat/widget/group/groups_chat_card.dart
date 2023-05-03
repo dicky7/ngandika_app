@@ -20,6 +20,7 @@ class GroupsChatCard extends StatelessWidget {
             arguments: ChatPage(
                 name: groupData.name,
                 receiverId: groupData.groupId,
+                profilePicture: groupData.groupProfilePic,
                 isGroupChat: true,
             )
         );

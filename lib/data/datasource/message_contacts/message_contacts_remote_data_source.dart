@@ -48,6 +48,7 @@ class MessageContactsRemoteDataSourceImpl extends MessageContactsRemoteDataSourc
             lastMessage: chatContact.lastMessage,
             timeSent: chatContact.timeSent));
       }
+      print('messages ${messages[0].name}');
       return messages;
     });
   }

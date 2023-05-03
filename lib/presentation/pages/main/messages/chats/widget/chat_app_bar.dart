@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/data/models/user_model.dart';
+import 'package:ngandika_app/presentation/bloc/call/call_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
 import 'package:ngandika_app/presentation/pages/main/main_page.dart';
 import 'package:ngandika_app/presentation/widget/custom_appbar_network_image.dart';
@@ -16,14 +17,15 @@ import '../../../../../widget/custom_pop_up_menu_button.dart';
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String name;
   final String receiverId;
+  final String profilePicture;
   final bool isGroupChat;
 
-  ChatAppBar(
-      {Key? key,
-      required this.name,
-      required this.receiverId,
-      required this.isGroupChat})
-      : super(key: key);
+  ChatAppBar({
+    Key? key,
+    required this.name,
+    required this.receiverId,
+    required this.isGroupChat,
+    required this.profilePicture}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +109,15 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   List<Widget> getIconButtons(BuildContext context) {
     return [
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          context.read<CallCubit>().makeCall(
+              context,
+              receiverId: receiverId,
+              receiverName: name,
+              receiverPic: profilePicture,
+              isGroupChat: isGroupChat
+          );
+        },
         splashRadius: 20,
         icon: Icon(Icons.videocam, color: kBlackColor),
       ),

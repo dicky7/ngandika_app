@@ -28,6 +28,7 @@ class ContactsChatCard extends StatelessWidget {
                 arguments: ChatPage(
                     name: chatContactData.name,
                     receiverId: chatContactData.contactId,
+                    profilePicture: chatContactData.profilePicture,
                     isGroupChat: false,
                 )
             );

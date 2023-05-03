@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngandika_app/presentation/bloc/user/user_cubit.dart';
-import 'package:ngandika_app/presentation/pages/main/calls/call_page.dart';
+import 'package:ngandika_app/presentation/pages/main/calls/call_list_page.dart';
 import 'package:ngandika_app/presentation/pages/main/settings/setting_page.dart';
 import 'package:ngandika_app/presentation/pages/main/status/status_page.dart';
 import 'package:ngandika_app/utils/styles/style.dart';
@@ -75,7 +75,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       case 1:
         return const StatusPage();
       case 2:
-        return const CallPage();
+        return const CallListPage();
       case 3:
         return  SettingPage();
       default:

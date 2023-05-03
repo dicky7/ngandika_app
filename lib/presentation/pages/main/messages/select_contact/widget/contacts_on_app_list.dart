@@ -30,6 +30,7 @@ class ContactsOnAppList extends StatelessWidget {
                 arguments: ChatPage(
                     name: contact["name"],
                     receiverId: contact["uId"],
+                    profilePicture: contact['profilePicture'],
                     isGroupChat: false,
                 ));
           },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ngandika_app/data/models/message_model.dart';
 import 'package:ngandika_app/data/models/status_model.dart';
 import 'package:ngandika_app/data/models/user_model.dart';
+import 'package:ngandika_app/presentation/pages/main/calls/call_list_page.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/camera_page.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/image_preview_page.dart';
 import 'package:ngandika_app/presentation/pages/main/cameras/widget/preview/video_preview_page.dart';
@@ -11,6 +12,8 @@ import 'package:ngandika_app/presentation/pages/main/messages/chats/widget/previ
 import 'package:ngandika_app/presentation/pages/main/messages/groups/create_group_page.dart';
 import 'package:ngandika_app/presentation/pages/main/settings/widget/my_profile_detail_page.dart';
 
+import '../../presentation/pages/main/calls/calling/call_pickup_page.dart';
+import '../../presentation/pages/main/calls/calling/calling_page.dart';
 import '../../presentation/pages/main/messages/chats/chat_page.dart';
 import '../../presentation/pages/main/messages/select_contact/select_contact_page.dart';
 import '../../presentation/pages/main/status/status_detail_page.dart';
@@ -58,8 +61,18 @@ class AppRoutes {
             builder: (context) => ChatPage(
                   name: arguments.name,
                   receiverId: arguments.receiverId,
+                  profilePicture: arguments.profilePicture,
                   isGroupChat: arguments.isGroupChat,
                 ));
+      case CallingPage.routeName:
+        final arguments = settings.arguments as CallingPage;
+        return MaterialPageRoute(
+            builder: (context) => CallingPage(
+                channelId: arguments.channelId,
+                call: arguments.call,
+                isGroupChat: arguments.isGroupChat
+            ),
+        );
       case ImageMessagePreview.routeName:
         final arguments = settings.arguments as MessageModel;
         return MaterialPageRoute(
@@ -109,6 +122,7 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (context) => MyProfileDetailPage(user: arguments),
         );
+        
       default:
         return MaterialPageRoute(builder: (context) => const SplashPage());
     }

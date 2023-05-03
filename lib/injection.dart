@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ngandika_app/data/datasource/auth/auth_local_data_source.dart';
 import 'package:ngandika_app/data/datasource/auth/auth_remote_data_source.dart';
+import 'package:ngandika_app/data/datasource/call/call_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/chat/chat_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/groups/groups_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/select_contact/select_contact_local_data_source.dart';
@@ -11,6 +12,7 @@ import 'package:ngandika_app/data/datasource/select_contact/select_contact_remot
 import 'package:ngandika_app/data/datasource/status/status_remote_data_source.dart';
 import 'package:ngandika_app/data/datasource/user/user_remote_data_source.dart';
 import 'package:ngandika_app/data/repository/auth_repository.dart';
+import 'package:ngandika_app/data/repository/call_repository.dart';
 import 'package:ngandika_app/data/repository/message_contats_repository.dart';
 import 'package:ngandika_app/data/repository/chat_repository.dart';
 import 'package:ngandika_app/data/repository/message_groups_repository.dart';
@@ -18,6 +20,7 @@ import 'package:ngandika_app/data/repository/select_contact_repository.dart';
 import 'package:ngandika_app/data/repository/status_repository.dart';
 import 'package:ngandika_app/data/repository/user_repository.dart';
 import 'package:ngandika_app/presentation/bloc/auth/auth_cubit.dart';
+import 'package:ngandika_app/presentation/bloc/call/call_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/chat/chat_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/message_contacts/chat_contacts_cubit.dart';
 import 'package:ngandika_app/presentation/bloc/message/message_groups/message_groups_cubit.dart';
@@ -58,6 +61,9 @@ Future<void> init() async {
     () => ChatCubit(locator()),
   );
   locator.registerFactory(
+    () => CallCubit(locator()),
+  );
+  locator.registerFactory(
     () => MessageContactsCubit(locator()),
   );
   locator.registerFactory(
@@ -85,6 +91,9 @@ Future<void> init() async {
   locator.registerLazySingleton<ChatRemoteDataSource>(
     () => ChatRemoteDataSourceImpl(locator(), locator(), locator()),
   );
+  locator.registerLazySingleton<CallRemoteDataSource>(
+    () => CallRemoteDataSourceImpl(locator(), locator()),
+  );
   locator.registerLazySingleton<MessageContactsRemoteDataSource>(
     () => MessageContactsRemoteDataSourceImpl(locator(), locator()),
   );
@@ -94,6 +103,8 @@ Future<void> init() async {
   locator.registerLazySingleton<GroupsRemoteDataSource>(
     () => GroupsRemoteDataSourceImpl(locator(), locator(), locator()),
   );
+
+
 
   /**
    * Repository
@@ -110,6 +121,9 @@ Future<void> init() async {
   locator.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImpl(locator()),
   );
+  locator.registerLazySingleton<CallRepository>(
+    () => CallRepositoryImpl(locator()),
+  );
   locator.registerLazySingleton<MessageContactsRepository>(
     () => MessageContactsRepositoryImpl(locator()),
   );
@@ -119,6 +133,7 @@ Future<void> init() async {
   locator.registerLazySingleton<MessageRepository>(
     () => MessageGroupsRepositoryImpl(locator()),
   );
+
 
   //External
   locator.registerLazySingleton(() => FirebaseAuth.instance);

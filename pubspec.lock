@@ -9,6 +9,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  agora_rtc_engine:
+    dependency: "direct main"
+    description:
+      name: agora_rtc_engine
+      sha256: "2dad9b9b7dc92d3a2f47f6bd2f4feffffef355b1d1ea94f8e1e0f9c89d93a0de"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
+  agora_rtm:
+    dependency: transitive
+    description:
+      name: agora_rtm
+      sha256: cc4881804ad027388b1871bf7d2881fe7903fb4328f16a8e5eb083ad0adf537f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
+  agora_uikit:
+    dependency: "direct main"
+    description:
+      name: agora_uikit
+      sha256: "2b17d2af96a1ce9e02c3aad096669428f0d06607d11b77eab3be127701748cd9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.2"
   archive:
     dependency: transitive
     description:
@@ -630,6 +654,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.17.0"
+  iris_event:
+    dependency: transitive
+    description:
+      name: iris_event
+      sha256: bd5d84ac0edb0dd65dfadfae1e76422f783e73a73c9a06b4e78419d0d3a2d48e
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   js:
     dependency: transitive
     description:
@@ -638,6 +670,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.5"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      sha256: c33da08e136c3df0190bd5bbe51ae1df4a7d96e7954d1d7249fea2968a72d317
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.8.0"
   lints:
     dependency: transitive
     description:
@@ -758,6 +798,46 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
+  permission_handler:
+    dependency: "direct main"
+    description:
+      name: permission_handler
+      sha256: "33c6a1253d1f95fd06fa74b65b7ba907ae9811f9d5c1d3150e51417d04b8d6a8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.2.0"
+  permission_handler_android:
+    dependency: transitive
+    description:
+      name: permission_handler_android
+      sha256: "8028362b40c4a45298f1cbfccd227c8dd6caf0e27088a69f2ba2ab15464159e2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.2.0"
+  permission_handler_apple:
+    dependency: transitive
+    description:
+      name: permission_handler_apple
+      sha256: ee96ac32f5a8e6f80756e25b25b9f8e535816c8e6665a96b6d70681f8c4f7e85
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.8"
+  permission_handler_platform_interface:
+    dependency: transitive
+    description:
+      name: permission_handler_platform_interface
+      sha256: "68abbc472002b5e6dfce47fe9898c6b7d8328d58b5d2524f75e277c07a97eb84"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.9.0"
+  permission_handler_windows:
+    dependency: transitive
+    description:
+      name: permission_handler_windows
+      sha256: f67cab14b4328574938ecea2db3475dad7af7ead6afab6338772c5f88963e38b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   pin_input_text_field:
     dependency: transitive
     description:
