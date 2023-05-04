@@ -7,6 +7,8 @@ import 'package:ngandika_app/data/models/call_model.dart';
 import 'package:ngandika_app/presentation/bloc/call/call_cubit.dart';
 import 'package:ngandika_app/presentation/widget/custom_loading.dart';
 
+import '../../../../../utils/styles/style.dart';
+
 class CallingPage extends StatefulWidget {
   static const routeName = 'call-pickup';
 
@@ -57,17 +59,22 @@ class _CallingPageState extends State<CallingPage> {
                   AgoraVideoViewer(client: client!),
                   AgoraVideoButtons(
                     client: client!,
-                    disconnectButtonChild: IconButton(
-                      onPressed: () async {
+                    disconnectButtonChild: GestureDetector(
+                      onTap: () async {
                         await client!.engine.leaveChannel();
+                        if(!mounted) return;
                         context.read<CallCubit>().endCall(
-                            callerId: widget.call.callId,
-                            receiverId: widget.call.receiverId,
+                          callerId: widget.call.callerId,
+                          receiverId: widget.call.receiverId,
                         );
                         Navigator.pop(context);
                       },
-                      icon: const Icon(Icons.call_end),
-                    ),
+                      child: CircleAvatar(
+                        backgroundColor: kRedColor,
+                        radius: 25,
+                        child: Icon(Icons.call_end, color: kPrimaryColor),
+                      ),
+                    )
                   ),
                 ],
               ),

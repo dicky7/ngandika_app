@@ -80,7 +80,7 @@ class _LoginProfileInfoPageState extends State<LoginProfileInfoPage> {
                 const Spacer(),
                 CustomButton(
                   text: "Next",
-                  color: kBlueLight,
+                  color: kBlueDark,
                   width: context.width(0.65),
                   onPress: () {
                     if (nameController.text.isNotEmpty) {

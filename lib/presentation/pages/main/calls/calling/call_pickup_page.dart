@@ -58,6 +58,7 @@ class CallPickupPage extends StatelessWidget {
                               callerId: call.callId,
                               receiverId: call.receiverId,
                             );
+                            Navigator.pop(context);
                           },
                           icon: Icon(CupertinoIcons.phone_down_fill, color: kRedColor, size: 40),
                         ),

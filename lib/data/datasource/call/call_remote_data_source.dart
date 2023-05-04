@@ -40,6 +40,7 @@ class CallRemoteDataSourceImpl extends CallRemoteDataSource{
   //The snapshots() method creates a stream that emits a new DocumentSnapshot every time the document is modified in the database.
   @override
   Stream<CallModel> get callStream {
+    print('_auth.currentUser!.uid ${_auth.currentUser!.uid}');
    return _firestore
        .collection('call')
        .doc(_auth.currentUser!.uid)
@@ -100,11 +101,13 @@ class CallRemoteDataSourceImpl extends CallRemoteDataSource{
         timeCalling: timeCalling
       );
 
+      //Then, both instances of CallModel are passed to the _saveToCallingSubCollection and _saveToHistorySubCollection functions.
+      // These functions save the details of the video call in the Firestore database in separate collections named "calling" and "history," respectively.
       _saveToCallingSubCollection(senderCallData: senderCallData, receiverCallData: receiverCallData);
 
       _saveToHistorySubCollection(senderCallData: senderCallData, receiverCallData: receiverCallData);
 
-      //if user make a call automaticly go to CallingPage
+      //Finally, if the user makes a call, the makeCall function automatically navigates the user to the CallingPage with the relevant details of the video call.
       Navigator.pushNamed(
           context,
           CallingPage.routeName,
@@ -121,10 +124,8 @@ class CallRemoteDataSourceImpl extends CallRemoteDataSource{
     }
   }
 
+  //The _saveToCallingSubCollection function is responsible for saving the details of the video call in the Firestore database.
   void _saveToCallingSubCollection({required CallModel senderCallData, required CallModel receiverCallData})async{
-    //The method then uses the Firebase Firestore API to store the call details in the call collection. It sets the document ID of each call detail
-    // instance to the ID of the caller and receiver respectively. The toMap method is used to convert each instance of
-    // the CallModel class to a Map, which is then stored in the Firestore database.
     await _firestore
         .collection('call')
         .doc(senderCallData.callerId)
@@ -136,44 +137,40 @@ class CallRemoteDataSourceImpl extends CallRemoteDataSource{
         .collection('call')
         .doc(senderCallData.receiverId)
         .collection('calling')
-        .doc(senderCallData.callerId)
+        .doc(senderCallData.receiverId)
         .set(receiverCallData.toMap());
   }
 
+  //The _saveToHistorySubCollection function is responsible for saving the details of the video call in the Firestore database for historical purposes.
   void _saveToHistorySubCollection({required CallModel senderCallData, required CallModel receiverCallData})async{
-    //The method then uses the Firebase Firestore API to store the call details in the call collection. It sets the document ID of each call detail
-    // instance to the ID of the caller and receiver respectively. The toMap method is used to convert each instance of
-    // the CallModel class to a Map, which is then stored in the Firestore database.
     await _firestore
         .collection('call')
         .doc(senderCallData.callerId)
         .collection('history')
-        .doc(senderCallData.receiverId)
+        .doc(senderCallData.callId)
         .set(senderCallData.toMap());
 
     await _firestore
         .collection('call')
         .doc(senderCallData.receiverId)
         .collection('history')
-        .doc(senderCallData.callerId)
+        .doc(senderCallData.callId)
         .set(receiverCallData.toMap());
   }
 
-
-
-  // This code provides a way to retrieve a list of chat contacts for the currently authenticated user from Firestore, along with some additional
-  // information about each contact.
+  //The getCallHistory function returns a stream of List<CallModel> objects, which represents the call history of a user.
   @override
   Stream<List<CallModel>> getCallHistory() {
     return _firestore
         .collection("call")
         .doc(_auth.currentUser!.uid)
         .collection("history")
+    //the snapshots() method is used to create a stream of query snapshots, which updates the stream whenever the underlying data changes in the database.
         .snapshots()
-        .map((event) => event.docs.map((doc) => CallModel.fromMap(doc.data())).toList());
+    // The map() method is then called on the stream to transform the snapshots into a list of CallModel objects.
+        .map((event) =>
+    //The CallModel.fromMap method is used to convert the Firestore document data (represented as a Map<String, dynamic>) into a CallModel object.
+    //This is done for each document in the snapshot, resulting in a list of CallModel objects.
+        event.docs.map((doc) => CallModel.fromMap(doc.data())).toList());
   }
-
-
-
-
 }
