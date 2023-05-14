@@ -25,14 +25,14 @@ Star⭐ the repo if you like what you see😉.
 - Custom gallery & camera & video display
 - Status
 
+## Demo
+
+### [Watch it on YouTube](https://youtu.be/slk0shFBXwk)
+
+
 ## App Screenshot
 
 ![Group 1 (4)](https://github.com/dicky7/ngandika_app/assets/54176971/cad29341-a340-42e3-861f-6a3af216376e)
-
-## Demo
-
-https://github.com/dicky7/ngandika_app/assets/54176971/9282b4d9-1447-4f97-b3c3-3a98a5ce17b9
-
 
 ## Note
 The stories feature is ready, you can write a cloud scheduler function to auto delete stories after 24hrs as cloud functions is not enabled in this project
