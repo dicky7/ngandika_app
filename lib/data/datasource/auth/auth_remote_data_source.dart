@@ -17,6 +17,8 @@ abstract class AuthRemoteDataSource {
   Future<String> storeFileToFirebase(String path, File file);
 
   Future<String> getCurrentUid();
+
+  Future<void> signOut();
 }
 
 class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
@@ -150,5 +152,10 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
     } on FirebaseAuthException catch (e) {
       throw ServerException(e.message.toString());
     }
+  }
+
+  @override
+  Future<void> signOut() async {
+   await firebaseAuth.signOut();
   }
 }

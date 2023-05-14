@@ -23,16 +23,18 @@ class CallCubit extends Cubit<CallState> {
     required String receiverPic,
     required bool isGroupChat
   }) async{
-    final result = await repository.makeCall(
+    if (!isGroupChat) {
+      final result = await repository.makeCall(
         context,
         receiverId: receiverId,
         receiverName: receiverName,
         receiverPic: receiverPic
-    );
-    result.fold(
-      (l) => emit(CallError(l.message)),
-      (r) => emit(MakeCallSuccess()),
-    );
+      );
+      result.fold(
+        (l) => emit(CallError(l.message)),
+        (r) => emit(MakeCallSuccess()),
+      );
+    }
   }
 
   Future<void> endCall({required String callerId, required String receiverId}){

@@ -185,10 +185,12 @@ class _LoginPageState extends State<LoginPage> {
         color: kBlueDark,
         width: context.width(0.65),
         onPress: () {
-          if (countryCodeController.text.isNotEmpty &&
-              phoneController.text.isNotEmpty) {
-            final number = phoneController.text.trim();
-            final countryCode = countryCodeController.text;
+          if (countryCodeController.text.isNotEmpty && phoneController.text.isNotEmpty) {
+            var number = phoneController.text.trim();
+            if (number.startsWith('0')) {
+              number = number.substring(1); // remove leading zero
+            }
+            var countryCode = countryCodeController.text;
             phoneNumber = "+$countryCode$number";
 
             AppDialogs.submitPhoneDialog(
@@ -201,6 +203,7 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
       ),
+
     );
   }
 }

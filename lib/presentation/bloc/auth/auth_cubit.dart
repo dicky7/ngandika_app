@@ -50,4 +50,9 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepository.getCurrentUid();
     return result;
   }
+
+  Future<void> signOut() async{
+    getCurrentUid();
+    authRepository.signOut();
+  }
 }

@@ -12,10 +12,11 @@ abstract class AuthRepository {
 
   Future<Either<Failure, void>> verifyOtp(String smsOtpCode);
 
-  Future<Either<Failure, void>> saveUserDataToFirebase(
-      String username, File? profilePicture);
+  Future<Either<Failure, void>> saveUserDataToFirebase(String username, File? profilePicture);
 
   Future<String> getCurrentUid();
+
+  Future<void> signOut();
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -71,5 +72,11 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<String> getCurrentUid() async {
     final result = await authLocalDataSource.getUserId();
     return result;
+  }
+
+  @override
+  Future<void> signOut() async {
+    await authRemoteDataSource.signOut();
+    await authLocalDataSource.removeUserId();
   }
 }
